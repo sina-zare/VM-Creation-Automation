@@ -1,7 +1,4 @@
-#### 5147 Python
-#### 460  Pipeline
-#### 512  Terraform
-#### 330  Ansible
+#### Lines: (5151 Python) (483  Pipeline) (512  Terraform) (330  Ansible)
 
 # VM Creation Automation
 
