@@ -27,18 +27,18 @@ Configures newly created Windows VMs: local group membership and the Zabbix Agen
 - WinRM access to the VM with `WINDOWS_ANSIBLE_USER` / `WINDOWS_ANSIBLE_PASSWORD` (from the generated inventory).
 - The VM is domain joined and the AD groups already exist (created by `configure_active_directory`), plus the shared group `Server_Administrators`.
 - The runner can download from `https://vnk-nexus.abramad.com/repository/zabbix-cdn/...`.
-- The host variable `zabbix_server` is set in the inventory (copied from `vms.<name>.zabbix_server`). It must be `vnk-customerzabbix` or `me-customerzabbix`; **it is null for unmonitored product lines (for example IaaS) and the config copy then fails**.
+- The host variable `zabbix_server` is set in the inventory (copied from `vms.<name>.zabbix_server`). It must be `vnk-customerzabbix` or `me-customerzabbix`.
 
 ## Variables (`defaults/main.yml`)
 
-| Variable | Default | Meaning |
-|---|---|---|
-| `admin_groups` | `<OU>Deploy`, `<OU>Support`, `Server_Administrators`, `<OU><hostname>Members` | Domain groups added to local **Administrators** |
-| `rdp_groups` | `<OU>Members` | Domain groups added to local **Remote Desktop Users** |
-| `agent2_version` | `7.0.30` | Zabbix Agent 2 version |
-| `agent2_download_url` | Nexus `zabbix-cdn` MSI URL built from `agent2_version` | Download location |
-| `agent2_temp_dir` | `C:\Temp\zabbix_agent2` | Temporary folder on the VM |
-| `agent2_install_dir` | `C:\Program Files\Zabbix Agent 2` | Installation folder |
+| Variable | Default                                                                       | Meaning                                               |
+|---|-------------------------------------------------------------------------------|-------------------------------------------------------|
+| `admin_groups` | `<OU>Deploy`, `<OU>Support`, `Server_Administrators`, `<OU><hostname>Members` | Domain groups added to local **Administrators**       |
+| `rdp_groups` | `<OU>Members`                                                                 | Domain groups added to local **Remote Desktop Users** |
+| `agent2_version` | `ZABBIX_AGENT2_VERSION`                                                       | Zabbix Agent 2 version taken from Gitlab CI variables |
+| `agent2_download_url` | Nexus `zabbix-cdn` MSI URL built from `agent2_version`                        | Download location                                     |
+| `agent2_temp_dir` | `C:\Temp\zabbix_agent2`                                                       | Temporary folder on the VM                            |
+| `agent2_install_dir` | `C:\Program Files\Zabbix Agent 2`                                             | Installation folder                                   |
 
 `<OU>` is `ad_info.ad_ou` and `<hostname>` is `inventory_hostname`; both come from `vms.tfvars.json` (`-e "@../vms.tfvars.json"`). The group names match the ones created by `configure_active_directory`.
 
@@ -47,9 +47,9 @@ Configures newly created Windows VMs: local group membership and the Zabbix Agen
 | Folder (`files/zabbix/config_files/`) | `zabbix_server` value | Used for |
 |---|---|---|
 | `vnk-customerzabbix/zabbix_agent2.conf` | `vnk-customerzabbix` | Vanak customer Zabbix |
-| `me-customerzabbix/zabbix_agent2.conf` | `me-customerzabbix` | Miremad customer Zabbix (**Planned**) |
+| `me-customerzabbix/zabbix_agent2.conf` | `me-customerzabbix` | Miremad customer Zabbix |
 
-The same file is copied to every VM of that datacenter. **TODO** document how the host name is set in the file (for example `HostnameItem`) and which values must be changed per environment.
+The same file is copied to every VM of that datacenter.
 
 ## Usage
 
@@ -61,23 +61,7 @@ ansible-playbook -i inventory/hosts.yml \
   -e "@../vms.tfvars.json"
 ```
 
-Playbook sketch (**TODO** replace with the real playbook):
-
-```yaml
-- hosts: windows_clients
-  roles:
-    - configure_windows_client
-```
-
 ## Idempotency
 
 - Group membership tasks make no change on re-runs.
 - The Zabbix part always downloads, copies, restarts the service and removes the MSI, so it reports changes on every run.
-
-## Known gaps
-
-- The Zabbix task does not check whether the agent is already at `agent2_version` and does not skip VMs without `zabbix_server`; add `when: zabbix_server` and a version check.
-- `local_groups.yml` hard-codes the NetBIOS prefix `cloud\`; derive it from `ad_info.domain`.
-- The MSI download uses `validate_certs: false`; trust the internal CA instead.
-- Splunk forwarder configuration is disabled; re-enable the include in `main.yml` once `splunk_forwarder.yml` is ready.
-- Windows guests only; Linux guests are not configured yet.

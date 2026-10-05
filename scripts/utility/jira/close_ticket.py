@@ -158,7 +158,7 @@ try:
         logger.error(
             f"Usage: close_ticket.py <TICKET_KEY> <REPORT_HTML_PATH>",
             extra={
-                "issue": ticket,
+                "issue": JIRA_TICKET_KEY,
             }
         )
         raise SystemExit("Usage: close_ticket.py <TICKET_KEY> <REPORT_HTML_PATH>")

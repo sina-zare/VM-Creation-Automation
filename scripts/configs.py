@@ -10,7 +10,7 @@ BIND_PUSH_TOKEN = os.environ["BIND_PUSH_TOKEN"] # used to push changes to bind p
 
 # DNS (used for resolving abramad.cloud domain records)
 DNS_SERVER = os.environ["DNS_SERVER"]
-PUBLIC_ZONE = os.environ["PUBLIC_ZONE"]
+PUBLIC_ZONE = os.environ.get("PUBLIC_ZONE", "abramad.cloud")
 
 # Mattermost
 MATTERMOST_NOTIFY_WEBHOOK = os.environ["MATTERMOST_NOTIFY_WEBHOOK"]
@@ -34,6 +34,7 @@ VNK_CUSTOMERZABBIX_URL = os.environ["VNK_CUSTOMERZABBIX_URL"]
 VNK_CUSTOMERZABBIX_TOKEN = os.environ["VNK_CUSTOMERZABBIX_TOKEN"]
 ME_CUSTOMERZABBIX_URL = os.environ["ME_CUSTOMERZABBIX_URL"]
 ME_CUSTOMERZABBIX_TOKEN = os.environ["ME_CUSTOMERZABBIX_TOKEN"]
+ZABBIX_AGENT2_VERSION =  os.environ["ZABBIX_AGENT2_VERSION"]
 
 # Pushgateway
 success = True

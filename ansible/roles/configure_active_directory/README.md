@@ -44,7 +44,7 @@ Prepares Active Directory for a new customer deployment: customer OU, security g
 |---|---|---|
 | `ad_info` | `vms.tfvars.json` (`-e "@../vms.tfvars.json"`) | See below |
 | `vms` | `vms.tfvars.json` | Map of VMs keyed by hostname; only the keys are used here |
-| `local_admin_password` | **TODO** confirm (probably set in the playbook from `LOCAL_ADMIN_PASSWORD`) | Initial password of new AD users |
+| `local_admin_password` | set in the playbook from `LOCAL_ADMIN_PASSWORD` | Initial password of new AD users |
 
 `ad_info` keys:
 
@@ -64,7 +64,7 @@ Prepares Active Directory for a new customer deployment: customer OU, security g
 | `<OU>Support` | Support staff of the customer (local administrators) |
 | `<OU>Members` | Customer members (Remote Desktop access on its VMs) |
 | `<OU>Computers` | Computer objects of the customer |
-| `<OU><hostname>Members` | Per-VM administrators group (created empty, managed manually) |
+| `<OU><hostname>Members` | Per-VM administrators group |
 
 ## Usage
 
@@ -76,25 +76,8 @@ ansible-playbook -i inventory/hosts.yml \
   -e "@../vms.tfvars.json"
 ```
 
-Playbook sketch (**TODO** replace with the real playbook):
-
-```yaml
-- hosts: domain_controllers
-  gather_facts: false
-  roles:
-    - configure_active_directory
-```
-
 ## Idempotency
 
 - OU, groups and computer objects use `state: present`, so re-runs make no change.
 - Users are only created once; password and "must change password" are applied on creation only.
 - The CI job retries twice on failure, which relies on the points above.
-
-## Known gaps
-
-- `ad_customers_ou` hard-codes `DC=cloud,DC=local`; derive it from `ad_info.domain`.
-- `local_admin_password` is also the local administrator password of every Windows VM. Use a random per-user initial password instead, and add `no_log: true` to the password-handling task.
-- `computer.yml` loops over every VM in `vms`, including Linux VMs, so it can create stray computer objects for them (verify); filter on `os_type == 'windows'`.
-- A user whose national ID already exists in another customer OU may be moved by the `path` parameter (verify).
-- A missing prerequisite OU or group makes the run fail; consider a pre-check task listing them.

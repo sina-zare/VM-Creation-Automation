@@ -11,7 +11,7 @@ rdp_groups:
 
 
 # Zabbix_Agent2
-agent2_version: "7.0.30"
+agent2_version: "{{ lookup('env', 'ZABBIX_AGENT2_VERSION') }}"
 
 agent2_download_url: https://vnk-nexus.abramad.com/repository/zabbix-cdn/zabbix/binaries/stable/7.0/{{ agent2_version }}/zabbix_agent2-{{ agent2_version }}-windows-amd64-openssl.msi
 
