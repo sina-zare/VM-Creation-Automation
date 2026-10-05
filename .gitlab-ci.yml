@@ -1,0 +1,468 @@
+default:
+  image: "${IMAGE_NAME}:${IMAGE_TAG}"
+  tags:
+    - docker
+    
+  retry:
+    max: 2
+    when:
+      - runner_system_failure
+      - stuck_or_timeout_failure
+
+stages:
+  - reconnaissance
+  - terraform_vm_provision
+  - ansible_vm_provision
+  - dns
+  - zabbix
+  - reporting
+  - catch_exception
+
+variables:
+  ANSIBLE_ROLES_PATH: "${CI_PROJECT_DIR}/ansible/roles"
+  IMAGE_NAME: "${NEXUS_DOCKER_REGISTRY}/tap"
+  IMAGE_TAG: "1.0"
+
+
+# ============================================================================
+# Fetch data from Jira / NetBox / APIs
+# Produces:
+#   vms.tfvars.json
+# ============================================================================
+fetch_data:
+  stage: reconnaissance
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "trigger"'
+
+
+  script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - python3 -m scripts.utility.pipeline.timing start
+    - echo "Fetching ticket ${JIRA_TICKET_KEY}"
+    - python3 -m scripts.data_fetcher "${JIRA_TICKET_KEY}"
+    - python3 -m scripts.utility.pipeline.timing mark reconnaissance_end
+
+  artifacts:
+    paths:
+      - vms.tfvars.json
+      - automation.*.log
+      - reports/
+      - pipeline_timing/
+    expire_in: 1 day
+
+
+# ============================================================================
+# Terraform
+# Creates VM(s)
+# Produces:
+#   vm_outputs.json
+# ============================================================================
+create_vm:
+  retry: 0
+  stage: terraform_vm_provision
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "trigger"'
+
+  needs:
+  - job: fetch_data
+    artifacts: true
+
+  variables:
+    # Sensitive Variables
+    TF_VAR_domain_join_password: "${DOMAIN_JOIN_PASSWORD}"
+    TF_VAR_domain_join_user: "${DOMAIN_JOIN_USER}"
+    TF_VAR_local_admin_password: "${LOCAL_ADMIN_PASSWORD}"
+    
+    # Configure the http backend via TF_HTTP_*
+    TF_STATE_NAME: ${JIRA_TICKET_KEY}
+    TF_ADDRESS: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${TF_STATE_NAME}"
+    TF_HTTP_ADDRESS: "${TF_ADDRESS}"
+    TF_HTTP_LOCK_ADDRESS: "${TF_ADDRESS}/lock"
+    TF_HTTP_UNLOCK_ADDRESS: "${TF_ADDRESS}/lock"
+    TF_HTTP_USERNAME: "gitlab-ci-token"
+    TF_HTTP_PASSWORD: "${CI_JOB_TOKEN}"
+    TF_HTTP_LOCK_METHOD: "POST"
+    TF_HTTP_UNLOCK_METHOD: "DELETE"
+    TF_HTTP_RETRY_WAIT_MIN: "5"
+
+  script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - echo "Creating VMs with Terraform ${JIRA_TICKET_KEY}"
+    - cp vms.tfvars.json "terraform/main/vms.tfvars.json"
+    - cd "terraform/main"
+
+    - terraform init
+    - python3 -m scripts.utility.log.run_and_log "${JIRA_TICKET_KEY}" terraform -- terraform apply -auto-approve -var-file=vms.tfvars.json
+
+    - terraform output -json | jq '{vm_ids:.vm_ids.value, vm_ips:.vm_ips.value}' > "${CI_PROJECT_DIR}/vm_outputs.json"
+    - python3 -m scripts.utility.pipeline.timing mark terraform_end
+
+  artifacts:
+    paths:
+      - vms.tfvars.json
+      - reports/  
+      - vm_outputs.json
+      - automation.*.log
+      - pipeline_timing/
+    expire_in: 1 day
+
+
+# ============================================================================
+# Generate Ansible Inventory
+# Produces:
+#   ansible/inventory/hosts.yml
+# ============================================================================
+1_generate_inventory:
+  stage: ansible_vm_provision
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "trigger"'
+
+
+  needs:
+    - job: create_vm
+      artifacts: true
+
+  script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - python3 -m scripts.utility.pipeline.timing mark ansible_start
+    - python3 -m scripts.utility.ansible.generate_ansible_inventory
+
+    - echo "Generated inventory:"
+    - cat ansible/inventory/hosts.yml
+
+    - echo "Inventory validation:"
+    - ansible-inventory -i ansible/inventory/hosts.yml --list
+
+  artifacts:
+    paths:
+      - ansible/inventory/hosts.yml
+      - vm_outputs.json
+      - vms.tfvars.json
+      - reports/  
+      - automation.*.log
+      - pipeline_timing/
+    expire_in: 1 day
+
+
+# ============================================================================
+# Active Directory Provisioning
+# Creates:
+#   OU
+#   Security Groups
+#   Users
+#   Computer Object Updates
+# ============================================================================
+2_configure_ad:
+  stage: ansible_vm_provision
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "trigger"'
+
+  retry:
+    max: 2
+    when:
+      - script_failure
+
+  needs:
+    - job: 1_generate_inventory
+
+  script:
+    - ansible-galaxy collection list
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - cd ansible
+    - |
+      python3 -m scripts.utility.log.run_and_log "${JIRA_TICKET_KEY}" ansible -- \
+        ansible-playbook \
+        -i inventory/hosts.yml \
+        playbooks/configure_active_directory.yml \
+        -e "@../vms.tfvars.json"
+
+  artifacts:
+    paths:
+      - automation.*.log
+    expire_in: 1 day
+
+
+# ============================================================================
+# Windows Provisioning
+# Adds:
+#   Administrators memberships
+#   Remote Desktop Users memberships
+#   Software installation
+# ============================================================================
+3_configure_windows:
+  stage: ansible_vm_provision
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "trigger"'
+  
+  retry:
+    max: 2
+    when:
+      - script_failure
+
+  needs:
+    - job: 1_generate_inventory
+      artifacts: true
+    - job: 2_configure_ad
+      artifacts: true
+
+  script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - cd ansible
+    - |
+      python3 -m scripts.utility.log.run_and_log "${JIRA_TICKET_KEY}" ansible -- \
+        ansible-playbook \
+        -i inventory/hosts.yml \
+        playbooks/configure_windows_client.yml \
+        -e "@../vms.tfvars.json"
+    - python3 -m scripts.utility.pipeline.timing mark ansible_end
+
+  artifacts:
+    paths:
+      - vm_outputs.json
+      - vms.tfvars.json
+      - reports/
+      - automation.*.log
+      - pipeline_timing/
+    expire_in: 1 day
+
+
+# ============================================================================
+# DNS record (via bind project)
+# ============================================================================
+add_dns_records:
+  stage: dns
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "trigger"'
+  resource_group: bind_repo
+  needs:
+    - job: fetch_data
+      artifacts: true
+    - job: 3_configure_windows
+
+  script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - python3 -m scripts.utility.dns.add_dns_records vms.tfvars.json
+    - python3 -m scripts.utility.pipeline.timing mark dns_end
+
+
+  artifacts:
+    paths:
+      - automation.*.log
+      - pipeline_timing/
+    expire_in: 1 day
+
+
+# ============================================================================
+# Zabbix URL Monitoring
+# ============================================================================
+add_url_monitoring:
+  stage: zabbix
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "trigger"'
+  resource_group: bind_repo
+  needs:
+    - job: fetch_data
+      artifacts: true
+    - job: add_dns_records
+  
+  allow_failure: true
+
+  script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - python3 -m scripts.utility.zabbix.add_url_monitoring
+    - python3 -m scripts.utility.pipeline.timing mark zabbix_end
+
+
+  artifacts:
+    paths:
+      - automation.*.log
+      - pipeline_timing/
+    expire_in: 1 day
+
+
+# ============================================================================
+# Patch report with Terraform outputs
+# ============================================================================
+1_finalize_report:
+  stage: reporting
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "trigger"'
+
+  needs:
+    - job: 3_configure_windows
+      artifacts: true
+    - job: add_url_monitoring
+
+  script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - python3 -m scripts.utility.pipeline.timing mark reporting_start
+    - cat vm_outputs.json | jq
+    - python3 -m scripts.utility.webpage.patch_report_ips "${JIRA_TICKET_KEY}" vm_outputs.json
+
+  artifacts:
+    paths:
+      - automation.*.log
+      - vms.tfvars.json
+      - reports/
+      - pipeline_timing/
+    expire_in: 1 day
+
+
+# ============================================================================
+# Email report
+# ============================================================================
+2_send_report_email:
+  stage: reporting
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "trigger"'
+
+  needs:
+    - job: 1_finalize_report    # brings reports/ and vms.tfvars.json
+  
+  allow_failure: true
+
+  script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - python3 -m scripts.utility.email.send_report_email "${JIRA_TICKET_KEY}" vms.tfvars.json
+
+  artifacts:
+    paths:
+      - automation.*.log
+
+
+# ============================================================================
+# Comment and Close Ticket
+# ============================================================================
+3_close_ticket:
+  stage: reporting
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "trigger"'
+
+  needs:
+    - job: 1_finalize_report
+
+  script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - python3 -m scripts.utility.jira.close_ticket "${JIRA_TICKET_KEY}" "reports/${JIRA_TICKET_KEY}/index.html"
+
+  artifacts:
+    paths:
+      - automation.*.log
+    expire_in: 1 day
+
+
+# ============================================================================
+# Merge Logs
+# ============================================================================
+4_merge_logs:
+  stage: reporting
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "trigger"'
+
+  needs:
+    - job: fetch_data
+      artifacts: true
+    - job: create_vm
+      artifacts: true
+    - job: 1_generate_inventory
+      artifacts: true
+    - job: 2_configure_ad
+      artifacts: true
+    - job: 3_configure_windows
+      artifacts: true
+    - job: add_dns_records
+      artifacts: true
+    - job: add_url_monitoring
+      artifacts: true
+    - job: 1_finalize_report
+      artifacts: true
+    - job: 2_send_report_email
+      artifacts: true
+    - job: 3_close_ticket
+      artifacts: true
+
+  script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - python3 -m scripts.utility.log.merge_logs
+
+  artifacts:
+    paths:
+      - automation.log
+    expire_in: 1 day
+
+
+# ============================================================================
+# GitLab Pages
+# ============================================================================
+5_publish_pages:
+  stage: reporting
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "trigger"'
+
+  # Only one instance of this job runs at a time across all pipelines
+  resource_group: pages_publish
+
+  needs:
+    - job: 1_finalize_report
+      artifacts: true
+    - job: 4_merge_logs
+      artifacts: true
+
+  script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - echo "Publishing Pages"
+    - sh scripts/utility/webpage/generate_log.sh "${JIRA_TICKET_KEY}"
+    - sh scripts/utility/webpage/generate_index.sh
+    - echo "Pages URL is ${CI_PAGES_URL}"
+
+    # Timing
+    - python3 -m scripts.utility.pipeline.timing mark reporting_end
+    - python3 -m scripts.utility.pipeline.timing summary
+    #- 'python3 -m scripts.utility.mattermost.notifier "${MATTERMOST_NOTIFY_WEBHOOK}" "#### :globe_with_meridians: :link: Web Report URL: ${CI_PAGES_URL}"'
+    
+    # Make sure we're in the Git repository
+    - cd "${CI_PROJECT_DIR}"
+    - git config --global --add safe.directory "${CI_PROJECT_DIR}"
+    # Commit reports back to GitLab for pages
+    - git config user.email "ci-bot@abramad.com"
+    - git config user.name "vm-creation-bot"
+    - git remote set-url origin "https://oauth2:${GIT_PUSH_TOKEN}@gitlab.abramad.com/abramad/sysops/automation/vm-creation.git"
+    - git config http.version HTTP/1.1
+    - git config http.postBuffer 524288000
+    - git add "reports/${JIRA_TICKET_KEY}"
+    - 'git commit -m "Finalize report and logs for ${JIRA_TICKET_KEY} [skip ci]" || echo "nothing to commit"'
+    - git push origin HEAD:main
+
+    
+
+  artifacts:
+    paths:
+      - public
+      - pipeline_timing/
+
+  pages:
+    publish: public
+
+  environment:
+    name: pages
+    url: ${CI_PAGES_URL}
+
+
+notify_failure:
+  stage: catch_exception
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "trigger"'
+      when: on_failure
+
+  script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - FAILED_JOBS_SUMMARY=$(python3 -m scripts.utility.gitlab.get_failed_jobs)
+    - |
+      MESSAGE="🔴 Project *${CI_PROJECT_NAME}*
+      Pipeline failed for ticket *${JIRA_TICKET_KEY}*
+      Pipeline: ${CI_PIPELINE_URL}
+
+      
+      ${FAILED_JOBS_SUMMARY}"
+    - python3 -m scripts.utility.mattermost.notifier "${MATTERMOST_FAILURE_WEBHOOK}" "${MESSAGE}"
+
