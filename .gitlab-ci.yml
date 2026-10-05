@@ -30,10 +30,12 @@ variables:
 #   vms.tfvars.json
 # ============================================================================
 fetch_data:
+  timeout: 1m
   stage: reconnaissance
   rules:
     - if: '$CI_PIPELINE_SOURCE == "trigger"'
 
+  resource_group: recon
 
   script:
     - export PYTHONPATH="${CI_PROJECT_DIR}"
@@ -62,6 +64,8 @@ create_vm:
   stage: terraform_vm_provision
   rules:
     - if: '$CI_PIPELINE_SOURCE == "trigger"'
+
+  resource_group: terrafrom
 
   needs:
   - job: fetch_data
@@ -113,6 +117,7 @@ create_vm:
 #   ansible/inventory/hosts.yml
 # ============================================================================
 1_generate_inventory:
+  timeout: 1m
   stage: ansible_vm_provision
   rules:
     - if: '$CI_PIPELINE_SOURCE == "trigger"'
@@ -153,6 +158,7 @@ create_vm:
 #   Computer Object Updates
 # ============================================================================
 2_configure_ad:
+  timeout: 5m
   stage: ansible_vm_provision
   rules:
     - if: '$CI_PIPELINE_SOURCE == "trigger"'
@@ -190,6 +196,7 @@ create_vm:
 #   Software installation
 # ============================================================================
 3_configure_windows:
+  timeout: 10m
   stage: ansible_vm_provision
   rules:
     - if: '$CI_PIPELINE_SOURCE == "trigger"'
@@ -230,6 +237,7 @@ create_vm:
 # DNS record (via bind project)
 # ============================================================================
 add_dns_records:
+  timeout: 2m
   stage: dns
   rules:
     - if: '$CI_PIPELINE_SOURCE == "trigger"'
@@ -256,10 +264,11 @@ add_dns_records:
 # Zabbix URL Monitoring
 # ============================================================================
 add_url_monitoring:
+  timeout: 1m
   stage: zabbix
   rules:
     - if: '$CI_PIPELINE_SOURCE == "trigger"'
-  resource_group: bind_repo
+
   needs:
     - job: fetch_data
       artifacts: true
@@ -284,6 +293,7 @@ add_url_monitoring:
 # Patch report with Terraform outputs
 # ============================================================================
 1_finalize_report:
+  timeout: 1m
   stage: reporting
   rules:
     - if: '$CI_PIPELINE_SOURCE == "trigger"'
@@ -312,6 +322,7 @@ add_url_monitoring:
 # Email report
 # ============================================================================
 2_send_report_email:
+  timeout: 1m
   stage: reporting
   rules:
     - if: '$CI_PIPELINE_SOURCE == "trigger"'
@@ -334,6 +345,7 @@ add_url_monitoring:
 # Comment and Close Ticket
 # ============================================================================
 3_close_ticket:
+  timeout: 1m
   stage: reporting
   rules:
     - if: '$CI_PIPELINE_SOURCE == "trigger"'
@@ -355,6 +367,7 @@ add_url_monitoring:
 # Merge Logs
 # ============================================================================
 4_merge_logs:
+  timeout: 1m
   stage: reporting
   rules:
     - if: '$CI_PIPELINE_SOURCE == "trigger"'
@@ -395,6 +408,7 @@ add_url_monitoring:
 # GitLab Pages
 # ============================================================================
 5_publish_pages:
+  timeout: 2m
   stage: reporting
   rules:
     - if: '$CI_PIPELINE_SOURCE == "trigger"'
