@@ -1,0 +1,10 @@
+---
+- name: Create customer OU
+  microsoft.ad.ou:
+    name: "{{ ad_info.ad_ou }}"
+    path: "{{ ad_customers_ou }}"
+    state: present
+    protect_from_deletion: true
+    attributes:
+      set:
+        description: "{{ ad_info.ad_desc }}"

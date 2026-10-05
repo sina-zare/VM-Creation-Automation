@@ -1,0 +1,16 @@
+---
+- name: Create customer OU
+  ansible.builtin.include_tasks:
+    file: ou.yml
+
+- name: Create customer groups
+  ansible.builtin.include_tasks:
+    file: groups.yml
+
+- name: Create customer users
+  ansible.builtin.include_tasks:
+    file: users.yml
+
+- name: Configure computer objects
+  ansible.builtin.include_tasks:
+    file: computer.yml

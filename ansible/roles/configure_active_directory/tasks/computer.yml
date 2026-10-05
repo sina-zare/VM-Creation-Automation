@@ -1,0 +1,26 @@
+---
+- name: Configure existing AD computer objects
+  microsoft.ad.computer:
+    identity: "{{ item.key }}"
+    description: "{{ ad_info.ad_ou }}"
+    path: "{{ ad_customer_ou }}"
+    state: present
+
+  loop: "{{ vms | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+
+- name: Add computers to customer AD group
+  microsoft.ad.group:
+    name: "{{ ad_info.ad_ou }}Computers"
+    path: "{{ ad_customer_ou }}"
+    scope: global
+    category: security
+    members:
+      add:
+        - "{{ item.key }}$"
+    state: present
+
+  loop: "{{ vms | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"

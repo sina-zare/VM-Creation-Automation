@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logs · SERVICDESK-84411 · Abramad</title>
+<style>
+  :root {
+    --bg-1: #0a1224;
+    --bg-2: #0f1c33;
+    --accent: #2f5fec;
+    --accent-2: #22c55e;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --card-border: rgba(255, 255, 255, 0.08);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: radial-gradient(circle at top, var(--bg-2), var(--bg-1));
+    color: var(--text); padding: 48px 24px;
+  }
+  .container { max-width: 820px; margin: 0 auto; }
+
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; color: var(--text-dim); text-decoration: none; margin-bottom: 24px;
+    transition: color 0.15s ease;
+  }
+  .back-link:hover { color: var(--accent); }
+
+  .brand {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.04em;
+    color: var(--accent); margin-bottom: 14px;
+  }
+  .brand .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    display: inline-block;
+  }
+
+  h1 {
+    font-size: 20px; margin: 0 0 4px; font-weight: 600;
+    font-family: "SFMono-Regular", Consolas, monospace;
+  }
+  .subtitle { color: var(--text-dim); font-size: 13px; margin: 0 0 24px; }
+
+  .log-box {
+    background: #27385f;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 20px;
+    overflow-x: auto;
+    max-height: 70vh;
+    overflow-y: auto;
+    box-shadow: inset 0 0 0 1px rgba(230, 230, 230, 0.02);
+  }
+  .log-box pre {
+    margin: 0;
+    font-family: "SFMono-Regular", Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #c9d6ea;
+    white-space: pre-wrap;
+    word-break: break-word;
+    tab-size: 2;
+}
+
+  .log-time { color: var(--text-dim); }
+
+  .lvl {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+  .lvl-info  { color: #7dd3fc; background: rgba(56, 189, 248, 0.12); }
+  .lvl-warn  { color: #fbbf24; background: rgba(251, 191, 36, 0.14); }
+  .lvl-error { color: #fb7185; background: rgba(251, 113, 133, 0.14); }
+  .lvl-debug { color: #a1a1aa; background: rgba(161, 161, 170, 0.14); }
+
+  .footer { margin-top: 28px; text-align: center; font-size: 12px; color: var(--text-dim); }
+  .footer .company { color: var(--accent); font-weight: 600; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <a class="back-link" href="../../index.html">&larr; Back to all reports</a>
+    <div class="brand"><span class="dot"></span>ABRAMAD</div>
+    <h1>SERVICDESK-84411</h1>
+    <p class="subtitle">automation.log</p>
+    <div class="log-box"><pre>
+{
+  "asctime": "1405-07-06 22:59:05",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "vCenter folder selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "vcenter_folder_selector",
+  "vcenter_folder": "AbramadCustomers/Rahkaran/ElCenter"
+}
+
+{
+  "asctime": "1405-07-06 22:59:05",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "VM name validated",
+  "issue": "SERVICDESK-84411",
+  "funcName": "vm_name_selector",
+  "vm_name": "VR3-ElCenter-DB",
+  "vm_product_line": "Rahkaran Server"
+}
+
+{
+  "asctime": "1405-07-06 22:59:05",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Zabbix Server selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "zabbix_server_selector",
+  "zabbix_server": "vnk-customerzabbix",
+  "datacenter": "vanak",
+  "product_line": "Rahkaran Server"
+}
+
+{
+  "asctime": "1405-07-06 22:59:06",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "disks selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "pick_datastore",
+  "disks": [
+    {
+      "label": "disk0",
+      "size": 90,
+      "type": "standard",
+      "storage_cluster": "VTS-VNX5400-Std-Pool01-15K-LAB",
+      "unit_number": 0,
+      "datastore": "VTS-VNX5400-Std-Pool01-15K-LAB-LUN04"
+    },
+    {
+      "label": "disk1",
+      "size": 50,
+      "type": "standard",
+      "storage_cluster": "VTS-VNX5400-Std-Pool01-15K-LAB",
+      "unit_number": 1,
+      "datastore": "VTS-VNX5400-Std-Pool01-15K-LAB-LUN04"
+    }
+  ]
+}
+
+{
+  "asctime": "1405-07-06 22:59:06",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Template name selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "template_selector",
+  "vm_name": "VR3-ElCenter-DB",
+  "template": "TMP-RII-W2022DB"
+}
+
+{
+  "asctime": "1405-07-06 22:59:06",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Portgroup selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "portgroup_selector",
+  "product_line": "Rahkaran Server",
+  "datacenter": "vanak",
+  "portgroup": "AbramadRahkaran-VR3-NSX-214"
+}
+
+{
+  "asctime": "1405-07-06 22:59:06",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "URL selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "url_selector",
+  "url": "https://ElCenter-r.abramad.cloud"
+}
+
+{
+  "asctime": "1405-07-06 22:59:06",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Custom attributes selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "attribute_selector",
+  "custom_attributes": {
+    "CompanyName": "الناز محمدی",
+    "Creation Date": "1405/07/06-22:59",
+    "Creation Ticket ID": "SERVICDESK-84411",
+    "National ID": "0311259952",
+    "NativeBackup": "True",
+    "Physical Dongle": "True",
+    "IDS/IPS": "True",
+    "WAF Service": "False",
+    "Site-to-Site VPN": "False",
+    "Owner": "Support Team",
+    "ProductLine": "Rahkaran Server",
+    "Business Value": "VIP",
+    "RepMail": "elnaz.m@abramad.com",
+    "RepName": "Elnaz Mohammadi",
+    "RepNumber": "09356917639",
+    "Industry": "Sales &amp; Destribution"
+  }
+}
+
+{
+  "asctime": "1405-07-06 22:59:06",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "VM name validated",
+  "issue": "SERVICDESK-84411",
+  "funcName": "vm_name_selector",
+  "vm_name": "VR3-ElCenter-LB",
+  "vm_product_line": "Rahkaran Server"
+}
+
+{
+  "asctime": "1405-07-06 22:59:06",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Zabbix Server selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "zabbix_server_selector",
+  "zabbix_server": "vnk-customerzabbix",
+  "datacenter": "vanak",
+  "product_line": "Rahkaran Server"
+}
+
+{
+  "asctime": "1405-07-06 22:59:06",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "disks selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "pick_datastore",
+  "disks": [
+    {
+      "label": "disk0",
+      "size": 95,
+      "type": "standard",
+      "storage_cluster": "VTS-VNX5400-Std-Pool01-15K-LAB",
+      "unit_number": 0,
+      "datastore": "VTS-VNX5400-Std-Pool01-15K-LAB-LUN04"
+    }
+  ]
+}
+
+{
+  "asctime": "1405-07-06 22:59:06",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Template name selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "template_selector",
+  "vm_name": "VR3-ElCenter-LB",
+  "template": "TMP-RII-W2022APP"
+}
+
+{
+  "asctime": "1405-07-06 22:59:06",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Portgroup selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "portgroup_selector",
+  "product_line": "Rahkaran Server",
+  "datacenter": "vanak",
+  "portgroup": "AbramadRahkaran-VR3-NSX-214"
+}
+
+{
+  "asctime": "1405-07-06 22:59:06",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "URL selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "url_selector",
+  "url": "https://ElCenter-r.abramad.cloud"
+}
+
+{
+  "asctime": "1405-07-06 22:59:09",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.netbox",
+  "message": "Prefix 185.119.240.0/22 (id=114) scope=vanak -&gt; 558 free IPs",
+  "issue": "SERVICDESK-84411",
+  "funcName": "find_best_prefix",
+  "Prefix": "185.119.240.0/22",
+  "scope": "vanak",
+  "target": "customers",
+  "free_ips": 558
+}
+
+{
+  "asctime": "1405-07-06 22:59:09",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.netbox",
+  "message": "Selected prefix 185.119.240.0/22",
+  "issue": null,
+  "funcName": "find_best_prefix"
+}
+
+{
+  "asctime": "1405-07-06 22:59:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.netbox",
+  "message": "Reserved IP: 185.119.240.22/22 (id=24775)",
+  "issue": "SERVICDESK-84411",
+  "funcName": "reserve_ip",
+  "IP": "185.119.240.22/22"
+}
+
+{
+  "asctime": "1405-07-06 22:59:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Custom attributes selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "attribute_selector",
+  "custom_attributes": {
+    "CompanyName": "الناز محمدی",
+    "Creation Date": "1405/07/06-22:59",
+    "Creation Ticket ID": "SERVICDESK-84411",
+    "National ID": "0311259952",
+    "NativeBackup": "True",
+    "Physical Dongle": "True",
+    "IDS/IPS": "True",
+    "WAF Service": "False",
+    "Site-to-Site VPN": "False",
+    "Owner": "Support Team",
+    "ProductLine": "Rahkaran Server",
+    "Business Value": "VIP",
+    "RepMail": "elnaz.m@abramad.com",
+    "RepName": "Elnaz Mohammadi",
+    "RepNumber": "09356917639",
+    "Industry": "Sales &amp; Destribution",
+    "URL": "https://ElCenter-r.abramad.cloud",
+    "Public IP": "185.119.240.22"
+  }
+}
+
+{
+  "asctime": "1405-07-06 22:59:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "VM name validated",
+  "issue": "SERVICDESK-84411",
+  "funcName": "vm_name_selector",
+  "vm_name": "VR3-ElCenter-A1",
+  "vm_product_line": "Rahkaran Server"
+}
+
+{
+  "asctime": "1405-07-06 22:59:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Zabbix Server selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "zabbix_server_selector",
+  "zabbix_server": "vnk-customerzabbix",
+  "datacenter": "vanak",
+  "product_line": "Rahkaran Server"
+}
+
+{
+  "asctime": "1405-07-06 22:59:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "disks selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "pick_datastore",
+  "disks": [
+    {
+      "label": "disk0",
+      "size": 80,
+      "type": "standard",
+      "storage_cluster": "VTS-VNX5400-Std-Pool01-15K-LAB",
+      "unit_number": 0,
+      "datastore": "VTS-VNX5400-Std-Pool01-15K-LAB-LUN04"
+    },
+    {
+      "label": "disk1",
+      "size": 50,
+      "type": "standard",
+      "storage_cluster": "VTS-VNX5400-Std-Pool01-15K-LAB",
+      "unit_number": 1,
+      "datastore": "VTS-VNX5400-Std-Pool01-15K-LAB-LUN04"
+    }
+  ]
+}
+
+{
+  "asctime": "1405-07-06 22:59:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Template name selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "template_selector",
+  "vm_name": "VR3-ElCenter-A1",
+  "template": "TMP-RII-W2022APP"
+}
+
+{
+  "asctime": "1405-07-06 22:59:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Portgroup selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "portgroup_selector",
+  "product_line": "Rahkaran Server",
+  "datacenter": "vanak",
+  "portgroup": "AbramadRahkaran-VR3-NSX-214"
+}
+
+{
+  "asctime": "1405-07-06 22:59:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "URL selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "url_selector",
+  "url": "https://ElCenter-r.abramad.cloud"
+}
+
+{
+  "asctime": "1405-07-06 22:59:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Custom attributes selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "attribute_selector",
+  "custom_attributes": {
+    "CompanyName": "الناز محمدی",
+    "Creation Date": "1405/07/06-22:59",
+    "Creation Ticket ID": "SERVICDESK-84411",
+    "National ID": "0311259952",
+    "NativeBackup": "True",
+    "Physical Dongle": "True",
+    "IDS/IPS": "True",
+    "WAF Service": "False",
+    "Site-to-Site VPN": "False",
+    "Owner": "Support Team",
+    "ProductLine": "Rahkaran Server",
+    "Business Value": "VIP",
+    "RepMail": "elnaz.m@abramad.com",
+    "RepName": "Elnaz Mohammadi",
+    "RepNumber": "09356917639",
+    "Industry": "Sales &amp; Destribution"
+  }
+}
+
+{
+  "asctime": "1405-07-06 22:59:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "VM name validated",
+  "issue": "SERVICDESK-84411",
+  "funcName": "vm_name_selector",
+  "vm_name": "VR3-ElCenter-A2",
+  "vm_product_line": "Rahkaran Server"
+}
+
+{
+  "asctime": "1405-07-06 22:59:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Zabbix Server selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "zabbix_server_selector",
+  "zabbix_server": "vnk-customerzabbix",
+  "datacenter": "vanak",
+  "product_line": "Rahkaran Server"
+}
+
+{
+  "asctime": "1405-07-06 22:59:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "disks selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "pick_datastore",
+  "disks": [
+    {
+      "label": "disk0",
+      "size": 80,
+      "type": "standard",
+      "storage_cluster": "VTS-VNX5400-Std-Pool01-15K-LAB",
+      "unit_number": 0,
+      "datastore": "VTS-VNX5400-Std-Pool01-15K-LAB-LUN04"
+    },
+    {
+      "label": "disk1",
+      "size": 50,
+      "type": "standard",
+      "storage_cluster": "VTS-VNX5400-Std-Pool01-15K-LAB",
+      "unit_number": 1,
+      "datastore": "VTS-VNX5400-Std-Pool01-15K-LAB-LUN04"
+    }
+  ]
+}
+
+{
+  "asctime": "1405-07-06 22:59:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Template name selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "template_selector",
+  "vm_name": "VR3-ElCenter-A2",
+  "template": "TMP-RII-W2022APP"
+}
+
+{
+  "asctime": "1405-07-06 22:59:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Portgroup selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "portgroup_selector",
+  "product_line": "Rahkaran Server",
+  "datacenter": "vanak",
+  "portgroup": "AbramadRahkaran-VR3-NSX-214"
+}
+
+{
+  "asctime": "1405-07-06 22:59:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "URL selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "url_selector",
+  "url": "https://ElCenter-r.abramad.cloud"
+}
+
+{
+  "asctime": "1405-07-06 22:59:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Custom attributes selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "attribute_selector",
+  "custom_attributes": {
+    "CompanyName": "الناز محمدی",
+    "Creation Date": "1405/07/06-22:59",
+    "Creation Ticket ID": "SERVICDESK-84411",
+    "National ID": "0311259952",
+    "NativeBackup": "True",
+    "Physical Dongle": "True",
+    "IDS/IPS": "True",
+    "WAF Service": "False",
+    "Site-to-Site VPN": "False",
+    "Owner": "Support Team",
+    "ProductLine": "Rahkaran Server",
+    "Business Value": "VIP",
+    "RepMail": "elnaz.m@abramad.com",
+    "RepName": "Elnaz Mohammadi",
+    "RepNumber": "09356917639",
+    "Industry": "Sales &amp; Destribution"
+  }
+}
+
+{
+  "asctime": "1405-07-06 22:59:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "VM name validated",
+  "issue": "SERVICDESK-84411",
+  "funcName": "vm_name_selector",
+  "vm_name": "VR3-ElCenter-A3",
+  "vm_product_line": "Rahkaran Server"
+}
+
+{
+  "asctime": "1405-07-06 22:59:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Zabbix Server selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "zabbix_server_selector",
+  "zabbix_server": "vnk-customerzabbix",
+  "datacenter": "vanak",
+  "product_line": "Rahkaran Server"
+}
+
+{
+  "asctime": "1405-07-06 22:59:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "disks selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "pick_datastore",
+  "disks": [
+    {
+      "label": "disk0",
+      "size": 80,
+      "type": "standard",
+      "storage_cluster": "VTS-VNX5400-Std-Pool01-15K-LAB",
+      "unit_number": 0,
+      "datastore": "VTS-VNX5400-Std-Pool01-15K-LAB-LUN04"
+    },
+    {
+      "label": "disk1",
+      "size": 50,
+      "type": "standard",
+      "storage_cluster": "VTS-VNX5400-Std-Pool01-15K-LAB",
+      "unit_number": 1,
+      "datastore": "VTS-VNX5400-Std-Pool01-15K-LAB-LUN04"
+    }
+  ]
+}
+
+{
+  "asctime": "1405-07-06 22:59:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Template name selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "template_selector",
+  "vm_name": "VR3-ElCenter-A3",
+  "template": "TMP-RII-W2022APP"
+}
+
+{
+  "asctime": "1405-07-06 22:59:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Portgroup selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "portgroup_selector",
+  "product_line": "Rahkaran Server",
+  "datacenter": "vanak",
+  "portgroup": "AbramadRahkaran-VR3-NSX-214"
+}
+
+{
+  "asctime": "1405-07-06 22:59:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "URL selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "url_selector",
+  "url": "https://ElCenter-r.abramad.cloud"
+}
+
+{
+  "asctime": "1405-07-06 22:59:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Custom attributes selected",
+  "issue": "SERVICDESK-84411",
+  "funcName": "attribute_selector",
+  "custom_attributes": {
+    "CompanyName": "الناز محمدی",
+    "Creation Date": "1405/07/06-22:59",
+    "Creation Ticket ID": "SERVICDESK-84411",
+    "National ID": "0311259952",
+    "NativeBackup": "True",
+    "Physical Dongle": "True",
+    "IDS/IPS": "True",
+    "WAF Service": "False",
+    "Site-to-Site VPN": "False",
+    "Owner": "Support Team",
+    "ProductLine": "Rahkaran Server",
+    "Business Value": "VIP",
+    "RepMail": "elnaz.m@abramad.com",
+    "RepName": "Elnaz Mohammadi",
+    "RepNumber": "09356917639",
+    "Industry": "Sales &amp; Destribution"
+  }
+}
+
+{
+  "asctime": "1405-07-06 23:13:20",
+  "levelname": "INFO",
+  "name": "scripts.utility.log.run_and_log.terraform",
+  "message": "module.vm.data.vsphere_datacenter.dc: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"RepMail\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"RepName\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"NativeBackup\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Business Value\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Physical Dongle\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"RepNumber\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"ProductLine\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Industry\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Owner\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Physical Dongle\"]: Read complete after 0s [id=215]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"CompanyName\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"NativeBackup\"]: Read complete after 0s [id=321]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Owner\"]: Read complete after 0s [id=214]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"RepName\"]: Read complete after 0s [id=219]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"RepMail\"]: Read complete after 0s [id=218]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Sepidar-Lock\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Business Value\"]: Read complete after 0s [id=230]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"ProductLine\"]: Read complete after 0s [id=216]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Creation Ticket ID\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Creation Date\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Public IP\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"IDS/IPS\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Site-to-Site VPN\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Industry\"]: Read complete after 0s [id=322]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"RepNumber\"]: Read complete after 0s [id=220]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"National ID\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"WAF Service\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"CompanyName\"]: Read complete after 0s [id=202]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"URL\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Sepidar-Lock\"]: Read complete after 0s [id=311]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Creation Ticket ID\"]: Read complete after 0s [id=242]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"IDS/IPS\"]: Read complete after 0s [id=235]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Creation Date\"]: Read complete after 0s [id=204]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Link-VraServer\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Public IP\"]: Read complete after 0s [id=217]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Site-to-Site VPN\"]: Read complete after 0s [id=226]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"URL\"]: Read complete after 0s [id=228]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"WAF Service\"]: Read complete after 0s [id=231]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"National ID\"]: Read complete after 0s [id=211]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Link-VraServer\"]: Read complete after 0s [id=209]\nmodule.vm.data.vsphere_datacenter.dc: Read complete after 0s [id=datacenter-1001]\nmodule.vm.data.vsphere_compute_cluster.vm_cluster[\"VR3-ElCenter-A2\"]: Reading...\nmodule.vm.data.vsphere_compute_cluster.vm_cluster[\"VR3-ElCenter-DB\"]: Reading...\nmodule.vm.data.vsphere_network.vm_network[\"VR3-ElCenter-DB\"]: Reading...\nmodule.vm.data.vsphere_network.vm_network[\"VR3-ElCenter-A1\"]: Reading...\nmodule.vm.data.vsphere_compute_cluster.vm_cluster[\"VR3-ElCenter-A1\"]: Reading...\nmodule.vm.data.vsphere_compute_cluster.vm_cluster[\"VR3-ElCenter-LB\"]: Reading...\nmodule.vm.data.vsphere_network.vm_network[\"VR3-ElCenter-A2\"]: Reading...\nmodule.vm.data.vsphere_network.vm_network[\"VR3-ElCenter-A3\"]: Reading...\nmodule.vm.data.vsphere_network.vm_network[\"VR3-ElCenter-LB\"]: Reading...\nmodule.vm.data.vsphere_compute_cluster.vm_cluster[\"VR3-ElCenter-A3\"]: Reading...\nmodule.vm.data.vsphere_network.vm_network[\"VR3-ElCenter-LB\"]: Read complete after 0s [id=dvportgroup-2800016]\nmodule.vm.data.vsphere_datastore.ds[\"VTS-VNX5400-Std-Pool01-15K-LAB-LUN04\"]: Reading...\nmodule.vm.data.vsphere_network.vm_network[\"VR3-ElCenter-A3\"]: Read complete after 0s [id=dvportgroup-2800016]\nmodule.vm.data.vsphere_virtual_machine.templates[\"VR3-ElCenter-A2\"]: Reading...\nmodule.vm.data.vsphere_network.vm_network[\"VR3-ElCenter-DB\"]: Read complete after 0s [id=dvportgroup-2800016]\nmodule.vm.data.vsphere_network.vm_network[\"VR3-ElCenter-A2\"]: Read complete after 0s [id=dvportgroup-2800016]\nmodule.vm.data.vsphere_virtual_machine.templates[\"VR3-ElCenter-A1\"]: Reading...\nmodule.vm.data.vsphere_virtual_machine.templates[\"VR3-ElCenter-A3\"]: Reading...\nmodule.vm.data.vsphere_compute_cluster.vm_cluster[\"VR3-ElCenter-DB\"]: Read complete after 0s [id=domain-c1006]\nmodule.vm.data.vsphere_virtual_machine.templates[\"VR3-ElCenter-DB\"]: Reading...\nmodule.vm.data.vsphere_network.vm_network[\"VR3-ElCenter-A1\"]: Read complete after 0s [id=dvportgroup-2800016]\nmodule.vm.data.vsphere_virtual_machine.templates[\"VR3-ElCenter-LB\"]: Reading...\nmodule.vm.data.vsphere_compute_cluster.vm_cluster[\"VR3-ElCenter-A1\"]: Read complete after 0s [id=domain-c1006]\nmodule.vm.data.vsphere_compute_cluster.vm_cluster[\"VR3-ElCenter-LB\"]: Read complete after 0s [id=domain-c1006]\nmodule.vm.data.vsphere_compute_cluster.vm_cluster[\"VR3-ElCenter-A2\"]: Read complete after 0s [id=domain-c1006]\nmodule.vm.data.vsphere_compute_cluster.vm_cluster[\"VR3-ElCenter-A3\"]: Read complete after 0s [id=domain-c1006]\nmodule.vm.data.vsphere_datastore.ds[\"VTS-VNX5400-Std-Pool01-15K-LAB-LUN04\"]: Read complete after 0s [id=datastore-2798709]\nmodule.vm.data.vsphere_virtual_machine.templates[\"VR3-ElCenter-A3\"]: Read complete after 1s [id=423ac017-ba87-3523-0922-506cddf1a488]\nmodule.vm.data.vsphere_virtual_machine.templates[\"VR3-ElCenter-A2\"]: Read complete after 1s [id=423ac017-ba87-3523-0922-506cddf1a488]\nmodule.vm.data.vsphere_virtual_machine.templates[\"VR3-ElCenter-LB\"]: Read complete after 1s [id=423ac017-ba87-3523-0922-506cddf1a488]\nmodule.vm.data.vsphere_virtual_machine.templates[\"VR3-ElCenter-DB\"]: Read complete after 1s [id=423afe01-60c0-372a-75af-17534a8c7fcc]\nmodule.vm.data.vsphere_virtual_machine.templates[\"VR3-ElCenter-A1\"]: Read complete after 1s [id=423ac017-ba87-3523-0922-506cddf1a488]\nTerraform used the selected providers to generate the following execution\nplan. Resource actions are indicated with the following symbols:\n  + create\nTerraform will perform the following actions:\n  # module.vm.vsphere_folder.customer_folder[\"AbramadCustomers/Rahkaran/ElCenter\"] will be created\n  + resource \"vsphere_folder\" \"customer_folder\" {\n      + datacenter_id = \"datacenter-1001\"\n      + id            = (known after apply)\n      + path          = \"AbramadCustomers/Rahkaran/ElCenter\"\n      + type          = \"vm\"\n    }\n  # module.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"] will be created\n  + resource \"vsphere_virtual_machine\" \"vm\" {\n      + annotation                              = (known after apply)\n      + boot_retry_delay                        = 10000\n      + change_version                          = (known after apply)\n      + cpu_hot_add_enabled                     = true\n      + cpu_limit                               = -1\n      + cpu_share_count                         = (known after apply)\n      + cpu_share_level                         = \"normal\"\n      + custom_attributes                       = {\n          + \"202\" = \"الناز محمدی\"\n          + \"204\" = \"1405/07/06-22:59\"\n          + \"211\" = \"0311259952\"\n          + \"214\" = \"Support Team\"\n          + \"215\" = \"True\"\n          + \"216\" = \"Rahkaran Server\"\n          + \"218\" = \"elnaz.m@abramad.com\"\n          + \"219\" = \"Elnaz Mohammadi\"\n          + \"220\" = \"09356917639\"\n          + \"226\" = \"False\"\n          + \"230\" = \"VIP\"\n          + \"231\" = \"False\"\n          + \"235\" = \"True\"\n          + \"242\" = \"SERVICDESK-84411\"\n          + \"321\" = \"True\"\n          + \"322\" = \"Sales &amp; Destribution\"\n        }\n      + datastore_id                            = \"datastore-2798709\"\n      + default_ip_address                      = (known after apply)\n      + ept_rvi_mode                            = (known after apply)\n      + extra_config_reboot_required            = true\n      + firmware                                = \"efi\"\n      + folder                                  = \"AbramadCustomers/Rahkaran/ElCenter\"\n      + force_power_off                         = true\n      + guest_id                                = \"windows9Server64Guest\"\n      + guest_ip_addresses                      = (known after apply)\n      + hardware_version                        = (known after apply)\n      + host_system_id                          = (known after apply)\n      + hv_mode                                 = (known after apply)\n      + id                                      = (known after apply)\n      + ide_controller_count                    = 2\n      + imported                                = (known after apply)\n      + latency_sensitivity                     = \"normal\"\n      + memory                                  = 8192\n      + memory_hot_add_enabled                  = true\n      + memory_limit                            = -1\n      + memory_share_count                      = (known after apply)\n      + memory_share_level                      = \"normal\"\n      + migrate_wait_timeout                    = 30\n      + moid                                    = (known after apply)\n      + name                                    = \"VR3-ElCenter-A1\"\n      + num_cores_per_socket                    = 1\n      + num_cpus                                = 4\n      + nvme_controller_count                   = 0\n      + power_state                             = (known after apply)\n      + poweron_timeout                         = 300\n      + reboot_required                         = (known after apply)\n      + resource_pool_id                        = \"resgroup-1007\"\n      + run_tools_scripts_after_power_on        = true\n      + run_tools_scripts_after_resume          = true\n      + run_tools_scripts_before_guest_shutdown = true\n      + run_tools_scripts_before_guest_standby  = true\n      + sata_controller_count                   = 0\n      + scsi_bus_sharing                        = \"noSharing\"\n      + scsi_controller_count                   = 1\n      + scsi_type                               = \"pvscsi\"\n      + shutdown_wait_timeout                   = 3\n      + storage_policy_id                       = (known after apply)\n      + swap_placement_policy                   = \"inherit\"\n      + sync_time_with_host                     = true\n      + tools_upgrade_policy                    = \"manual\"\n      + uuid                                    = (known after apply)\n      + vapp_transport                          = (known after apply)\n      + vmware_tools_status                     = (known after apply)\n      + vmx_path                                = (known after apply)\n      + wait_for_guest_ip_timeout               = 0\n      + wait_for_guest_net_routable             = true\n      + wait_for_guest_net_timeout              = 5\n      + clone {\n          + template_uuid = \"423ac017-ba87-3523-0922-506cddf1a488\"\n          + timeout       = 30\n          + customize {\n              + dns_server_list = []\n              + dns_suffix_list = []\n              + timeout         = 10\n              + network_interface {}\n              + windows_options {\n                  + admin_password        = (sensitive value)\n                  + auto_logon_count      = 1\n                  + computer_name         = \"VR3-ElCenter-A1\"\n                  + domain_admin_password = (sensitive value)\n                  + domain_admin_user     = \"sysops-svc@cloud.local\"\n                  + full_name             = \"Administrator\"\n                  + join_domain           = \"cloud.local\"\n                  + organization_name     = \"Managed by Terraform\"\n                  + time_zone             = 160\n                }\n            }\n        }\n      + disk {\n          + attach            = false\n          + controller_type   = \"scsi\"\n          + datastore_id      = \"datastore-2798709\"\n          + device_address    = (known after apply)\n          + disk_mode         = \"persistent\"\n          + disk_sharing      = \"sharingNone\"\n          + eagerly_scrub     = false\n          + io_limit          = -1\n          + io_reservation    = 0\n          + io_share_count    = 0\n          + io_share_level    = \"normal\"\n          + keep_on_remove    = false\n          + key               = 0\n          + label             = \"disk0\"\n          + path              = (known after apply)\n          + size              = 80\n          + storage_policy_id = (known after apply)\n          + thin_provisioned  = true\n          + unit_number       = 0\n          + uuid              = (known after apply)\n          + write_through     = false\n        }\n      + disk {\n          + attach            = false\n          + controller_type   = \"scsi\"\n          + datastore_id      = \"datastore-2798709\"\n          + device_address    = (known after apply)\n          + disk_mode         = \"persistent\"\n          + disk_sharing      = \"sharingNone\"\n          + eagerly_scrub     = false\n          + io_limit          = -1\n          + io_reservation    = 0\n          + io_share_count    = 0\n          + io_share_level    = \"normal\"\n          + keep_on_remove    = false\n          + key               = 0\n          + label             = \"disk1\"\n          + path              = (known after apply)\n          + size              = 50\n          + storage_policy_id = (known after apply)\n          + thin_provisioned  = true\n          + unit_number       = 1\n          + uuid              = (known after apply)\n          + write_through     = false\n        }\n      + network_interface {\n          + adapter_type          = \"vmxnet3\"\n          + bandwidth_limit       = -1\n          + bandwidth_reservation = 0\n          + bandwidth_share_count = (known after apply)\n          + bandwidth_share_level = \"normal\"\n          + device_address        = (known after apply)\n          + external_port_id      = (known after apply)\n          + key                   = (known after apply)\n          + mac_address           = (known after apply)\n          + network_id            = \"dvportgroup-2800016\"\n        }\n    }\n  # module.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"] will be created\n  + resource \"vsphere_virtual_machine\" \"vm\" {\n      + annotation                              = (known after apply)\n      + boot_retry_delay                        = 10000\n      + change_version                          = (known after apply)\n      + cpu_hot_add_enabled                     = true\n      + cpu_limit                               = -1\n      + cpu_share_count                         = (known after apply)\n      + cpu_share_level                         = \"normal\"\n      + custom_attributes                       = {\n          + \"202\" = \"الناز محمدی\"\n          + \"204\" = \"1405/07/06-22:59\"\n          + \"211\" = \"0311259952\"\n          + \"214\" = \"Support Team\"\n          + \"215\" = \"True\"\n          + \"216\" = \"Rahkaran Server\"\n          + \"218\" = \"elnaz.m@abramad.com\"\n          + \"219\" = \"Elnaz Mohammadi\"\n          + \"220\" = \"09356917639\"\n          + \"226\" = \"False\"\n          + \"230\" = \"VIP\"\n          + \"231\" = \"False\"\n          + \"235\" = \"True\"\n          + \"242\" = \"SERVICDESK-84411\"\n          + \"321\" = \"True\"\n          + \"322\" = \"Sales &amp; Destribution\"\n        }\n      + datastore_id                            = \"datastore-2798709\"\n      + default_ip_address                      = (known after apply)\n      + ept_rvi_mode                            = (known after apply)\n      + extra_config_reboot_required            = true\n      + firmware                                = \"efi\"\n      + folder                                  = \"AbramadCustomers/Rahkaran/ElCenter\"\n      + force_power_off                         = true\n      + guest_id                                = \"windows9Server64Guest\"\n      + guest_ip_addresses                      = (known after apply)\n      + hardware_version                        = (known after apply)\n      + host_system_id                          = (known after apply)\n      + hv_mode                                 = (known after apply)\n      + id                                      = (known after apply)\n      + ide_controller_count                    = 2\n      + imported                                = (known after apply)\n      + latency_sensitivity                     = \"normal\"\n      + memory                                  = 8192\n      + memory_hot_add_enabled                  = true\n      + memory_limit                            = -1\n      + memory_share_count                      = (known after apply)\n      + memory_share_level                      = \"normal\"\n      + migrate_wait_timeout                    = 30\n      + moid                                    = (known after apply)\n      + name                                    = \"VR3-ElCenter-A2\"\n      + num_cores_per_socket                    = 1\n      + num_cpus                                = 4\n      + nvme_controller_count                   = 0\n      + power_state                             = (known after apply)\n      + poweron_timeout                         = 300\n      + reboot_required                         = (known after apply)\n      + resource_pool_id                        = \"resgroup-1007\"\n      + run_tools_scripts_after_power_on        = true\n      + run_tools_scripts_after_resume          = true\n      + run_tools_scripts_before_guest_shutdown = true\n      + run_tools_scripts_before_guest_standby  = true\n      + sata_controller_count                   = 0\n      + scsi_bus_sharing                        = \"noSharing\"\n      + scsi_controller_count                   = 1\n      + scsi_type                               = \"pvscsi\"\n      + shutdown_wait_timeout                   = 3\n      + storage_policy_id                       = (known after apply)\n      + swap_placement_policy                   = \"inherit\"\n      + sync_time_with_host                     = true\n      + tools_upgrade_policy                    = \"manual\"\n      + uuid                                    = (known after apply)\n      + vapp_transport                          = (known after apply)\n      + vmware_tools_status                     = (known after apply)\n      + vmx_path                                = (known after apply)\n      + wait_for_guest_ip_timeout               = 0\n      + wait_for_guest_net_routable             = true\n      + wait_for_guest_net_timeout              = 5\n      + clone {\n          + template_uuid = \"423ac017-ba87-3523-0922-506cddf1a488\"\n          + timeout       = 30\n          + customize {\n              + dns_server_list = []\n              + dns_suffix_list = []\n              + timeout         = 10\n              + network_interface {}\n              + windows_options {\n                  + admin_password        = (sensitive value)\n                  + auto_logon_count      = 1\n                  + computer_name         = \"VR3-ElCenter-A2\"\n                  + domain_admin_password = (sensitive value)\n                  + domain_admin_user     = \"sysops-svc@cloud.local\"\n                  + full_name             = \"Administrator\"\n                  + join_domain           = \"cloud.local\"\n                  + organization_name     = \"Managed by Terraform\"\n                  + time_zone             = 160\n                }\n            }\n        }\n      + disk {\n          + attach            = false\n          + controller_type   = \"scsi\"\n          + datastore_id      = \"datastore-2798709\"\n          + device_address    = (known after apply)\n          + disk_mode         = \"persistent\"\n          + disk_sharing      = \"sharingNone\"\n          + eagerly_scrub     = false\n          + io_limit          = -1\n          + io_reservation    = 0\n          + io_share_count    = 0\n          + io_share_level    = \"normal\"\n          + keep_on_remove    = false\n          + key               = 0\n          + label             = \"disk0\"\n          + path              = (known after apply)\n          + size              = 80\n          + storage_policy_id = (known after apply)\n          + thin_provisioned  = true\n          + unit_number       = 0\n          + uuid              = (known after apply)\n          + write_through     = false\n        }\n      + disk {\n          + attach            = false\n          + controller_type   = \"scsi\"\n          + datastore_id      = \"datastore-2798709\"\n          + device_address    = (known after apply)\n          + disk_mode         = \"persistent\"\n          + disk_sharing      = \"sharingNone\"\n          + eagerly_scrub     = false\n          + io_limit          = -1\n          + io_reservation    = 0\n          + io_share_count    = 0\n          + io_share_level    = \"normal\"\n          + keep_on_remove    = false\n          + key               = 0\n          + label             = \"disk1\"\n          + path              = (known after apply)\n          + size              = 50\n          + storage_policy_id = (known after apply)\n          + thin_provisioned  = true\n          + unit_number       = 1\n          + uuid              = (known after apply)\n          + write_through     = false\n        }\n      + network_interface {\n          + adapter_type          = \"vmxnet3\"\n          + bandwidth_limit       = -1\n          + bandwidth_reservation = 0\n          + bandwidth_share_count = (known after apply)\n          + bandwidth_share_level = \"normal\"\n          + device_address        = (known after apply)\n          + external_port_id      = (known after apply)\n          + key                   = (known after apply)\n          + mac_address           = (known after apply)\n          + network_id            = \"dvportgroup-2800016\"\n        }\n    }\n  # module.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"] will be created\n  + resource \"vsphere_virtual_machine\" \"vm\" {\n      + annotation                              = (known after apply)\n      + boot_retry_delay                        = 10000\n      + change_version                          = (known after apply)\n      + cpu_hot_add_enabled                     = true\n      + cpu_limit                               = -1\n      + cpu_share_count                         = (known after apply)\n      + cpu_share_level                         = \"normal\"\n      + custom_attributes                       = {\n          + \"202\" = \"الناز محمدی\"\n          + \"204\" = \"1405/07/06-22:59\"\n          + \"211\" = \"0311259952\"\n          + \"214\" = \"Support Team\"\n          + \"215\" = \"True\"\n          + \"216\" = \"Rahkaran Server\"\n          + \"218\" = \"elnaz.m@abramad.com\"\n          + \"219\" = \"Elnaz Mohammadi\"\n          + \"220\" = \"09356917639\"\n          + \"226\" = \"False\"\n          + \"230\" = \"VIP\"\n          + \"231\" = \"False\"\n          + \"235\" = \"True\"\n          + \"242\" = \"SERVICDESK-84411\"\n          + \"321\" = \"True\"\n          + \"322\" = \"Sales &amp; Destribution\"\n        }\n      + datastore_id                            = \"datastore-2798709\"\n      + default_ip_address                      = (known after apply)\n      + ept_rvi_mode                            = (known after apply)\n      + extra_config_reboot_required            = true\n      + firmware                                = \"efi\"\n      + folder                                  = \"AbramadCustomers/Rahkaran/ElCenter\"\n      + force_power_off                         = true\n      + guest_id                                = \"windows9Server64Guest\"\n      + guest_ip_addresses                      = (known after apply)\n      + hardware_version                        = (known after apply)\n      + host_system_id                          = (known after apply)\n      + hv_mode                                 = (known after apply)\n      + id                                      = (known after apply)\n      + ide_controller_count                    = 2\n      + imported                                = (known after apply)\n      + latency_sensitivity                     = \"normal\"\n      + memory                                  = 8192\n      + memory_hot_add_enabled                  = true\n      + memory_limit                            = -1\n      + memory_share_count                      = (known after apply)\n      + memory_share_level                      = \"normal\"\n      + migrate_wait_timeout                    = 30\n      + moid                                    = (known after apply)\n      + name                                    = \"VR3-ElCenter-A3\"\n      + num_cores_per_socket                    = 1\n      + num_cpus                                = 4\n      + nvme_controller_count                   = 0\n      + power_state                             = (known after apply)\n      + poweron_timeout                         = 300\n      + reboot_required                         = (known after apply)\n      + resource_pool_id                        = \"resgroup-1007\"\n      + run_tools_scripts_after_power_on        = true\n      + run_tools_scripts_after_resume          = true\n      + run_tools_scripts_before_guest_shutdown = true\n      + run_tools_scripts_before_guest_standby  = true\n      + sata_controller_count                   = 0\n      + scsi_bus_sharing                        = \"noSharing\"\n      + scsi_controller_count                   = 1\n      + scsi_type                               = \"pvscsi\"\n      + shutdown_wait_timeout                   = 3\n      + storage_policy_id                       = (known after apply)\n      + swap_placement_policy                   = \"inherit\"\n      + sync_time_with_host                     = true\n      + tools_upgrade_policy                    = \"manual\"\n      + uuid                                    = (known after apply)\n      + vapp_transport                          = (known after apply)\n      + vmware_tools_status                     = (known after apply)\n      + vmx_path                                = (known after apply)\n      + wait_for_guest_ip_timeout               = 0\n      + wait_for_guest_net_routable             = true\n      + wait_for_guest_net_timeout              = 5\n      + clone {\n          + template_uuid = \"423ac017-ba87-3523-0922-506cddf1a488\"\n          + timeout       = 30\n          + customize {\n              + dns_server_list = []\n              + dns_suffix_list = []\n              + timeout         = 10\n              + network_interface {}\n              + windows_options {\n                  + admin_password        = (sensitive value)\n                  + auto_logon_count      = 1\n                  + computer_name         = \"VR3-ElCenter-A3\"\n                  + domain_admin_password = (sensitive value)\n                  + domain_admin_user     = \"sysops-svc@cloud.local\"\n                  + full_name             = \"Administrator\"\n                  + join_domain           = \"cloud.local\"\n                  + organization_name     = \"Managed by Terraform\"\n                  + time_zone             = 160\n                }\n            }\n        }\n      + disk {\n          + attach            = false\n          + controller_type   = \"scsi\"\n          + datastore_id      = \"datastore-2798709\"\n          + device_address    = (known after apply)\n          + disk_mode         = \"persistent\"\n          + disk_sharing      = \"sharingNone\"\n          + eagerly_scrub     = false\n          + io_limit          = -1\n          + io_reservation    = 0\n          + io_share_count    = 0\n          + io_share_level    = \"normal\"\n          + keep_on_remove    = false\n          + key               = 0\n          + label             = \"disk0\"\n          + path              = (known after apply)\n          + size              = 80\n          + storage_policy_id = (known after apply)\n          + thin_provisioned  = true\n          + unit_number       = 0\n          + uuid              = (known after apply)\n          + write_through     = false\n        }\n      + disk {\n          + attach            = false\n          + controller_type   = \"scsi\"\n          + datastore_id      = \"datastore-2798709\"\n          + device_address    = (known after apply)\n          + disk_mode         = \"persistent\"\n          + disk_sharing      = \"sharingNone\"\n          + eagerly_scrub     = false\n          + io_limit          = -1\n          + io_reservation    = 0\n          + io_share_count    = 0\n          + io_share_level    = \"normal\"\n          + keep_on_remove    = false\n          + key               = 0\n          + label             = \"disk1\"\n          + path              = (known after apply)\n          + size              = 50\n          + storage_policy_id = (known after apply)\n          + thin_provisioned  = true\n          + unit_number       = 1\n          + uuid              = (known after apply)\n          + write_through     = false\n        }\n      + network_interface {\n          + adapter_type          = \"vmxnet3\"\n          + bandwidth_limit       = -1\n          + bandwidth_reservation = 0\n          + bandwidth_share_count = (known after apply)\n          + bandwidth_share_level = \"normal\"\n          + device_address        = (known after apply)\n          + external_port_id      = (known after apply)\n          + key                   = (known after apply)\n          + mac_address           = (known after apply)\n          + network_id            = \"dvportgroup-2800016\"\n        }\n    }\n  # module.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"] will be created\n  + resource \"vsphere_virtual_machine\" \"vm\" {\n      + annotation                              = (known after apply)\n      + boot_retry_delay                        = 10000\n      + change_version                          = (known after apply)\n      + cpu_hot_add_enabled                     = true\n      + cpu_limit                               = -1\n      + cpu_share_count                         = (known after apply)\n      + cpu_share_level                         = \"normal\"\n      + custom_attributes                       = {\n          + \"202\" = \"الناز محمدی\"\n          + \"204\" = \"1405/07/06-22:59\"\n          + \"211\" = \"0311259952\"\n          + \"214\" = \"Support Team\"\n          + \"215\" = \"True\"\n          + \"216\" = \"Rahkaran Server\"\n          + \"218\" = \"elnaz.m@abramad.com\"\n          + \"219\" = \"Elnaz Mohammadi\"\n          + \"220\" = \"09356917639\"\n          + \"226\" = \"False\"\n          + \"230\" = \"VIP\"\n          + \"231\" = \"False\"\n          + \"235\" = \"True\"\n          + \"242\" = \"SERVICDESK-84411\"\n          + \"321\" = \"True\"\n          + \"322\" = \"Sales &amp; Destribution\"\n        }\n      + datastore_id                            = \"datastore-2798709\"\n      + default_ip_address                      = (known after apply)\n      + ept_rvi_mode                            = (known after apply)\n      + extra_config_reboot_required            = true\n      + firmware                                = \"efi\"\n      + folder                                  = \"AbramadCustomers/Rahkaran/ElCenter\"\n      + force_power_off                         = true\n      + guest_id                                = \"windows9Server64Guest\"\n      + guest_ip_addresses                      = (known after apply)\n      + hardware_version                        = (known after apply)\n      + host_system_id                          = (known after apply)\n      + hv_mode                                 = (known after apply)\n      + id                                      = (known after apply)\n      + ide_controller_count                    = 2\n      + imported                                = (known after apply)\n      + latency_sensitivity                     = \"normal\"\n      + memory                                  = 16384\n      + memory_hot_add_enabled                  = true\n      + memory_limit                            = -1\n      + memory_share_count                      = (known after apply)\n      + memory_share_level                      = \"normal\"\n      + migrate_wait_timeout                    = 30\n      + moid                                    = (known after apply)\n      + name                                    = \"VR3-ElCenter-DB\"\n      + num_cores_per_socket                    = 1\n      + num_cpus                                = 8\n      + nvme_controller_count                   = 0\n      + power_state                             = (known after apply)\n      + poweron_timeout                         = 300\n      + reboot_required                         = (known after apply)\n      + resource_pool_id                        = \"resgroup-1007\"\n      + run_tools_scripts_after_power_on        = true\n      + run_tools_scripts_after_resume          = true\n      + run_tools_scripts_before_guest_shutdown = true\n      + run_tools_scripts_before_guest_standby  = true\n      + sata_controller_count                   = 0\n      + scsi_bus_sharing                        = \"noSharing\"\n      + scsi_controller_count                   = 1\n      + scsi_type                               = \"pvscsi\"\n      + shutdown_wait_timeout                   = 3\n      + storage_policy_id                       = (known after apply)\n      + swap_placement_policy                   = \"inherit\"\n      + sync_time_with_host                     = true\n      + tools_upgrade_policy                    = \"manual\"\n      + uuid                                    = (known after apply)\n      + vapp_transport                          = (known after apply)\n      + vmware_tools_status                     = (known after apply)\n      + vmx_path                                = (known after apply)\n      + wait_for_guest_ip_timeout               = 0\n      + wait_for_guest_net_routable             = true\n      + wait_for_guest_net_timeout              = 5\n      + clone {\n          + template_uuid = \"423afe01-60c0-372a-75af-17534a8c7fcc\"\n          + timeout       = 30\n          + customize {\n              + dns_server_list = []\n              + dns_suffix_list = []\n              + timeout         = 10\n              + network_interface {}\n              + windows_options {\n                  + admin_password        = (sensitive value)\n                  + auto_logon_count      = 1\n                  + computer_name         = \"VR3-ElCenter-DB\"\n                  + domain_admin_password = (sensitive value)\n                  + domain_admin_user     = \"sysops-svc@cloud.local\"\n                  + full_name             = \"Administrator\"\n                  + join_domain           = \"cloud.local\"\n                  + organization_name     = \"Managed by Terraform\"\n                  + time_zone             = 160\n                }\n            }\n        }\n      + disk {\n          + attach            = false\n          + controller_type   = \"scsi\"\n          + datastore_id      = \"datastore-2798709\"\n          + device_address    = (known after apply)\n          + disk_mode         = \"persistent\"\n          + disk_sharing      = \"sharingNone\"\n          + eagerly_scrub     = false\n          + io_limit          = -1\n          + io_reservation    = 0\n          + io_share_count    = 0\n          + io_share_level    = \"normal\"\n          + keep_on_remove    = false\n          + key               = 0\n          + label             = \"disk0\"\n          + path              = (known after apply)\n          + size              = 90\n          + storage_policy_id = (known after apply)\n          + thin_provisioned  = true\n          + unit_number       = 0\n          + uuid              = (known after apply)\n          + write_through     = false\n        }\n      + disk {\n          + attach            = false\n          + controller_type   = \"scsi\"\n          + datastore_id      = \"datastore-2798709\"\n          + device_address    = (known after apply)\n          + disk_mode         = \"persistent\"\n          + disk_sharing      = \"sharingNone\"\n          + eagerly_scrub     = false\n          + io_limit          = -1\n          + io_reservation    = 0\n          + io_share_count    = 0\n          + io_share_level    = \"normal\"\n          + keep_on_remove    = false\n          + key               = 0\n          + label             = \"disk1\"\n          + path              = (known after apply)\n          + size              = 50\n          + storage_policy_id = (known after apply)\n          + thin_provisioned  = true\n          + unit_number       = 1\n          + uuid              = (known after apply)\n          + write_through     = false\n        }\n      + network_interface {\n          + adapter_type          = \"vmxnet3\"\n          + bandwidth_limit       = -1\n          + bandwidth_reservation = 0\n          + bandwidth_share_count = (known after apply)\n          + bandwidth_share_level = \"normal\"\n          + device_address        = (known after apply)\n          + external_port_id      = (known after apply)\n          + key                   = (known after apply)\n          + mac_address           = (known after apply)\n          + network_id            = \"dvportgroup-2800016\"\n        }\n    }\n  # module.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"] will be created\n  + resource \"vsphere_virtual_machine\" \"vm\" {\n      + annotation                              = (known after apply)\n      + boot_retry_delay                        = 10000\n      + change_version                          = (known after apply)\n      + cpu_hot_add_enabled                     = true\n      + cpu_limit                               = -1\n      + cpu_share_count                         = (known after apply)\n      + cpu_share_level                         = \"normal\"\n      + custom_attributes                       = {\n          + \"202\" = \"الناز محمدی\"\n          + \"204\" = \"1405/07/06-22:59\"\n          + \"211\" = \"0311259952\"\n          + \"214\" = \"Support Team\"\n          + \"215\" = \"True\"\n          + \"216\" = \"Rahkaran Server\"\n          + \"217\" = \"185.119.240.22\"\n          + \"218\" = \"elnaz.m@abramad.com\"\n          + \"219\" = \"Elnaz Mohammadi\"\n          + \"220\" = \"09356917639\"\n          + \"226\" = \"False\"\n          + \"228\" = \"https://ElCenter-r.abramad.cloud\"\n          + \"230\" = \"VIP\"\n          + \"231\" = \"False\"\n          + \"235\" = \"True\"\n          + \"242\" = \"SERVICDESK-84411\"\n          + \"321\" = \"True\"\n          + \"322\" = \"Sales &amp; Destribution\"\n        }\n      + datastore_id                            = \"datastore-2798709\"\n      + default_ip_address                      = (known after apply)\n      + ept_rvi_mode                            = (known after apply)\n      + extra_config_reboot_required            = true\n      + firmware                                = \"efi\"\n      + folder                                  = \"AbramadCustomers/Rahkaran/ElCenter\"\n      + force_power_off                         = true\n      + guest_id                                = \"windows9Server64Guest\"\n      + guest_ip_addresses                      = (known after apply)\n      + hardware_version                        = (known after apply)\n      + host_system_id                          = (known after apply)\n      + hv_mode                                 = (known after apply)\n      + id                                      = (known after apply)\n      + ide_controller_count                    = 2\n      + imported                                = (known after apply)\n      + latency_sensitivity                     = \"normal\"\n      + memory                                  = 8192\n      + memory_hot_add_enabled                  = true\n      + memory_limit                            = -1\n      + memory_share_count                      = (known after apply)\n      + memory_share_level                      = \"normal\"\n      + migrate_wait_timeout                    = 30\n      + moid                                    = (known after apply)\n      + name                                    = \"VR3-ElCenter-LB\"\n      + num_cores_per_socket                    = 1\n      + num_cpus                                = 4\n      + nvme_controller_count                   = 0\n      + power_state                             = (known after apply)\n      + poweron_timeout                         = 300\n      + reboot_required                         = (known after apply)\n      + resource_pool_id                        = \"resgroup-1007\"\n      + run_tools_scripts_after_power_on        = true\n      + run_tools_scripts_after_resume          = true\n      + run_tools_scripts_before_guest_shutdown = true\n      + run_tools_scripts_before_guest_standby  = true\n      + sata_controller_count                   = 0\n      + scsi_bus_sharing                        = \"noSharing\"\n      + scsi_controller_count                   = 1\n      + scsi_type                               = \"pvscsi\"\n      + shutdown_wait_timeout                   = 3\n      + storage_policy_id                       = (known after apply)\n      + swap_placement_policy                   = \"inherit\"\n      + sync_time_with_host                     = true\n      + tools_upgrade_policy                    = \"manual\"\n      + uuid                                    = (known after apply)\n      + vapp_transport                          = (known after apply)\n      + vmware_tools_status                     = (known after apply)\n      + vmx_path                                = (known after apply)\n      + wait_for_guest_ip_timeout               = 0\n      + wait_for_guest_net_routable             = true\n      + wait_for_guest_net_timeout              = 5\n      + clone {\n          + template_uuid = \"423ac017-ba87-3523-0922-506cddf1a488\"\n          + timeout       = 30\n          + customize {\n              + dns_server_list = []\n              + dns_suffix_list = []\n              + timeout         = 10\n              + network_interface {}\n              + windows_options {\n                  + admin_password        = (sensitive value)\n                  + auto_logon_count      = 1\n                  + computer_name         = \"VR3-ElCenter-LB\"\n                  + domain_admin_password = (sensitive value)\n                  + domain_admin_user     = \"sysops-svc@cloud.local\"\n                  + full_name             = \"Administrator\"\n                  + join_domain           = \"cloud.local\"\n                  + organization_name     = \"Managed by Terraform\"\n                  + time_zone             = 160\n                }\n            }\n        }\n      + disk {\n          + attach            = false\n          + controller_type   = \"scsi\"\n          + datastore_id      = \"datastore-2798709\"\n          + device_address    = (known after apply)\n          + disk_mode         = \"persistent\"\n          + disk_sharing      = \"sharingNone\"\n          + eagerly_scrub     = false\n          + io_limit          = -1\n          + io_reservation    = 0\n          + io_share_count    = 0\n          + io_share_level    = \"normal\"\n          + keep_on_remove    = false\n          + key               = 0\n          + label             = \"disk0\"\n          + path              = (known after apply)\n          + size              = 95\n          + storage_policy_id = (known after apply)\n          + thin_provisioned  = true\n          + unit_number       = 0\n          + uuid              = (known after apply)\n          + write_through     = false\n        }\n      + network_interface {\n          + adapter_type          = \"vmxnet3\"\n          + bandwidth_limit       = -1\n          + bandwidth_reservation = 0\n          + bandwidth_share_count = (known after apply)\n          + bandwidth_share_level = \"normal\"\n          + device_address        = (known after apply)\n          + external_port_id      = (known after apply)\n          + key                   = (known after apply)\n          + mac_address           = (known after apply)\n          + network_id            = \"dvportgroup-2800016\"\n        }\n    }\nPlan: 6 to add, 0 to change, 0 to destroy.\nChanges to Outputs:\n  + vm_ids = {\n      + VR3-ElCenter-A1 = (known after apply)\n      + VR3-ElCenter-A2 = (known after apply)\n      + VR3-ElCenter-A3 = (known after apply)\n      + VR3-ElCenter-DB = (known after apply)\n      + VR3-ElCenter-LB = (known after apply)\n    }\n  + vm_ips = {\n      + VR3-ElCenter-A1 = (known after apply)\n      + VR3-ElCenter-A2 = (known after apply)\n      + VR3-ElCenter-A3 = (known after apply)\n      + VR3-ElCenter-DB = (known after apply)\n      + VR3-ElCenter-LB = (known after apply)\n    }\nmodule.vm.vsphere_folder.customer_folder[\"AbramadCustomers/Rahkaran/ElCenter\"]: Creating...\nmodule.vm.vsphere_folder.customer_folder[\"AbramadCustomers/Rahkaran/ElCenter\"]: Creation complete after 0s [id=group-v2800225]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Creating...\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Creating...\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Creating...\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Creating...\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Creating...\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [00m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [00m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [00m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [00m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [00m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [00m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [00m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [00m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [00m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [00m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [00m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [00m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [00m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [00m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [00m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [00m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [00m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [00m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [00m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [00m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [00m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [00m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [00m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [00m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [00m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [01m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [01m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [01m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [01m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [01m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [01m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [01m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [01m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [01m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [01m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [01m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [01m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [01m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [01m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [01m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [01m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [01m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [01m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [01m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [01m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [01m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [01m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [01m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [01m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [01m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [01m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [01m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [01m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [01m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [01m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [02m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [02m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [02m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [02m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [02m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [02m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [02m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [02m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [02m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [02m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [02m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [02m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [02m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [02m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [02m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [02m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [02m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [02m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [02m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [02m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [02m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [02m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [02m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [02m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [02m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [02m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [02m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [02m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [02m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [02m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [03m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [03m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [03m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [03m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [03m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [03m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [03m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [03m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [03m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [03m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [03m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [03m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [03m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [03m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [03m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [03m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [03m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [03m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [03m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [03m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [03m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [03m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [03m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [03m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [03m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [03m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [03m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [03m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [03m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [03m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [04m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [04m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [04m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [04m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [04m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [04m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [04m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [04m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [04m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [04m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [04m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [04m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [04m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [04m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [04m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [04m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [04m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [04m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [04m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [04m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [04m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [04m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [04m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [04m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [04m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [04m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [04m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [04m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [04m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [04m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [05m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [05m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [05m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [05m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [05m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [05m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [05m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [05m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [05m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [05m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [05m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [05m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [05m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [05m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [05m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [05m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [05m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [05m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [05m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [05m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [05m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [05m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [05m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [05m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [05m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [05m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [05m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [05m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [05m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [05m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [06m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [06m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [06m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [06m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [06m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [06m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [06m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [06m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [06m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [06m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [06m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [06m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [06m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [06m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [06m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [06m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [06m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [06m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [06m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [06m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [06m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [06m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [06m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [06m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [06m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [06m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [06m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [06m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [06m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [06m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [07m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [07m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [07m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [07m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [07m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [07m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [07m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [07m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [07m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [07m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [07m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [07m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [07m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [07m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [07m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [07m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [07m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [07m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [07m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [07m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [07m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [07m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [07m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [07m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [07m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [07m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [07m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [07m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [07m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [07m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [08m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [08m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [08m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [08m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [08m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [08m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [08m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [08m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [08m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [08m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [08m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [08m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [08m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [08m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [08m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [08m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [08m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [08m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [08m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [08m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [08m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [08m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [08m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [08m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [08m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [08m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [08m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [08m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [08m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [08m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [09m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [09m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [09m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [09m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [09m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [09m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [09m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [09m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [09m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [09m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [09m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [09m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [09m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [09m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [09m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [09m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [09m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [09m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [09m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [09m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [09m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [09m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [09m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [09m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [09m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [09m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [09m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [09m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [09m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [09m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [10m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [10m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [10m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [10m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [10m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [10m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [10m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [10m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [10m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [10m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [10m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [10m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [10m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [10m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [10m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [10m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [10m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [10m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [10m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [10m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [10m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [10m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [10m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [10m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [10m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [10m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [10m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [10m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [10m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [10m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [11m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [11m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [11m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [11m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [11m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [11m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [11m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [11m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [11m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [11m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [11m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [11m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [11m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [11m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [11m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [11m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [11m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [11m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [11m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [11m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [11m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [11m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [11m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [11m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [11m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [11m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [11m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [11m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [11m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Still creating... [11m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A3\"]: Creation complete after 11m56s [id=423ab27e-7ad0-5013-e995-c7c400462ada]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [12m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Still creating... [12m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [12m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [12m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-DB\"]: Creation complete after 12m8s [id=423adc5d-8366-3214-aa39-fbcd525b4e77]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [12m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [12m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [12m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [12m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [12m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [12m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [12m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [12m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [12m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [12m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [12m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [12m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [12m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [12m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [12m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Still creating... [13m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [13m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [13m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-LB\"]: Creation complete after 13m3s [id=423a390c-c280-23a3-21d1-f86448533ff9]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [13m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Still creating... [13m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A1\"]: Creation complete after 13m13s [id=423af176-646c-2c2a-0422-af9808765fbc]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [13m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [13m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [13m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Still creating... [13m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR3-ElCenter-A2\"]: Creation complete after 13m53s [id=423a7b06-8a93-752a-46c1-d6b9969443fd]\nApply complete! Resources: 6 added, 0 changed, 0 destroyed.\nOutputs:\nvm_ids = {\n  \"VR3-ElCenter-A1\" = \"423af176-646c-2c2a-0422-af9808765fbc\"\n  \"VR3-ElCenter-A2\" = \"423a7b06-8a93-752a-46c1-d6b9969443fd\"\n  \"VR3-ElCenter-A3\" = \"423ab27e-7ad0-5013-e995-c7c400462ada\"\n  \"VR3-ElCenter-DB\" = \"423adc5d-8366-3214-aa39-fbcd525b4e77\"\n  \"VR3-ElCenter-LB\" = \"423a390c-c280-23a3-21d1-f86448533ff9\"\n}\nvm_ips = {\n  \"VR3-ElCenter-A1\" = \"172.29.252.135\"\n  \"VR3-ElCenter-A2\" = \"172.29.252.136\"\n  \"VR3-ElCenter-A3\" = \"172.29.252.134\"\n  \"VR3-ElCenter-DB\" = \"172.29.252.137\"\n  \"VR3-ElCenter-LB\" = \"172.29.252.130\"\n}",
+  "issue": "SERVICDESK-84411",
+  "funcName": "&lt;module&gt;",
+  "source": "terraform",
+  "exit_code": 0,
+  "line_count": 1281
+}
+
+{
+  "asctime": "1405-07-06 23:13:28",
+  "levelname": "INFO",
+  "name": "scripts.utility.ansible.generate_inventory",
+  "message": "Inventory written to ansible/inventory/hosts.yml",
+  "issue": "SERVICDESK-84411",
+  "funcName": "&lt;module&gt;"
+}
+
+{
+  "asctime": "1405-07-06 23:16:26",
+  "levelname": "INFO",
+  "name": "scripts.utility.log.run_and_log.ansible",
+  "message": "[WARNING]: Ansible is being run in a world writable directory (/builds/abramad/sysops/automation/vm-creation/ansible), ignoring it as an ansible.cfg source. For more information see https://docs.ansible.com/ansible/devel/reference_appendices/config.html#cfg-in-world-writable-dir\nPLAY [Configure Active Directory] **********************************************\nTASK [configure_active_directory : Create customer OU] *************************\nincluded: /builds/abramad/sysops/automation/vm-creation/ansible/roles/configure_active_directory/tasks/ou.yml for dc01\nTASK [configure_active_directory : Create customer OU] *************************\nchanged: [dc01]\nTASK [configure_active_directory : Create customer groups] *********************\nincluded: /builds/abramad/sysops/automation/vm-creation/ansible/roles/configure_active_directory/tasks/groups.yml for dc01\nTASK [configure_active_directory : Create customer AD groups] ******************\nchanged: [dc01] =&gt; (item=ElCenterDeploy)\nchanged: [dc01] =&gt; (item=ElCenterSupport)\nchanged: [dc01] =&gt; (item=ElCenterMembers)\nchanged: [dc01] =&gt; (item=ElCenterComputers)\nchanged: [dc01] =&gt; (item=ElCenterVR3-ElCenter-DBMembers)\nchanged: [dc01] =&gt; (item=ElCenterVR3-ElCenter-LBMembers)\nchanged: [dc01] =&gt; (item=ElCenterVR3-ElCenter-A1Members)\nchanged: [dc01] =&gt; (item=ElCenterVR3-ElCenter-A2Members)\nchanged: [dc01] =&gt; (item=ElCenterVR3-ElCenter-A3Members)\nTASK [configure_active_directory : Create customer users] **********************\nincluded: /builds/abramad/sysops/automation/vm-creation/ansible/roles/configure_active_directory/tasks/users.yml for dc01\nTASK [configure_active_directory : Look up existing AD users] ******************\nok: [dc01] =&gt; (item=0311259952)\nok: [dc01] =&gt; (item=17171717)\nTASK [configure_active_directory : Build list of existing usernames] ***********\nok: [dc01]\nTASK [configure_active_directory : Create AD users] ****************************\nchanged: [dc01] =&gt; (item=0311259952)\nchanged: [dc01] =&gt; (item=17171717)\nTASK [configure_active_directory : Configure computer objects] *****************\nincluded: /builds/abramad/sysops/automation/vm-creation/ansible/roles/configure_active_directory/tasks/computer.yml for dc01\nTASK [configure_active_directory : Configure existing AD computer objects] *****\nchanged: [dc01] =&gt; (item=VR3-ElCenter-DB)\nchanged: [dc01] =&gt; (item=VR3-ElCenter-LB)\nchanged: [dc01] =&gt; (item=VR3-ElCenter-A1)\nchanged: [dc01] =&gt; (item=VR3-ElCenter-A2)\nchanged: [dc01] =&gt; (item=VR3-ElCenter-A3)\nTASK [configure_active_directory : Add computers to customer AD group] *********\nchanged: [dc01] =&gt; (item=VR3-ElCenter-DB)\nchanged: [dc01] =&gt; (item=VR3-ElCenter-LB)\nchanged: [dc01] =&gt; (item=VR3-ElCenter-A1)\nchanged: [dc01] =&gt; (item=VR3-ElCenter-A2)\nchanged: [dc01] =&gt; (item=VR3-ElCenter-A3)\nPLAY RECAP *********************************************************************\ndc01                       : ok=11   changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0",
+  "issue": "SERVICDESK-84411",
+  "funcName": "&lt;module&gt;",
+  "source": "ansible",
+  "exit_code": 0,
+  "line_count": 44
+}
+
+{
+  "asctime": "1405-07-06 23:18:52",
+  "levelname": "INFO",
+  "name": "scripts.utility.log.run_and_log.ansible",
+  "message": "[WARNING]: Ansible is being run in a world writable directory (/builds/abramad/sysops/automation/vm-creation/ansible), ignoring it as an ansible.cfg source. For more information see https://docs.ansible.com/ansible/devel/reference_appendices/config.html#cfg-in-world-writable-dir\nPLAY [Configure Windows Client] ************************************************\nTASK [configure_windows_client : Update local groups] **************************\nincluded: /builds/abramad/sysops/automation/vm-creation/ansible/roles/configure_windows_client/tasks/local_groups.yml for VR3-ElCenter-DB, VR3-ElCenter-LB, VR3-ElCenter-A1, VR3-ElCenter-A3, VR3-ElCenter-A2\nTASK [configure_windows_client : Add AD groups to local Administrators] ********\nchanged: [VR3-ElCenter-DB] =&gt; (item=ElCenterDeploy)\nchanged: [VR3-ElCenter-A3] =&gt; (item=ElCenterDeploy)\nchanged: [VR3-ElCenter-A2] =&gt; (item=ElCenterDeploy)\nchanged: [VR3-ElCenter-LB] =&gt; (item=ElCenterDeploy)\nchanged: [VR3-ElCenter-A1] =&gt; (item=ElCenterDeploy)\nchanged: [VR3-ElCenter-DB] =&gt; (item=ElCenterSupport)\nchanged: [VR3-ElCenter-A3] =&gt; (item=ElCenterSupport)\nchanged: [VR3-ElCenter-A2] =&gt; (item=ElCenterSupport)\nchanged: [VR3-ElCenter-LB] =&gt; (item=ElCenterSupport)\nchanged: [VR3-ElCenter-A1] =&gt; (item=ElCenterSupport)\nchanged: [VR3-ElCenter-DB] =&gt; (item=Server_Administrators)\nchanged: [VR3-ElCenter-A3] =&gt; (item=Server_Administrators)\nchanged: [VR3-ElCenter-A2] =&gt; (item=Server_Administrators)\nchanged: [VR3-ElCenter-LB] =&gt; (item=Server_Administrators)\nchanged: [VR3-ElCenter-A1] =&gt; (item=Server_Administrators)\nchanged: [VR3-ElCenter-DB] =&gt; (item=ElCenterVR3-ElCenter-DBMembers)\nchanged: [VR3-ElCenter-A3] =&gt; (item=ElCenterVR3-ElCenter-A3Members)\nchanged: [VR3-ElCenter-A2] =&gt; (item=ElCenterVR3-ElCenter-A2Members)\nchanged: [VR3-ElCenter-A1] =&gt; (item=ElCenterVR3-ElCenter-A1Members)\nchanged: [VR3-ElCenter-LB] =&gt; (item=ElCenterVR3-ElCenter-LBMembers)\nTASK [configure_windows_client : Add AD groups to Remote Desktop Users] ********\nchanged: [VR3-ElCenter-A3] =&gt; (item=ElCenterMembers)\nchanged: [VR3-ElCenter-DB] =&gt; (item=ElCenterMembers)\nchanged: [VR3-ElCenter-A1] =&gt; (item=ElCenterMembers)\nchanged: [VR3-ElCenter-A2] =&gt; (item=ElCenterMembers)\nchanged: [VR3-ElCenter-LB] =&gt; (item=ElCenterMembers)\nTASK [configure_windows_client : Install or Upgrade ZabbixAgent2] **************\nincluded: /builds/abramad/sysops/automation/vm-creation/ansible/roles/configure_windows_client/tasks/zabbix_agent2.yml for VR3-ElCenter-DB, VR3-ElCenter-LB, VR3-ElCenter-A1, VR3-ElCenter-A2, VR3-ElCenter-A3\nTASK [configure_windows_client : Download Zabbix Agent2 MSI to Ansible controller] ***\nchanged: [VR3-ElCenter-DB -&gt; localhost]\nTASK [configure_windows_client : Create temporary directory] *******************\nchanged: [VR3-ElCenter-A3]\nchanged: [VR3-ElCenter-DB]\nchanged: [VR3-ElCenter-A2]\nchanged: [VR3-ElCenter-A1]\nchanged: [VR3-ElCenter-LB]\nTASK [configure_windows_client : Copy Zabbix Agent2 MSI to Windows client] *****\nchanged: [VR3-ElCenter-A3]\nchanged: [VR3-ElCenter-DB]\nchanged: [VR3-ElCenter-A2]\nchanged: [VR3-ElCenter-A1]\nchanged: [VR3-ElCenter-LB]\nTASK [configure_windows_client : Install Zabbix Agent2] ************************\nchanged: [VR3-ElCenter-A3]\nchanged: [VR3-ElCenter-DB]\nchanged: [VR3-ElCenter-A1]\nchanged: [VR3-ElCenter-A2]\nchanged: [VR3-ElCenter-LB]\nTASK [configure_windows_client : Copy Zabbix Agent2 configuration] *************\nchanged: [VR3-ElCenter-A3]\nchanged: [VR3-ElCenter-DB]\nchanged: [VR3-ElCenter-LB]\nchanged: [VR3-ElCenter-A2]\nchanged: [VR3-ElCenter-A1]\nTASK [configure_windows_client : Configure and restart Zabbix Agent2 service] ***\nchanged: [VR3-ElCenter-DB]\nchanged: [VR3-ElCenter-A3]\nchanged: [VR3-ElCenter-LB]\nchanged: [VR3-ElCenter-A2]\nchanged: [VR3-ElCenter-A1]\nTASK [configure_windows_client : Read Zabbix Agent2 log] ***********************\nok: [VR3-ElCenter-LB]\nok: [VR3-ElCenter-DB]\nok: [VR3-ElCenter-A2]\nok: [VR3-ElCenter-A1]\nok: [VR3-ElCenter-A3]\nTASK [configure_windows_client : Display Zabbix Agent2 log] ********************\nok: [VR3-ElCenter-DB] =&gt; {\n    \"zabbix_log.stdout_lines\": [\n        \"2026/09/28 23:18:11.828867 using plugin 'TCP' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.829423 using plugin 'UDP' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.829423 using plugin 'Uname' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.829423 using plugin 'Uptime' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.830080 using plugin 'Users' (built-in) providing following interfaces: exporter, configurator, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.830195 using plugin 'VFSDir' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.830195 using plugin 'VMemory' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.830717 using plugin 'VfsFs' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.831069 using plugin 'WebCertificate' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.831069 using plugin 'WebPage' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.831595 using plugin 'WindowsEventlog' (built-in) providing following interfaces: exporter, configurator, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.831630 using plugin 'WindowsPerfInstance' (built-in) providing following interfaces: exporter, maximum capacity: 1, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.831630 using plugin 'WindowsPerfMon' (built-in) providing following interfaces: exporter, runner, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.832212 using plugin 'WindowsServices' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.832787 using plugin 'Wmi' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.832787 using plugin 'ZabbixAsync' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.833375 using plugin 'ZabbixStats' (built-in) providing following interfaces: exporter, configurator, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.833375 using plugin 'ZabbixSync' (built-in) providing following interfaces: exporter, maximum capacity: 1, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.912343 Plugin communication protocol version is 6.4.0\",\n        \"2026/09/28 23:18:13.000625 Zabbix Agent2 hostname: [VR3-ELCENTER-DB]\"\n    ]\n}\nok: [VR3-ElCenter-LB] =&gt; {\n    \"zabbix_log.stdout_lines\": [\n        \"2026/09/28 23:18:11.957767 using plugin 'TCP' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.957767 using plugin 'UDP' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.958328 using plugin 'Uname' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.958328 using plugin 'Uptime' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.958328 using plugin 'Users' (built-in) providing following interfaces: exporter, configurator, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.958891 using plugin 'VFSDir' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.958891 using plugin 'VMemory' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.958891 using plugin 'VfsFs' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.959477 using plugin 'WebCertificate' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.959477 using plugin 'WebPage' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.960025 using plugin 'WindowsEventlog' (built-in) providing following interfaces: exporter, configurator, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.960592 using plugin 'WindowsPerfInstance' (built-in) providing following interfaces: exporter, maximum capacity: 1, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.960592 using plugin 'WindowsPerfMon' (built-in) providing following interfaces: exporter, runner, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.960592 using plugin 'WindowsServices' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.961137 using plugin 'Wmi' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.961137 using plugin 'ZabbixAsync' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.961704 using plugin 'ZabbixStats' (built-in) providing following interfaces: exporter, configurator, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.961704 using plugin 'ZabbixSync' (built-in) providing following interfaces: exporter, maximum capacity: 1, active checks on start enabled: false\",\n        \"2026/09/28 23:18:13.067192 Plugin communication protocol version is 6.4.0\",\n        \"2026/09/28 23:18:14.001089 Zabbix Agent2 hostname: [VR3-ELCENTER-LB]\"\n    ]\n}\nok: [VR3-ElCenter-A1] =&gt; {\n    \"zabbix_log.stdout_lines\": [\n        \"2026/09/28 23:18:12.856747 using plugin 'TCP' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.857329 using plugin 'UDP' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.857848 using plugin 'Uname' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.857930 using plugin 'Uptime' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.857930 using plugin 'Users' (built-in) providing following interfaces: exporter, configurator, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.858493 using plugin 'VFSDir' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.858493 using plugin 'VMemory' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.859080 using plugin 'VfsFs' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.859080 using plugin 'WebCertificate' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.859639 using plugin 'WebPage' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.860214 using plugin 'WindowsEventlog' (built-in) providing following interfaces: exporter, configurator, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.860214 using plugin 'WindowsPerfInstance' (built-in) providing following interfaces: exporter, maximum capacity: 1, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.860214 using plugin 'WindowsPerfMon' (built-in) providing following interfaces: exporter, runner, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.860772 using plugin 'WindowsServices' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.861424 using plugin 'Wmi' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.861424 using plugin 'ZabbixAsync' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.862000 using plugin 'ZabbixStats' (built-in) providing following interfaces: exporter, configurator, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.862706 using plugin 'ZabbixSync' (built-in) providing following interfaces: exporter, maximum capacity: 1, active checks on start enabled: false\",\n        \"2026/09/28 23:18:14.002213 Plugin communication protocol version is 6.4.0\",\n        \"2026/09/28 23:18:15.001264 Zabbix Agent2 hostname: [VR3-ELCENTER-A1]\"\n    ]\n}\nok: [VR3-ElCenter-A2] =&gt; {\n    \"zabbix_log.stdout_lines\": [\n        \"2026/09/28 23:18:11.973224 using plugin 'TCP' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.973224 using plugin 'UDP' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.973224 using plugin 'Uname' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.973771 using plugin 'Uptime' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.973771 using plugin 'Users' (built-in) providing following interfaces: exporter, configurator, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.974326 using plugin 'VFSDir' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.974326 using plugin 'VMemory' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.974892 using plugin 'VfsFs' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.975441 using plugin 'WebCertificate' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.975441 using plugin 'WebPage' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.976005 using plugin 'WindowsEventlog' (built-in) providing following interfaces: exporter, configurator, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.976005 using plugin 'WindowsPerfInstance' (built-in) providing following interfaces: exporter, maximum capacity: 1, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.976576 using plugin 'WindowsPerfMon' (built-in) providing following interfaces: exporter, runner, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.976576 using plugin 'WindowsServices' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.977129 using plugin 'Wmi' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.977129 using plugin 'ZabbixAsync' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.977676 using plugin 'ZabbixStats' (built-in) providing following interfaces: exporter, configurator, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:11.978228 using plugin 'ZabbixSync' (built-in) providing following interfaces: exporter, maximum capacity: 1, active checks on start enabled: false\",\n        \"2026/09/28 23:18:13.060729 Plugin communication protocol version is 6.4.0\",\n        \"2026/09/28 23:18:14.001675 Zabbix Agent2 hostname: [VR3-ELCENTER-A2]\"\n    ]\n}\nok: [VR3-ElCenter-A3] =&gt; {\n    \"zabbix_log.stdout_lines\": [\n        \"2026/09/28 23:18:12.390089 using plugin 'TCP' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.390089 using plugin 'UDP' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.390089 using plugin 'Uname' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.390089 using plugin 'Uptime' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.396111 using plugin 'Users' (built-in) providing following interfaces: exporter, configurator, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.396111 using plugin 'VFSDir' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.396680 using plugin 'VMemory' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.397191 using plugin 'VfsFs' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.397408 using plugin 'WebCertificate' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.397974 using plugin 'WebPage' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.397974 using plugin 'WindowsEventlog' (built-in) providing following interfaces: exporter, configurator, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.398536 using plugin 'WindowsPerfInstance' (built-in) providing following interfaces: exporter, maximum capacity: 1, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.399108 using plugin 'WindowsPerfMon' (built-in) providing following interfaces: exporter, runner, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.399108 using plugin 'WindowsServices' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.399672 using plugin 'Wmi' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.399672 using plugin 'ZabbixAsync' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.400232 using plugin 'ZabbixStats' (built-in) providing following interfaces: exporter, configurator, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 23:18:12.400232 using plugin 'ZabbixSync' (built-in) providing following interfaces: exporter, maximum capacity: 1, active checks on start enabled: false\",\n        \"2026/09/28 23:18:13.435644 Plugin communication protocol version is 6.4.0\",\n        \"2026/09/28 23:18:13.991398 Zabbix Agent2 hostname: [VR3-ELCENTER-A3]\"\n    ]\n}\nTASK [configure_windows_client : Remove Zabbix Agent2 MSI from Windows client] ***\nchanged: [VR3-ElCenter-LB]\nchanged: [VR3-ElCenter-A2]\nchanged: [VR3-ElCenter-DB]\nchanged: [VR3-ElCenter-A1]\nchanged: [VR3-ElCenter-A3]\nPLAY RECAP *********************************************************************\nVR3-ElCenter-A1            : ok=12   changed=8    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0\nVR3-ElCenter-A2            : ok=12   changed=8    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0\nVR3-ElCenter-A3            : ok=12   changed=8    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0\nVR3-ElCenter-DB            : ok=13   changed=9    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0\nVR3-ElCenter-LB            : ok=12   changed=8    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0",
+  "issue": "SERVICDESK-84411",
+  "funcName": "&lt;module&gt;",
+  "source": "ansible",
+  "exit_code": 0,
+  "line_count": 204
+}
+
+{
+  "asctime": "1405-07-06 23:19:01",
+  "levelname": "INFO",
+  "name": "scripts.utility.webpage.patch_report_ips",
+  "message": "Patched 5 IP(s) into reports/SERVICDESK-84411/index.html (verified)",
+  "issue": "SERVICDESK-84411",
+  "funcName": "&lt;module&gt;"
+}
+
+{
+  "asctime": "1405-07-06 23:19:10",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Email report sent.",
+  "issue": "SERVICDESK-84411",
+  "funcName": "send_anonymous_email",
+  "to": [
+    "elnaz.m@abramad.com",
+    "sina.z@abramad.com"
+  ],
+  "cc": [
+    "sina.z@abramad.com",
+    "sinasilver91891.sz@gmail.com"
+  ]
+}
+
+{
+  "asctime": "1405-07-06 23:19:15",
+  "levelname": "INFO",
+  "name": "scripts.utility.mattermost.notifier",
+  "message": "mattermost message sent",
+  "issue": "SERVICDESK-84411",
+  "funcName": "send_mattermost_message"
+}
+
+{
+  "asctime": "1405-07-06 23:19:16",
+  "levelname": "INFO",
+  "name": "scripts.utility.jira.close_ticket",
+  "message": "Commented and closed SERVICDESK-84411",
+  "issue": "SERVICDESK-84411",
+  "funcName": "&lt;module&gt;"
+}
+
+</pre></div>
+    <div class="footer">Generated: 1405/07/06 23:19 &middot; <span class="company">Abramad SysOps</span></div>
+  </div>
+</body>
+</html>

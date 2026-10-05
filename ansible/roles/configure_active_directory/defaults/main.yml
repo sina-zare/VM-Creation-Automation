@@ -1,0 +1,4 @@
+---
+ad_customers_ou: "OU=Customers,DC=cloud,DC=local"
+
+ad_customer_ou: "OU={{ ad_info.ad_ou }},{{ ad_customers_ou }}"

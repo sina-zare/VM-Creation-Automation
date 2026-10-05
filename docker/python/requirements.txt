@@ -1,0 +1,10 @@
+prometheus-client
+dnspython
+pyzabbix
+jira
+pyvmomi
+jdatetime
+pynetbox
+pyyaml
+beautifulsoup4
+python-json-logger

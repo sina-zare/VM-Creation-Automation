@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logs · SERVICDESK-84198 · Abramad</title>
+<style>
+  :root {
+    --bg-1: #0a1224;
+    --bg-2: #0f1c33;
+    --accent: #2f5fec;
+    --accent-2: #22c55e;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --card-border: rgba(255, 255, 255, 0.08);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: radial-gradient(circle at top, var(--bg-2), var(--bg-1));
+    color: var(--text); padding: 48px 24px;
+  }
+  .container { max-width: 820px; margin: 0 auto; }
+
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; color: var(--text-dim); text-decoration: none; margin-bottom: 24px;
+    transition: color 0.15s ease;
+  }
+  .back-link:hover { color: var(--accent); }
+
+  .brand {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.04em;
+    color: var(--accent); margin-bottom: 14px;
+  }
+  .brand .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    display: inline-block;
+  }
+
+  h1 {
+    font-size: 20px; margin: 0 0 4px; font-weight: 600;
+    font-family: "SFMono-Regular", Consolas, monospace;
+  }
+  .subtitle { color: var(--text-dim); font-size: 13px; margin: 0 0 24px; }
+
+  .log-box {
+    background: #27385f;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 20px;
+    overflow-x: auto;
+    max-height: 70vh;
+    overflow-y: auto;
+    box-shadow: inset 0 0 0 1px rgba(230, 230, 230, 0.02);
+  }
+  .log-box pre {
+    margin: 0;
+    font-family: "SFMono-Regular", Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #c9d6ea;
+    white-space: pre-wrap;
+    word-break: break-word;
+    tab-size: 2;
+}
+
+  .log-time { color: var(--text-dim); }
+
+  .lvl {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+  .lvl-info  { color: #7dd3fc; background: rgba(56, 189, 248, 0.12); }
+  .lvl-warn  { color: #fbbf24; background: rgba(251, 191, 36, 0.14); }
+  .lvl-error { color: #fb7185; background: rgba(251, 113, 133, 0.14); }
+  .lvl-debug { color: #a1a1aa; background: rgba(161, 161, 170, 0.14); }
+
+  .footer { margin-top: 28px; text-align: center; font-size: 12px; color: var(--text-dim); }
+  .footer .company { color: var(--accent); font-weight: 600; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <a class="back-link" href="../../index.html">&larr; Back to all reports</a>
+    <div class="brand"><span class="dot"></span>ABRAMAD</div>
+    <h1>SERVICDESK-84198</h1>
+    <p class="subtitle">automation.log</p>
+    <div class="log-box"><pre>
+{
+  "asctime": "1405-07-06 15:15:31",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "vCenter folder selected",
+  "issue": "SERVICDESK-84198",
+  "funcName": "vcenter_folder_selector",
+  "vcenter_folder": "AbramadCustomers/Rahkaran/Sintinel"
+}
+
+{
+  "asctime": "1405-07-06 15:15:32",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "VM name validated",
+  "issue": "SERVICDESK-84198",
+  "funcName": "vm_name_selector",
+  "vm_name": "VR2-Sintinel-A1",
+  "vm_product_line": "Rahkaran Server"
+}
+
+{
+  "asctime": "1405-07-06 15:15:32",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Zabbix Server selected",
+  "issue": "SERVICDESK-84198",
+  "funcName": "zabbix_server_selector",
+  "zabbix_server": "vnk-customerzabbix",
+  "datacenter": "vanak",
+  "product_line": "Rahkaran Server"
+}
+
+{
+  "asctime": "1405-07-06 15:15:32",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "disks selected",
+  "issue": "SERVICDESK-84198",
+  "funcName": "pick_datastore",
+  "disks": [
+    {
+      "label": "disk0",
+      "size": 100,
+      "type": "ultra",
+      "storage_cluster": "VTS-VNX5400-Ultra-Pool01-15K-LAB",
+      "unit_number": 0,
+      "datastore": "VTS-VNX5400-Ultra-Pool01-15K-LAB-LUN01"
+    },
+    {
+      "label": "disk1",
+      "size": 70,
+      "type": "standard",
+      "storage_cluster": "VTS-VNX5400-Std-Pool01-15K-LAB",
+      "unit_number": 1,
+      "datastore": "VTS-VNX5400-Std-Pool01-15K-LAB-LUN04"
+    },
+    {
+      "label": "disk2",
+      "size": 40,
+      "type": "advanced",
+      "storage_cluster": "VTS-VNX5400-Adv-Pool01-15K-LAB",
+      "unit_number": 2,
+      "datastore": "VTS-VNX5400-Adv-Pool01-15K-LAB-LUN01"
+    }
+  ]
+}
+
+{
+  "asctime": "1405-07-06 15:15:32",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Template name selected",
+  "issue": "SERVICDESK-84198",
+  "funcName": "template_selector",
+  "vm_name": "VR2-Sintinel-A1",
+  "template": "TMP-RII-W2022APP"
+}
+
+{
+  "asctime": "1405-07-06 15:15:32",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Portgroup selected",
+  "issue": "SERVICDESK-84198",
+  "funcName": "portgroup_selector",
+  "product_line": "Rahkaran Server",
+  "datacenter": "vanak",
+  "portgroup": "AbramadRahkaran-VR2-NSX-213"
+}
+
+{
+  "asctime": "1405-07-06 15:15:32",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "URL selected",
+  "issue": "SERVICDESK-84198",
+  "funcName": "url_selector",
+  "url": "https://Sintinel-r.abramad.cloud"
+}
+
+{
+  "asctime": "1405-07-06 15:16:22",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.netbox",
+  "message": "Prefix 185.119.240.0/22 (id=114) scope=vanak -&gt; 558 free IPs",
+  "issue": "SERVICDESK-84198",
+  "funcName": "find_best_prefix",
+  "Prefix": "185.119.240.0/22",
+  "scope": "vanak",
+  "target": "customers",
+  "free_ips": 558
+}
+
+{
+  "asctime": "1405-07-06 15:16:22",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.netbox",
+  "message": "Selected prefix 185.119.240.0/22",
+  "issue": null,
+  "funcName": "find_best_prefix"
+}
+
+{
+  "asctime": "1405-07-06 15:16:24",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.netbox",
+  "message": "Reusing existing IP reservation: 185.119.240.8/22 (id=24761)",
+  "issue": "SERVICDESK-84198",
+  "funcName": "reserve_ip",
+  "IP": "185.119.240.8/22",
+  "description": "VR2-Sintinel-A1 - SERVICDESK-84198",
+  "reused": true
+}
+
+{
+  "asctime": "1405-07-06 15:16:24",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Custom attributes selected",
+  "issue": "SERVICDESK-84198",
+  "funcName": "attribute_selector",
+  "custom_attributes": {
+    "CompanyName": "سینا مریدی",
+    "Creation Date": "1405/07/06-15:16",
+    "Creation Ticket ID": "SERVICDESK-84198",
+    "National ID": "0946310051",
+    "NativeBackup": "True",
+    "Physical Dongle": "True",
+    "IDS/IPS": "True",
+    "WAF Service": "False",
+    "Site-to-Site VPN": "True",
+    "Owner": "Support Team",
+    "ProductLine": "Rahkaran Server",
+    "Business Value": "VIP",
+    "RepMail": "sinazare1998@gmail.com",
+    "RepName": "Meyti Ghoul",
+    "RepNumber": "09150577079",
+    "Industry": "Sales &amp; Destribution",
+    "URL": "https://Sintinel-r.abramad.cloud",
+    "Public IP": "185.119.240.8"
+  }
+}
+
+{
+  "asctime": "1405-07-06 15:16:24",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "VM name validated",
+  "issue": "SERVICDESK-84198",
+  "funcName": "vm_name_selector",
+  "vm_name": "VR2-Sintinel-DB",
+  "vm_product_line": "Rahkaran Server"
+}
+
+{
+  "asctime": "1405-07-06 15:16:24",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Zabbix Server selected",
+  "issue": "SERVICDESK-84198",
+  "funcName": "zabbix_server_selector",
+  "zabbix_server": "vnk-customerzabbix",
+  "datacenter": "vanak",
+  "product_line": "Rahkaran Server"
+}
+
+{
+  "asctime": "1405-07-06 15:16:24",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "disks selected",
+  "issue": "SERVICDESK-84198",
+  "funcName": "pick_datastore",
+  "disks": [
+    {
+      "label": "disk0",
+      "size": 100,
+      "type": "standard",
+      "storage_cluster": "VTS-VNX5400-Std-Pool01-15K-LAB",
+      "unit_number": 0,
+      "datastore": "VTS-VNX5400-Std-Pool01-15K-LAB-LUN04"
+    },
+    {
+      "label": "disk1",
+      "size": 80,
+      "type": "advanced",
+      "storage_cluster": "VTS-VNX5400-Adv-Pool01-15K-LAB",
+      "unit_number": 1,
+      "datastore": "VTS-VNX5400-Adv-Pool01-15K-LAB-LUN01"
+    },
+    {
+      "label": "disk2",
+      "size": 50,
+      "type": "pro",
+      "storage_cluster": "VTS-VNX5400-Pro-Pool01-15K-LAB",
+      "unit_number": 2,
+      "datastore": "VTS-VNX5400-Pro-Pool01-15K-LAB-LUN01"
+    }
+  ]
+}
+
+{
+  "asctime": "1405-07-06 15:16:24",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Template name selected",
+  "issue": "SERVICDESK-84198",
+  "funcName": "template_selector",
+  "vm_name": "VR2-Sintinel-DB",
+  "template": "TMP-RII-W2022DB"
+}
+
+{
+  "asctime": "1405-07-06 15:16:24",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Portgroup selected",
+  "issue": "SERVICDESK-84198",
+  "funcName": "portgroup_selector",
+  "product_line": "Rahkaran Server",
+  "datacenter": "vanak",
+  "portgroup": "AbramadRahkaran-VR2-NSX-213"
+}
+
+{
+  "asctime": "1405-07-06 15:16:24",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "URL selected",
+  "issue": "SERVICDESK-84198",
+  "funcName": "url_selector",
+  "url": "https://Sintinel-r.abramad.cloud"
+}
+
+{
+  "asctime": "1405-07-06 15:16:24",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Custom attributes selected",
+  "issue": "SERVICDESK-84198",
+  "funcName": "attribute_selector",
+  "custom_attributes": {
+    "CompanyName": "سینا مریدی",
+    "Creation Date": "1405/07/06-15:16",
+    "Creation Ticket ID": "SERVICDESK-84198",
+    "National ID": "0946310051",
+    "NativeBackup": "True",
+    "Physical Dongle": "True",
+    "IDS/IPS": "True",
+    "WAF Service": "False",
+    "Site-to-Site VPN": "True",
+    "Owner": "Support Team",
+    "ProductLine": "Rahkaran Server",
+    "Business Value": "VIP",
+    "RepMail": "sinazare1998@gmail.com",
+    "RepName": "Meyti Ghoul",
+    "RepNumber": "09150577079",
+    "Industry": "Sales &amp; Destribution"
+  }
+}
+
+{
+  "asctime": "1405-07-06 15:27:47",
+  "levelname": "INFO",
+  "name": "scripts.utility.log.run_and_log.terraform",
+  "message": "module.vm.data.vsphere_datacenter.dc: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Link-VraServer\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"IDS/IPS\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"CompanyName\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"National ID\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Physical Dongle\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"RepMail\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Site-to-Site VPN\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"ProductLine\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"WAF Service\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"RepMail\"]: Read complete after 0s [id=218]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Sepidar-Lock\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"CompanyName\"]: Read complete after 0s [id=202]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"ProductLine\"]: Read complete after 0s [id=216]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Industry\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Creation Ticket ID\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Link-VraServer\"]: Read complete after 0s [id=209]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Site-to-Site VPN\"]: Read complete after 0s [id=226]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Industry\"]: Read complete after 0s [id=322]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"URL\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"WAF Service\"]: Read complete after 0s [id=231]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Physical Dongle\"]: Read complete after 0s [id=215]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"NativeBackup\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"National ID\"]: Read complete after 0s [id=211]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"RepName\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Creation Date\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Sepidar-Lock\"]: Read complete after 0s [id=311]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Creation Ticket ID\"]: Read complete after 0s [id=242]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"IDS/IPS\"]: Read complete after 0s [id=235]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Owner\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"RepNumber\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Public IP\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Business Value\"]: Reading...\nmodule.vm.data.vsphere_custom_attribute.attrs[\"URL\"]: Read complete after 0s [id=228]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"NativeBackup\"]: Read complete after 0s [id=321]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Creation Date\"]: Read complete after 0s [id=204]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"RepNumber\"]: Read complete after 0s [id=220]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"RepName\"]: Read complete after 0s [id=219]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Owner\"]: Read complete after 0s [id=214]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Business Value\"]: Read complete after 0s [id=230]\nmodule.vm.data.vsphere_custom_attribute.attrs[\"Public IP\"]: Read complete after 0s [id=217]\nmodule.vm.data.vsphere_datacenter.dc: Read complete after 0s [id=datacenter-1001]\nmodule.vm.data.vsphere_datastore.ds[\"VTS-VNX5400-Adv-Pool01-15K-LAB-LUN01\"]: Reading...\nmodule.vm.data.vsphere_virtual_machine.templates[\"VR2-Sintinel-A1\"]: Reading...\nmodule.vm.data.vsphere_datastore.ds[\"VTS-VNX5400-Std-Pool01-15K-LAB-LUN04\"]: Reading...\nmodule.vm.data.vsphere_datastore.ds[\"VTS-VNX5400-Ultra-Pool01-15K-LAB-LUN01\"]: Reading...\nmodule.vm.data.vsphere_compute_cluster.vm_cluster[\"VR2-Sintinel-A1\"]: Reading...\nmodule.vm.vsphere_folder.customer_folder[\"AbramadCustomers/Rahkaran/Sintinel\"]: Refreshing state... [id=group-v2800213]\nmodule.vm.data.vsphere_datastore.ds[\"VTS-VNX5400-Pro-Pool01-15K-LAB-LUN01\"]: Reading...\nmodule.vm.data.vsphere_network.vm_network[\"VR2-Sintinel-DB\"]: Reading...\nmodule.vm.data.vsphere_network.vm_network[\"VR2-Sintinel-A1\"]: Reading...\nmodule.vm.data.vsphere_virtual_machine.templates[\"VR2-Sintinel-DB\"]: Reading...\nmodule.vm.data.vsphere_network.vm_network[\"VR2-Sintinel-DB\"]: Read complete after 0s [id=dvportgroup-2800014]\nmodule.vm.data.vsphere_compute_cluster.vm_cluster[\"VR2-Sintinel-DB\"]: Reading...\nmodule.vm.data.vsphere_network.vm_network[\"VR2-Sintinel-A1\"]: Read complete after 0s [id=dvportgroup-2800014]\nmodule.vm.data.vsphere_compute_cluster.vm_cluster[\"VR2-Sintinel-A1\"]: Read complete after 0s [id=domain-c1006]\nmodule.vm.data.vsphere_datastore.ds[\"VTS-VNX5400-Std-Pool01-15K-LAB-LUN04\"]: Read complete after 0s [id=datastore-2798709]\nmodule.vm.data.vsphere_datastore.ds[\"VTS-VNX5400-Pro-Pool01-15K-LAB-LUN01\"]: Read complete after 0s [id=datastore-2799978]\nmodule.vm.data.vsphere_datastore.ds[\"VTS-VNX5400-Adv-Pool01-15K-LAB-LUN01\"]: Read complete after 0s [id=datastore-2799977]\nmodule.vm.data.vsphere_compute_cluster.vm_cluster[\"VR2-Sintinel-DB\"]: Read complete after 0s [id=domain-c1006]\nmodule.vm.data.vsphere_datastore.ds[\"VTS-VNX5400-Ultra-Pool01-15K-LAB-LUN01\"]: Read complete after 0s [id=datastore-2799979]\nmodule.vm.data.vsphere_virtual_machine.templates[\"VR2-Sintinel-DB\"]: Read complete after 0s [id=423afe01-60c0-372a-75af-17534a8c7fcc]\nmodule.vm.data.vsphere_virtual_machine.templates[\"VR2-Sintinel-A1\"]: Read complete after 0s [id=423ac017-ba87-3523-0922-506cddf1a488]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Refreshing state... [id=423a05d7-8724-82a2-559a-ded4afc9f3aa]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Refreshing state... [id=423aedc1-960b-6693-732c-8b98eae579ab]\nTerraform used the selected providers to generate the following execution\nplan. Resource actions are indicated with the following symbols:\n  + create\nTerraform will perform the following actions:\n  # module.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"] will be created\n  + resource \"vsphere_virtual_machine\" \"vm\" {\n      + annotation                              = (known after apply)\n      + boot_retry_delay                        = 10000\n      + change_version                          = (known after apply)\n      + cpu_hot_add_enabled                     = true\n      + cpu_limit                               = -1\n      + cpu_share_count                         = (known after apply)\n      + cpu_share_level                         = \"normal\"\n      + custom_attributes                       = {\n          + \"202\" = \"سینا مریدی\"\n          + \"204\" = \"1405/07/06-15:16\"\n          + \"211\" = \"0946310051\"\n          + \"214\" = \"Support Team\"\n          + \"215\" = \"True\"\n          + \"216\" = \"Rahkaran Server\"\n          + \"217\" = \"185.119.240.8\"\n          + \"218\" = \"sinazare1998@gmail.com\"\n          + \"219\" = \"Meyti Ghoul\"\n          + \"220\" = \"09150577079\"\n          + \"226\" = \"True\"\n          + \"228\" = \"https://Sintinel-r.abramad.cloud\"\n          + \"230\" = \"VIP\"\n          + \"231\" = \"False\"\n          + \"235\" = \"True\"\n          + \"242\" = \"SERVICDESK-84198\"\n          + \"321\" = \"True\"\n          + \"322\" = \"Sales &amp; Destribution\"\n        }\n      + datastore_id                            = \"datastore-2799979\"\n      + default_ip_address                      = (known after apply)\n      + ept_rvi_mode                            = (known after apply)\n      + extra_config_reboot_required            = true\n      + firmware                                = \"efi\"\n      + folder                                  = \"AbramadCustomers/Rahkaran/Sintinel\"\n      + force_power_off                         = true\n      + guest_id                                = \"windows9Server64Guest\"\n      + guest_ip_addresses                      = (known after apply)\n      + hardware_version                        = (known after apply)\n      + host_system_id                          = (known after apply)\n      + hv_mode                                 = (known after apply)\n      + id                                      = (known after apply)\n      + ide_controller_count                    = 2\n      + imported                                = (known after apply)\n      + latency_sensitivity                     = \"normal\"\n      + memory                                  = 16384\n      + memory_hot_add_enabled                  = true\n      + memory_limit                            = -1\n      + memory_share_count                      = (known after apply)\n      + memory_share_level                      = \"normal\"\n      + migrate_wait_timeout                    = 30\n      + moid                                    = (known after apply)\n      + name                                    = \"VR2-Sintinel-A1\"\n      + num_cores_per_socket                    = 1\n      + num_cpus                                = 8\n      + nvme_controller_count                   = 0\n      + power_state                             = (known after apply)\n      + poweron_timeout                         = 300\n      + reboot_required                         = (known after apply)\n      + resource_pool_id                        = \"resgroup-1007\"\n      + run_tools_scripts_after_power_on        = true\n      + run_tools_scripts_after_resume          = true\n      + run_tools_scripts_before_guest_shutdown = true\n      + run_tools_scripts_before_guest_standby  = true\n      + sata_controller_count                   = 0\n      + scsi_bus_sharing                        = \"noSharing\"\n      + scsi_controller_count                   = 1\n      + scsi_type                               = \"pvscsi\"\n      + shutdown_wait_timeout                   = 3\n      + storage_policy_id                       = (known after apply)\n      + swap_placement_policy                   = \"inherit\"\n      + sync_time_with_host                     = true\n      + tools_upgrade_policy                    = \"manual\"\n      + uuid                                    = (known after apply)\n      + vapp_transport                          = (known after apply)\n      + vmware_tools_status                     = (known after apply)\n      + vmx_path                                = (known after apply)\n      + wait_for_guest_ip_timeout               = 0\n      + wait_for_guest_net_routable             = true\n      + wait_for_guest_net_timeout              = 5\n      + clone {\n          + template_uuid = \"423ac017-ba87-3523-0922-506cddf1a488\"\n          + timeout       = 30\n          + customize {\n              + dns_server_list = []\n              + dns_suffix_list = []\n              + timeout         = 10\n              + network_interface {}\n              + windows_options {\n                  + admin_password        = (sensitive value)\n                  + auto_logon_count      = 1\n                  + computer_name         = \"VR2-Sintinel-A1\"\n                  + domain_admin_password = (sensitive value)\n                  + domain_admin_user     = \"sysops-svc@cloud.local\"\n                  + full_name             = \"Administrator\"\n                  + join_domain           = \"cloud.local\"\n                  + organization_name     = \"Managed by Terraform\"\n                  + time_zone             = 160\n                }\n            }\n        }\n      + disk {\n          + attach            = false\n          + controller_type   = \"scsi\"\n          + datastore_id      = \"datastore-2799979\"\n          + device_address    = (known after apply)\n          + disk_mode         = \"persistent\"\n          + disk_sharing      = \"sharingNone\"\n          + eagerly_scrub     = false\n          + io_limit          = -1\n          + io_reservation    = 0\n          + io_share_count    = 0\n          + io_share_level    = \"normal\"\n          + keep_on_remove    = false\n          + key               = 0\n          + label             = \"disk0\"\n          + path              = (known after apply)\n          + size              = 100\n          + storage_policy_id = (known after apply)\n          + thin_provisioned  = true\n          + unit_number       = 0\n          + uuid              = (known after apply)\n          + write_through     = false\n        }\n      + disk {\n          + attach            = false\n          + controller_type   = \"scsi\"\n          + datastore_id      = \"datastore-2798709\"\n          + device_address    = (known after apply)\n          + disk_mode         = \"persistent\"\n          + disk_sharing      = \"sharingNone\"\n          + eagerly_scrub     = false\n          + io_limit          = -1\n          + io_reservation    = 0\n          + io_share_count    = 0\n          + io_share_level    = \"normal\"\n          + keep_on_remove    = false\n          + key               = 0\n          + label             = \"disk1\"\n          + path              = (known after apply)\n          + size              = 70\n          + storage_policy_id = (known after apply)\n          + thin_provisioned  = true\n          + unit_number       = 1\n          + uuid              = (known after apply)\n          + write_through     = false\n        }\n      + disk {\n          + attach            = false\n          + controller_type   = \"scsi\"\n          + datastore_id      = \"datastore-2799977\"\n          + device_address    = (known after apply)\n          + disk_mode         = \"persistent\"\n          + disk_sharing      = \"sharingNone\"\n          + eagerly_scrub     = false\n          + io_limit          = -1\n          + io_reservation    = 0\n          + io_share_count    = 0\n          + io_share_level    = \"normal\"\n          + keep_on_remove    = false\n          + key               = 0\n          + label             = \"disk2\"\n          + path              = (known after apply)\n          + size              = 40\n          + storage_policy_id = (known after apply)\n          + thin_provisioned  = true\n          + unit_number       = 2\n          + uuid              = (known after apply)\n          + write_through     = false\n        }\n      + network_interface {\n          + adapter_type          = \"vmxnet3\"\n          + bandwidth_limit       = -1\n          + bandwidth_reservation = 0\n          + bandwidth_share_count = (known after apply)\n          + bandwidth_share_level = \"normal\"\n          + device_address        = (known after apply)\n          + external_port_id      = (known after apply)\n          + key                   = (known after apply)\n          + mac_address           = (known after apply)\n          + network_id            = \"dvportgroup-2800014\"\n        }\n    }\n  # module.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"] will be created\n  + resource \"vsphere_virtual_machine\" \"vm\" {\n      + annotation                              = (known after apply)\n      + boot_retry_delay                        = 10000\n      + change_version                          = (known after apply)\n      + cpu_hot_add_enabled                     = true\n      + cpu_limit                               = -1\n      + cpu_share_count                         = (known after apply)\n      + cpu_share_level                         = \"normal\"\n      + custom_attributes                       = {\n          + \"202\" = \"سینا مریدی\"\n          + \"204\" = \"1405/07/06-15:16\"\n          + \"211\" = \"0946310051\"\n          + \"214\" = \"Support Team\"\n          + \"215\" = \"True\"\n          + \"216\" = \"Rahkaran Server\"\n          + \"218\" = \"sinazare1998@gmail.com\"\n          + \"219\" = \"Meyti Ghoul\"\n          + \"220\" = \"09150577079\"\n          + \"226\" = \"True\"\n          + \"230\" = \"VIP\"\n          + \"231\" = \"False\"\n          + \"235\" = \"True\"\n          + \"242\" = \"SERVICDESK-84198\"\n          + \"321\" = \"True\"\n          + \"322\" = \"Sales &amp; Destribution\"\n        }\n      + datastore_id                            = \"datastore-2798709\"\n      + default_ip_address                      = (known after apply)\n      + ept_rvi_mode                            = (known after apply)\n      + extra_config_reboot_required            = true\n      + firmware                                = \"efi\"\n      + folder                                  = \"AbramadCustomers/Rahkaran/Sintinel\"\n      + force_power_off                         = true\n      + guest_id                                = \"windows9Server64Guest\"\n      + guest_ip_addresses                      = (known after apply)\n      + hardware_version                        = (known after apply)\n      + host_system_id                          = (known after apply)\n      + hv_mode                                 = (known after apply)\n      + id                                      = (known after apply)\n      + ide_controller_count                    = 2\n      + imported                                = (known after apply)\n      + latency_sensitivity                     = \"normal\"\n      + memory                                  = 18432\n      + memory_hot_add_enabled                  = true\n      + memory_limit                            = -1\n      + memory_share_count                      = (known after apply)\n      + memory_share_level                      = \"normal\"\n      + migrate_wait_timeout                    = 30\n      + moid                                    = (known after apply)\n      + name                                    = \"VR2-Sintinel-DB\"\n      + num_cores_per_socket                    = 1\n      + num_cpus                                = 8\n      + nvme_controller_count                   = 0\n      + power_state                             = (known after apply)\n      + poweron_timeout                         = 300\n      + reboot_required                         = (known after apply)\n      + resource_pool_id                        = \"resgroup-1007\"\n      + run_tools_scripts_after_power_on        = true\n      + run_tools_scripts_after_resume          = true\n      + run_tools_scripts_before_guest_shutdown = true\n      + run_tools_scripts_before_guest_standby  = true\n      + sata_controller_count                   = 0\n      + scsi_bus_sharing                        = \"noSharing\"\n      + scsi_controller_count                   = 1\n      + scsi_type                               = \"pvscsi\"\n      + shutdown_wait_timeout                   = 3\n      + storage_policy_id                       = (known after apply)\n      + swap_placement_policy                   = \"inherit\"\n      + sync_time_with_host                     = true\n      + tools_upgrade_policy                    = \"manual\"\n      + uuid                                    = (known after apply)\n      + vapp_transport                          = (known after apply)\n      + vmware_tools_status                     = (known after apply)\n      + vmx_path                                = (known after apply)\n      + wait_for_guest_ip_timeout               = 0\n      + wait_for_guest_net_routable             = true\n      + wait_for_guest_net_timeout              = 5\n      + clone {\n          + template_uuid = \"423afe01-60c0-372a-75af-17534a8c7fcc\"\n          + timeout       = 30\n          + customize {\n              + dns_server_list = []\n              + dns_suffix_list = []\n              + timeout         = 10\n              + network_interface {}\n              + windows_options {\n                  + admin_password        = (sensitive value)\n                  + auto_logon_count      = 1\n                  + computer_name         = \"VR2-Sintinel-DB\"\n                  + domain_admin_password = (sensitive value)\n                  + domain_admin_user     = \"sysops-svc@cloud.local\"\n                  + full_name             = \"Administrator\"\n                  + join_domain           = \"cloud.local\"\n                  + organization_name     = \"Managed by Terraform\"\n                  + time_zone             = 160\n                }\n            }\n        }\n      + disk {\n          + attach            = false\n          + controller_type   = \"scsi\"\n          + datastore_id      = \"datastore-2798709\"\n          + device_address    = (known after apply)\n          + disk_mode         = \"persistent\"\n          + disk_sharing      = \"sharingNone\"\n          + eagerly_scrub     = false\n          + io_limit          = -1\n          + io_reservation    = 0\n          + io_share_count    = 0\n          + io_share_level    = \"normal\"\n          + keep_on_remove    = false\n          + key               = 0\n          + label             = \"disk0\"\n          + path              = (known after apply)\n          + size              = 100\n          + storage_policy_id = (known after apply)\n          + thin_provisioned  = true\n          + unit_number       = 0\n          + uuid              = (known after apply)\n          + write_through     = false\n        }\n      + disk {\n          + attach            = false\n          + controller_type   = \"scsi\"\n          + datastore_id      = \"datastore-2799977\"\n          + device_address    = (known after apply)\n          + disk_mode         = \"persistent\"\n          + disk_sharing      = \"sharingNone\"\n          + eagerly_scrub     = false\n          + io_limit          = -1\n          + io_reservation    = 0\n          + io_share_count    = 0\n          + io_share_level    = \"normal\"\n          + keep_on_remove    = false\n          + key               = 0\n          + label             = \"disk1\"\n          + path              = (known after apply)\n          + size              = 80\n          + storage_policy_id = (known after apply)\n          + thin_provisioned  = true\n          + unit_number       = 1\n          + uuid              = (known after apply)\n          + write_through     = false\n        }\n      + disk {\n          + attach            = false\n          + controller_type   = \"scsi\"\n          + datastore_id      = \"datastore-2799978\"\n          + device_address    = (known after apply)\n          + disk_mode         = \"persistent\"\n          + disk_sharing      = \"sharingNone\"\n          + eagerly_scrub     = false\n          + io_limit          = -1\n          + io_reservation    = 0\n          + io_share_count    = 0\n          + io_share_level    = \"normal\"\n          + keep_on_remove    = false\n          + key               = 0\n          + label             = \"disk2\"\n          + path              = (known after apply)\n          + size              = 50\n          + storage_policy_id = (known after apply)\n          + thin_provisioned  = true\n          + unit_number       = 2\n          + uuid              = (known after apply)\n          + write_through     = false\n        }\n      + network_interface {\n          + adapter_type          = \"vmxnet3\"\n          + bandwidth_limit       = -1\n          + bandwidth_reservation = 0\n          + bandwidth_share_count = (known after apply)\n          + bandwidth_share_level = \"normal\"\n          + device_address        = (known after apply)\n          + external_port_id      = (known after apply)\n          + key                   = (known after apply)\n          + mac_address           = (known after apply)\n          + network_id            = \"dvportgroup-2800014\"\n        }\n    }\nPlan: 2 to add, 0 to change, 0 to destroy.\nChanges to Outputs:\n  ~ vm_ids = {\n      ~ VR2-Sintinel-A1 = \"423aedc1-960b-6693-732c-8b98eae579ab\" -&gt; (known after apply)\n      ~ VR2-Sintinel-DB = \"423a05d7-8724-82a2-559a-ded4afc9f3aa\" -&gt; (known after apply)\n    }\n  ~ vm_ips = {\n      ~ VR2-Sintinel-A1 = \"172.29.252.131\" -&gt; (known after apply)\n      ~ VR2-Sintinel-DB = \"172.29.252.132\" -&gt; (known after apply)\n    }\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Creating...\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Creating...\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [00m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [00m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [00m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [00m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [00m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [00m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [00m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [00m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [00m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [00m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [01m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [01m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [01m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [01m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [01m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [01m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [01m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [01m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [01m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [01m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [01m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [01m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [02m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [02m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [02m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [02m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [02m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [02m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [02m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [02m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [02m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [02m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [02m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [02m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [03m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [03m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [03m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [03m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [03m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [03m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [03m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [03m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [03m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [03m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [03m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [03m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [04m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [04m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [04m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [04m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [04m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [04m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [04m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [04m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [04m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [04m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [04m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [04m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [05m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [05m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [05m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [05m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [05m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [05m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [05m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [05m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [05m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [05m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [05m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [05m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [06m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [06m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [06m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [06m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [06m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [06m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [06m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [06m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [06m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [06m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [06m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [06m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [07m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [07m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [07m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [07m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [07m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [07m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [07m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [07m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [07m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [07m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [07m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [07m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [08m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [08m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [08m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [08m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [08m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [08m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [08m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [08m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [08m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [08m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [08m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [08m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [09m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [09m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [09m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [09m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [09m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [09m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [09m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [09m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [09m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [09m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [09m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [09m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [10m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [10m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [10m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [10m10s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [10m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [10m20s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [10m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [10m30s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [10m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [10m40s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [10m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Still creating... [10m50s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-DB\"]: Creation complete after 10m54s [id=423aaca3-fc49-eacd-4add-6fe4a3a968e7]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Still creating... [11m00s elapsed]\nmodule.vm.vsphere_virtual_machine.vm[\"VR2-Sintinel-A1\"]: Creation complete after 11m10s [id=423ae62a-2392-f564-da73-f6c8d4f8db1d]\nReleasing state lock. This may take a few moments...\nApply complete! Resources: 2 added, 0 changed, 0 destroyed.\nOutputs:\nvm_ids = {\n  \"VR2-Sintinel-A1\" = \"423ae62a-2392-f564-da73-f6c8d4f8db1d\"\n  \"VR2-Sintinel-DB\" = \"423aaca3-fc49-eacd-4add-6fe4a3a968e7\"\n}\nvm_ips = {\n  \"VR2-Sintinel-A1\" = \"172.29.252.131\"\n  \"VR2-Sintinel-DB\" = \"172.29.252.132\"\n}",
+  "issue": "SERVICDESK-84198",
+  "funcName": "&lt;module&gt;",
+  "source": "terraform",
+  "exit_code": 0,
+  "line_count": 589
+}
+
+{
+  "asctime": "1405-07-06 15:27:56",
+  "levelname": "INFO",
+  "name": "scripts.utility.ansible.generate_inventory",
+  "message": "Inventory written to ansible/inventory/hosts.yml",
+  "issue": "SERVICDESK-84198",
+  "funcName": "&lt;module&gt;"
+}
+
+{
+  "asctime": "1405-07-06 15:29:43",
+  "levelname": "INFO",
+  "name": "scripts.utility.log.run_and_log.ansible",
+  "message": "[WARNING]: Ansible is being run in a world writable directory (/builds/abramad/sysops/automation/vm-creation/ansible), ignoring it as an ansible.cfg source. For more information see https://docs.ansible.com/ansible/devel/reference_appendices/config.html#cfg-in-world-writable-dir\nPLAY [Configure Active Directory] **********************************************\nTASK [configure_active_directory : Create customer OU] *************************\nincluded: /builds/abramad/sysops/automation/vm-creation/ansible/roles/configure_active_directory/tasks/ou.yml for dc01\nTASK [configure_active_directory : Create customer OU] *************************\nok: [dc01]\nTASK [configure_active_directory : Create customer groups] *********************\nincluded: /builds/abramad/sysops/automation/vm-creation/ansible/roles/configure_active_directory/tasks/groups.yml for dc01\nTASK [configure_active_directory : Create customer AD groups] ******************\nok: [dc01] =&gt; (item=SintinelDeploy)\nok: [dc01] =&gt; (item=SintinelSupport)\nok: [dc01] =&gt; (item=SintinelMembers)\nok: [dc01] =&gt; (item=SintinelComputers)\nok: [dc01] =&gt; (item=SintinelVR2-Sintinel-A1Members)\nok: [dc01] =&gt; (item=SintinelVR2-Sintinel-DBMembers)\nTASK [configure_active_directory : Create customer users] **********************\nincluded: /builds/abramad/sysops/automation/vm-creation/ansible/roles/configure_active_directory/tasks/users.yml for dc01\nTASK [configure_active_directory : Look up existing AD users] ******************\nok: [dc01] =&gt; (item=141414141)\nok: [dc01] =&gt; (item=141414142)\nTASK [configure_active_directory : Build list of existing usernames] ***********\nok: [dc01]\nTASK [configure_active_directory : Create AD users] ****************************\nchanged: [dc01] =&gt; (item=141414141)\nchanged: [dc01] =&gt; (item=141414142)\nTASK [configure_active_directory : Configure computer objects] *****************\nincluded: /builds/abramad/sysops/automation/vm-creation/ansible/roles/configure_active_directory/tasks/computer.yml for dc01\nTASK [configure_active_directory : Configure existing AD computer objects] *****\nchanged: [dc01] =&gt; (item=VR2-Sintinel-A1)\nchanged: [dc01] =&gt; (item=VR2-Sintinel-DB)\nTASK [configure_active_directory : Add computers to customer AD group] *********\nchanged: [dc01] =&gt; (item=VR2-Sintinel-A1)\nchanged: [dc01] =&gt; (item=VR2-Sintinel-DB)\nPLAY RECAP *********************************************************************\ndc01                       : ok=11   changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0",
+  "issue": "SERVICDESK-84198",
+  "funcName": "&lt;module&gt;",
+  "source": "ansible",
+  "exit_code": 0,
+  "line_count": 35
+}
+
+{
+  "asctime": "1405-07-06 15:31:56",
+  "levelname": "INFO",
+  "name": "scripts.utility.log.run_and_log.ansible",
+  "message": "[WARNING]: Ansible is being run in a world writable directory (/builds/abramad/sysops/automation/vm-creation/ansible), ignoring it as an ansible.cfg source. For more information see https://docs.ansible.com/ansible/devel/reference_appendices/config.html#cfg-in-world-writable-dir\nPLAY [Configure Windows Client] ************************************************\nTASK [configure_windows_client : Update local groups] **************************\nincluded: /builds/abramad/sysops/automation/vm-creation/ansible/roles/configure_windows_client/tasks/local_groups.yml for VR2-Sintinel-A1, VR2-Sintinel-DB\nTASK [configure_windows_client : Add AD groups to local Administrators] ********\nchanged: [VR2-Sintinel-A1] =&gt; (item=SintinelDeploy)\nchanged: [VR2-Sintinel-DB] =&gt; (item=SintinelDeploy)\nchanged: [VR2-Sintinel-A1] =&gt; (item=SintinelSupport)\nchanged: [VR2-Sintinel-DB] =&gt; (item=SintinelSupport)\nchanged: [VR2-Sintinel-A1] =&gt; (item=Server_Administrators)\nchanged: [VR2-Sintinel-DB] =&gt; (item=Server_Administrators)\nchanged: [VR2-Sintinel-A1] =&gt; (item=SintinelVR2-Sintinel-A1Members)\nchanged: [VR2-Sintinel-DB] =&gt; (item=SintinelVR2-Sintinel-DBMembers)\nTASK [configure_windows_client : Add AD groups to Remote Desktop Users] ********\nchanged: [VR2-Sintinel-A1] =&gt; (item=SintinelMembers)\nchanged: [VR2-Sintinel-DB] =&gt; (item=SintinelMembers)\nTASK [configure_windows_client : Install or Upgrade ZabbixAgent2] **************\nincluded: /builds/abramad/sysops/automation/vm-creation/ansible/roles/configure_windows_client/tasks/zabbix_agent2.yml for VR2-Sintinel-A1, VR2-Sintinel-DB\nTASK [configure_windows_client : Download Zabbix Agent2 MSI to Ansible controller] ***\nchanged: [VR2-Sintinel-A1 -&gt; localhost]\nTASK [configure_windows_client : Create temporary directory] *******************\nchanged: [VR2-Sintinel-DB]\nchanged: [VR2-Sintinel-A1]\nTASK [configure_windows_client : Copy Zabbix Agent2 MSI to Windows client] *****\nchanged: [VR2-Sintinel-A1]\nchanged: [VR2-Sintinel-DB]\nTASK [configure_windows_client : Install Zabbix Agent2] ************************\nchanged: [VR2-Sintinel-A1]\nchanged: [VR2-Sintinel-DB]\nTASK [configure_windows_client : Copy Zabbix Agent2 configuration] *************\nchanged: [VR2-Sintinel-DB]\nchanged: [VR2-Sintinel-A1]\nTASK [configure_windows_client : Configure and restart Zabbix Agent2 service] ***\nchanged: [VR2-Sintinel-DB]\nchanged: [VR2-Sintinel-A1]\nTASK [configure_windows_client : Read Zabbix Agent2 log] ***********************\nok: [VR2-Sintinel-A1]\nok: [VR2-Sintinel-DB]\nTASK [configure_windows_client : Display Zabbix Agent2 log] ********************\nok: [VR2-Sintinel-A1] =&gt; {\n    \"zabbix_log.stdout_lines\": [\n        \"2026/09/28 15:31:31.297550 using plugin 'TCP' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.298089 using plugin 'UDP' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.298137 using plugin 'Uname' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.298137 using plugin 'Uptime' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.298705 using plugin 'Users' (built-in) providing following interfaces: exporter, configurator, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.298705 using plugin 'VFSDir' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.299236 using plugin 'VMemory' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.299277 using plugin 'VfsFs' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.299813 using plugin 'WebCertificate' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.300057 using plugin 'WebPage' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.300057 using plugin 'WindowsEventlog' (built-in) providing following interfaces: exporter, configurator, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.300632 using plugin 'WindowsPerfInstance' (built-in) providing following interfaces: exporter, maximum capacity: 1, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.301194 using plugin 'WindowsPerfMon' (built-in) providing following interfaces: exporter, runner, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.301194 using plugin 'WindowsServices' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.301762 using plugin 'Wmi' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.301762 using plugin 'ZabbixAsync' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.302360 using plugin 'ZabbixStats' (built-in) providing following interfaces: exporter, configurator, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.302360 using plugin 'ZabbixSync' (built-in) providing following interfaces: exporter, maximum capacity: 1, active checks on start enabled: false\",\n        \"2026/09/28 15:31:32.518219 Plugin communication protocol version is 6.4.0\",\n        \"2026/09/28 15:31:33.001601 Zabbix Agent2 hostname: [VR2-SINTINEL-A1]\"\n    ]\n}\nok: [VR2-Sintinel-DB] =&gt; {\n    \"zabbix_log.stdout_lines\": [\n        \"2026/09/28 15:31:31.647054 using plugin 'TCP' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.647605 using plugin 'UDP' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.647665 using plugin 'Uname' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.647665 using plugin 'Uptime' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.648248 using plugin 'Users' (built-in) providing following interfaces: exporter, configurator, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.648248 using plugin 'VFSDir' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.648248 using plugin 'VMemory' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.648829 using plugin 'VfsFs' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.648829 using plugin 'WebCertificate' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.649424 using plugin 'WebPage' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.649424 using plugin 'WindowsEventlog' (built-in) providing following interfaces: exporter, configurator, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.650019 using plugin 'WindowsPerfInstance' (built-in) providing following interfaces: exporter, maximum capacity: 1, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.650019 using plugin 'WindowsPerfMon' (built-in) providing following interfaces: exporter, runner, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.650795 using plugin 'WindowsServices' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.650853 using plugin 'Wmi' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.650853 using plugin 'ZabbixAsync' (built-in) providing following interfaces: exporter, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.651452 using plugin 'ZabbixStats' (built-in) providing following interfaces: exporter, configurator, maximum capacity: 1000, active checks on start enabled: false\",\n        \"2026/09/28 15:31:31.651452 using plugin 'ZabbixSync' (built-in) providing following interfaces: exporter, maximum capacity: 1, active checks on start enabled: false\",\n        \"2026/09/28 15:31:32.750127 Plugin communication protocol version is 6.4.0\",\n        \"2026/09/28 15:31:33.001344 Zabbix Agent2 hostname: [VR2-SINTINEL-DB]\"\n    ]\n}\nTASK [configure_windows_client : Remove Zabbix Agent2 MSI from Windows client] ***\nchanged: [VR2-Sintinel-DB]\nchanged: [VR2-Sintinel-A1]\nPLAY RECAP *********************************************************************\nVR2-Sintinel-A1            : ok=13   changed=9    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0\nVR2-Sintinel-DB            : ok=12   changed=8    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0",
+  "issue": "SERVICDESK-84198",
+  "funcName": "&lt;module&gt;",
+  "source": "ansible",
+  "exit_code": 0,
+  "line_count": 93
+}
+
+{
+  "asctime": "1405-07-06 15:32:03",
+  "levelname": "INFO",
+  "name": "scripts.utility.webpage.patch_report_ips",
+  "message": "Patched 2 IP(s) into reports/SERVICDESK-84198/index.html (verified)",
+  "issue": "SERVICDESK-84198",
+  "funcName": "&lt;module&gt;"
+}
+
+{
+  "asctime": "1405-07-06 15:32:12",
+  "levelname": "INFO",
+  "name": "scripts.utility.functions.data_validators",
+  "message": "Email report sent.",
+  "issue": "SERVICDESK-84198",
+  "funcName": "send_anonymous_email",
+  "to": [
+    "sina.z@abramad.com",
+    "sinazare1998@gmail.com"
+  ],
+  "cc": [
+    "sina.z@abramad.com",
+    "sinasilver91891.sz@gmail.com"
+  ]
+}
+
+{
+  "asctime": "1405-07-06 15:32:17",
+  "levelname": "INFO",
+  "name": "scripts.utility.mattermost.notifier",
+  "message": "mattermost message sent",
+  "issue": "SERVICDESK-84198",
+  "funcName": "send_mattermost_message"
+}
+
+{
+  "asctime": "1405-07-06 15:32:19",
+  "levelname": "INFO",
+  "name": "scripts.utility.jira.close_ticket",
+  "message": "Commented and closed SERVICDESK-84198",
+  "issue": "SERVICDESK-84198",
+  "funcName": "&lt;module&gt;"
+}
+
+</pre></div>
+    <div class="footer">Generated: 1405/07/06 15:32 &middot; <span class="company">Abramad SysOps</span></div>
+  </div>
+</body>
+</html>

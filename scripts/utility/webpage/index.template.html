@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VM Creation Reports · Abramad</title>
+<style>
+  :root {
+    --bg-1: #0a1224;
+    --bg-2: #0f1c33;
+    --accent: #2f5fec;
+    --accent-2: #22c55e;
+    --grad-1: #00a194;
+    --grad-2: #a855f7;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --card-bg: rgba(255, 255, 255, 0.04);
+    --card-border: rgba(255, 255, 255, 0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: radial-gradient(circle at top, var(--bg-2), var(--bg-1));
+    color: var(--text);
+    padding: 48px 24px;
+  }
+
+  .container { max-width: 640px; margin: 0 auto; }
+  .header { text-align: center; margin-bottom: 36px; }
+
+  .brand {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.04em;
+    color: var(--accent); margin-bottom: 18px;
+  }
+  .brand .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    display: inline-block;
+  }
+
+  .badge {
+    display: inline-block; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent); background: rgba(47, 95, 236, 0.14);
+    border: 1px solid rgba(47, 95, 236, 0.35);
+    padding: 4px 12px; border-radius: 999px; margin-bottom: 16px;
+  }
+
+  h1 { font-size: 24px; margin: 0 0 8px; font-weight: 600; }
+  .subtitle { color: var(--text-dim); font-size: 14px; margin: 0; }
+
+  .search-box { margin: 28px 0 20px; }
+  .search-input {
+    width: 100%; font-size: 14px; color: var(--text);
+    background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border);
+    border-radius: 10px; padding: 12px 16px; outline: none;
+    transition: border-color 0.15s ease;
+  }
+  .search-input::placeholder { color: var(--text-dim); }
+  .search-input:focus { border-color: var(--accent); }
+  .search-meta { font-size: 12px; color: var(--text-dim); margin: 8px 2px 0; min-height: 16px; }
+
+  .list {
+    display: flex; flex-direction: column; gap: 12px;
+    max-height: 420px; overflow-y: auto; padding: 4px 4px 4px 0;
+  }
+  .list::-webkit-scrollbar { width: 6px; }
+  .list::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 999px; }
+  .list::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+  .report-card {
+    position: relative;
+    display: flex; align-items: center; justify-content: space-between;
+    color: var(--text);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-left: 3px solid var(--accent);
+    border-radius: 12px;
+    padding: 14px 16px;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  /* gradient wash that fades in on hover, sitting behind the content */
+  .report-card::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--grad-1), var(--grad-2));
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    z-index: 0;
+  }
+  .report-card > * { position: relative; z-index: 1; }
+
+  .report-card:hover {
+    transform: translateY(-2px);
+    border-left-color: transparent;
+    border-color: transparent;
+    box-shadow: 0 10px 28px rgba(99, 102, 241, 0.25), 0 0 0 1px rgba(168, 85, 247, 0.35);
+  }
+  .report-card:hover::before { opacity: 0.10; }
+
+  .report-card.is-hidden { display: none; }
+
+  .ticket {
+    font-family: "SFMono-Regular", Consolas, monospace;
+    font-size: 15px; font-weight: 600;
+  }
+
+  .card-actions { display: flex; align-items: center; gap: 8px; }
+
+  .icon-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--card-border);
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+  .icon-btn svg { width: 16px; height: 16px; }
+  .icon-btn:hover {
+    background: linear-gradient(135deg, var(--grad-1), var(--grad-2));
+    color: #fff;
+    border-color: transparent;
+    transform: scale(1.08);
+    box-shadow: 0 4px 14px rgba(168, 85, 247, 0.4);
+  }
+
+  .empty { text-align: center; color: var(--text-dim); padding: 40px 0; }
+
+  .no-results {
+    display: none; text-align: center; color: var(--text-dim);
+    background: var(--card-bg); border: 1px dashed var(--card-border);
+    border-radius: 12px; padding: 24px; font-size: 14px;
+  }
+  .no-results.is-visible { display: block; }
+
+  .footer { margin-top: 32px; text-align: center; font-size: 12px; color: var(--text-dim); }
+  .footer .company { color: var(--accent); font-weight: 600; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="brand"><span class="dot"></span>ABRAMAD</div>
+      <span class="badge">VM Creation Pipeline · SysOps</span>
+      <h1>Provisioning Reports</h1>
+      <p class="subtitle">All tickets processed by the Automation pipeline</p>
+    </div>
+
+    <div class="search-box">
+      <input
+        type="text"
+        id="ticketSearch"
+        class="search-input"
+        placeholder="Search by ticket key, e.g. SERVICEDESK-83929"
+        autocomplete="off"
+      >
+      <div class="search-meta" id="searchMeta"></div>
+    </div>
+
+    <div class="list" id="reportList">
+__CARDS__
+    </div>
+
+    <div class="no-results" id="noResults">No ticket matches "<span id="noResultsTerm"></span>".</div>
+
+    <div class="footer">Last updated: __TIMESTAMP__ &middot; <span class="company">Abramad SysOps</span></div>
+  </div>
+
+  <script>
+    (function () {
+      var input = document.getElementById('ticketSearch');
+      var list = document.getElementById('reportList');
+      var noResults = document.getElementById('noResults');
+      var noResultsTerm = document.getElementById('noResultsTerm');
+      var searchMeta = document.getElementById('searchMeta');
+      var cards = Array.prototype.slice.call(list.querySelectorAll('.report-card'));
+
+      if (!input || cards.length === 0) return;
+
+      input.addEventListener('input', function () {
+        var term = input.value.trim().toLowerCase();
+        var visibleCount = 0;
+
+        cards.forEach(function (card) {
+          var ticket = (card.getAttribute('data-ticket') || '').toLowerCase();
+          var matches = term === '' || ticket.indexOf(term) !== -1;
+          card.classList.toggle('is-hidden', !matches);
+          if (matches) visibleCount += 1;
+        });
+
+        if (term === '') {
+          noResults.classList.remove('is-visible');
+          searchMeta.textContent = '';
+        } else if (visibleCount === 0) {
+          noResultsTerm.textContent = input.value.trim();
+          noResults.classList.add('is-visible');
+          searchMeta.textContent = '';
+        } else {
+          noResults.classList.remove('is-visible');
+          searchMeta.textContent = visibleCount + ' of ' + cards.length + ' report(s) match';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

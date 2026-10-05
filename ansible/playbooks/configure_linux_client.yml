@@ -1,0 +1,7 @@
+---
+- name: Configure Lindows Client
+  hosts: linux_clients
+  gather_facts: false
+
+  roles:
+    - configure_linux_client

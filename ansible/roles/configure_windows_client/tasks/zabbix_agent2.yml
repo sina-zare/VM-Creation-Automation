@@ -1,0 +1,61 @@
+---
+# Download MSI on the Ansible controller
+- name: Download Zabbix Agent2 MSI to Ansible controller
+  ansible.builtin.get_url:
+    url: "{{ agent2_download_url }}"
+    dest: "/tmp/zabbix_agent2.msi"
+    validate_certs: false
+    mode: "0644"
+  delegate_to: localhost
+  run_once: true
+
+# Create Temp Folder
+- name: Create temporary directory
+  ansible.windows.win_file:
+    path: "{{ agent2_temp_dir }}"
+    state: directory
+
+# Copy MSI from the Ansible to Windows VM
+- name: Copy Zabbix Agent2 MSI to Windows client
+  ansible.windows.win_copy:
+    src: "/tmp/zabbix_agent2.msi"
+    dest: "{{ agent2_temp_dir }}\\zabbix_agent2.msi"
+
+# Install/Upgrade ZabbixAgent2
+- name: Install Zabbix Agent2
+  ansible.windows.win_package:
+    path: "{{ agent2_temp_dir }}\\zabbix_agent2.msi"
+    state: present
+    arguments:
+      - /qn
+      - /norestart
+
+# Deploy Config
+- name: Copy Zabbix Agent2 configuration
+  ansible.windows.win_copy:
+    src: "zabbix/config_files/{{ zabbix_server }}/zabbix_agent2.conf"
+    dest: "{{ agent2_install_dir }}\\zabbix_agent2.conf"
+
+# Enable and Restart Service
+- name: Configure and restart Zabbix Agent2 service
+  ansible.windows.win_service:
+    name: "Zabbix Agent 2"
+    start_mode: auto
+    state: restarted
+
+# Show Recent Logs
+- name: Read Zabbix Agent2 log
+  ansible.windows.win_shell: |
+    Get-Content "{{ agent2_install_dir }}\zabbix_agent2.log" -Tail 20
+  register: zabbix_log
+  changed_when: false
+
+- name: Display Zabbix Agent2 log
+  ansible.builtin.debug:
+    var: zabbix_log.stdout_lines
+
+# Cleanup Windows MSI
+- name: Remove Zabbix Agent2 MSI from Windows client
+  ansible.windows.win_file:
+    path: "{{ agent2_temp_dir }}\\zabbix_agent2.msi"
+    state: absent

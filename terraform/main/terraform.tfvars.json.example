@@ -1,0 +1,124 @@
+{
+  "vcenter": {
+    "datacenter_name": "VTS-LAB-Datacenter",
+    "vc_addr": "vts-lab-vc01.abramad.com"
+  },
+  "vms": {
+    "VR1-Vulture": {
+      "os_type": "windows",
+      "zabbix_server": "vnk-customerzabbix",
+      "template_name": "TMP-RI-W2022",
+      "compute_cluster": "VTS-LAB-Sandy Bridge-E5-2600",
+      "vcenter_folder": "AbramadCustomers/Rahkaran/Vulture",
+      "num_cpus": 8,
+      "memory": 12288,
+      "disks": [
+        {
+          "label": "disk0",
+          "size": 100,
+          "type": "standard",
+          "storage_cluster": "VTS-VNX5400-Std-Pool01-15K-LAB",
+          "unit_number": 0,
+          "datastore": "VTS-VNX5400-Std-Pool01-15K-LAB-LUN04"
+        },
+        {
+          "label": "disk1",
+          "size": 70,
+          "type": "advanced",
+          "storage_cluster": "VTS-VNX5400-Adv-Pool01-15K-LAB",
+          "unit_number": 1,
+          "datastore": "VTS-VNX5400-Adv-Pool01-15K-LAB-LUN01"
+        }
+      ],
+      "network": {
+        "portgroup_name": "AbramadRahkaran-VR1-NSX-212"
+      },
+      "custom_attrs": {
+        "CompanyName": "محمود جوکار",
+        "Creation Date": "1405/07/12-13:04",
+        "Creation Ticket ID": "SERVICDESK-84482",
+        "National ID": "3501370342",
+        "NativeBackup": "True",
+        "Physical Dongle": "True",
+        "IDS/IPS": "True",
+        "WAF Service": "False",
+        "Site-to-Site VPN": "False",
+        "Owner": "Support Team",
+        "ProductLine": "Rahkaran Server",
+        "Business Value": "Normal",
+        "RepMail": "sina.z@abramad.com",
+        "RepName": "Jafar Jeni",
+        "RepNumber": "09379690139",
+        "Industry": "Retail",
+        "URL": "https://Vulture-r.abramad.cloud",
+        "Public IP": "185.119.240.23"
+      }
+    }
+  },
+  "ad_info": {
+    "ad_ou": "Vulture",
+    "ad_desc": "محمود جوکار",
+    "domain": "cloud.local",
+    "users": [
+      {
+        "role": "agent",
+        "username": "18181818",
+        "full_name": "Jafar Jeni",
+        "email": "sina.z@abramad.com",
+        "phone": "09379690139",
+        "company": "محمود جوکار",
+        "ou": "Vulture",
+        "groups": [
+          "ADSelfServiceEnrollment",
+          "VultureMembers"
+        ]
+      },
+      {
+        "role": "deployer",
+        "username": "19191919",
+        "full_name": "Nader Nefle",
+        "email": "sina.z@abramad.com",
+        "phone": "09379690139",
+        "company": "SystemGroup",
+        "ou": "Deploy",
+        "groups": [
+          "ADSelfServiceEnrollment",
+          "DeployMembers",
+          "VultureDeploy"
+        ]
+      }
+    ],
+    "groups": [
+      {
+        "name": "VultureDeploy",
+        "description": "Deployers of Vulture",
+        "scope": "global",
+        "category": "security"
+      },
+      {
+        "name": "VultureSupport",
+        "description": "Support of Vulture",
+        "scope": "global",
+        "category": "security"
+      },
+      {
+        "name": "VultureMembers",
+        "description": "Members of Vulture",
+        "scope": "global",
+        "category": "security"
+      },
+      {
+        "name": "VultureComputers",
+        "description": "Computers of Vulture",
+        "scope": "global",
+        "category": "security"
+      },
+      {
+        "name": "VultureVR1-VultureMembers",
+        "description": "Admins of VR1-Vulture",
+        "scope": "global",
+        "category": "security"
+      }
+    ]
+  }
+}

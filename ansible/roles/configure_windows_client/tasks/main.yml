@@ -1,0 +1,12 @@
+---
+- name: Update local groups
+  ansible.builtin.include_tasks:
+    file: local_groups.yml
+
+- name: Install or Upgrade ZabbixAgent2
+  ansible.builtin.include_tasks:
+    file: zabbix_agent2.yml
+
+# - name: Restart SplunkForwarder Service
+#   ansible.builtin.include_tasks:
+#     file: splunk_forwarder.yml

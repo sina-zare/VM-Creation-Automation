@@ -1,0 +1,55 @@
+---
+- name: Look up existing AD users
+  microsoft.ad.object_info:
+    ldap_filter: "(sAMAccountName={{ item.username }})"
+    properties:
+      - sAMAccountName
+  loop: "{{ ad_info.users }}"
+  loop_control:
+    label: "{{ item.username }}"
+  register: existing_users_lookup
+
+- name: Build list of existing usernames
+  ansible.builtin.set_fact:
+    existing_usernames: >-
+      {{
+        existing_users_lookup.results
+        | selectattr('objects')
+        | map(attribute='item.username')
+        | list
+      }}
+
+- name: Create AD users
+  microsoft.ad.user:
+    name: "{{ item.full_name }}"
+    identity: "{{ item.username }}"
+    sam_account_name: "{{ item.username }}"
+    upn: "{{ item.username }}@{{ ad_info.domain }}"
+
+    display_name: "{{ item.full_name }}"
+    firstname: "{{ item.full_name.split()[0] }}"
+    surname: "{{ item.full_name.split()[1:] | join(' ') }}"
+    company: "{{ item.company }}"
+
+    email: "{{ item.email }}"
+    description: "{{ item.role | title }} of {{ ad_info.ad_ou }}"
+
+    path: "OU={{ item.ou }},{{ ad_customers_ou }}"
+
+    update_password: on_create
+    password: "{{ local_admin_password }}"
+    password_expired: "{{ omit if item.username in existing_usernames else true }}"
+
+    enabled: true
+    state: present
+
+    groups:
+      add: "{{ item.groups }}"
+
+    attributes:
+      set:
+        telephoneNumber: "{{ item.phone }}"
+
+  loop: "{{ ad_info.users }}"
+  loop_control:
+    label: "{{ item.username }}"

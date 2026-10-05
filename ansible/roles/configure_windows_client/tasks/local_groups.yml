@@ -1,0 +1,16 @@
+---
+- name: Add AD groups to local Administrators
+  ansible.windows.win_group_membership:
+    name: Administrators
+    members:
+      - "cloud\\{{ item }}"
+    state: present
+  loop: "{{ admin_groups }}"
+
+- name: Add AD groups to Remote Desktop Users
+  ansible.windows.win_group_membership:
+    name: "Remote Desktop Users"
+    members:
+      - "cloud\\{{ item }}"
+    state: present
+  loop: "{{ rdp_groups }}"

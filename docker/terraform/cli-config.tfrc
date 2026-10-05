@@ -1,0 +1,5 @@
+host "registry.terraform.io" {
+  services = {
+    "providers.v1" = "https://vnk-nexus.abramad.com/repository/terraform-registry/v1/providers/"
+  }
+}

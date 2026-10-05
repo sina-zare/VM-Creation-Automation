@@ -1,0 +1,12 @@
+---
+- name: Create customer AD groups
+  microsoft.ad.group:
+    name: "{{ item.name }}"
+    description: "{{ item.description }}"
+    scope: "{{ item.scope }}"
+    category: "{{ item.category }}"
+    path: "{{ ad_customer_ou }}"
+    state: present
+  loop: "{{ ad_info.groups }}"
+  loop_control:
+    label: "{{ item.name }}"

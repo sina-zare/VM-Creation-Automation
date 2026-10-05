@@ -1,0 +1,10 @@
+---
+- name: Configure Active Directory
+  hosts: domain_controllers
+  gather_facts: false
+
+  vars:
+      local_admin_password: "{{ lookup('env', 'LOCAL_ADMIN_PASSWORD') }}"
+
+  roles:
+    - configure_active_directory

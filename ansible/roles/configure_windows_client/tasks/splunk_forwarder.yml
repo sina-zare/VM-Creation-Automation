@@ -1,0 +1,7 @@
+---
+# Enable and Restart Service
+- name: Configure and restart SplunkForwarder service
+  ansible.windows.win_service:
+    name: "SplunkForwarder"
+    start_mode: auto
+    state: restarted
