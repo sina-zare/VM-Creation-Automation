@@ -87,11 +87,32 @@ def zabbix_node_adder(url, token, hosts_dict, template_list, host_group_list, ta
                 print(f"Host '{host_name}' created with ID {new_host['hostids'][0]}")
                 print('#############\n')
 
+                logger.info(
+                        f"Host '{host_name}' created with ID {new_host['hostids'][0]}",
+                        extra={
+                            "issue": JIRA_TICKET_KEY,
+                        }
+                    )
+
             except Exception as loop_err:
                 print(f"Error adding host '{host_name}': {loop_err}")
 
+                logger.error(
+                        f"Error adding host '{host_name}': {loop_err}",
+                        extra={
+                            "issue": JIRA_TICKET_KEY,
+                        }
+                    )
+
     except Exception as err:
         print(f"Error: {err}")
+
+        logger.error(
+            f"Error: {err}",
+            extra={
+                "issue": JIRA_TICKET_KEY,
+            }
+        )
 
 
 def load_json(path):
