@@ -472,11 +472,16 @@ notify_failure:
     - export PYTHONPATH="${CI_PROJECT_DIR}"
     - FAILED_JOBS_SUMMARY=$(python3 -m scripts.utility.gitlab.get_failed_jobs)
     - |
-      MESSAGE="🔴 Project *${CI_PROJECT_NAME}*
+      MTR_MESSAGE="🔴 Project *${CI_PROJECT_NAME}*
       Pipeline failed for ticket *${JIRA_TICKET_KEY}*
       Pipeline: ${CI_PIPELINE_URL}
 
       
       ${FAILED_JOBS_SUMMARY}"
-    - python3 -m scripts.utility.mattermost.notifier "${MATTERMOST_FAILURE_WEBHOOK}" "${MESSAGE}"
+
+    - JIRA_MESSAGE="🔴 Provisioning failed for this ticket. Try again after deleting all resources."
+
+    - python3 -m scripts.utility.mattermost.notifier "${MATTERMOST_FAILURE_WEBHOOK}" "${MTR_MESSAGE}"
+    - python3 -m scripts.utility.jira.comment_ticket "${JIRA_TICKET_KEY}" "${JIRA_MESSAGE}"
+    #- python3 -m scripts.utility.jira.transition_ticket "${JIRA_TICKET_KEY}" "closed"
 
