@@ -3,6 +3,9 @@
 import os
 from pathlib import Path
 
+# Forticlient
+FORTICLIENT_DOWNLOAD_URL = os.environ["FORTICLIENT_DOWNLOAD_URL"] # Used in reports web page for downloading Forticlient
+
 # Gitlab
 GIT_PUSH_TOKEN = os.environ["GIT_PUSH_TOKEN"]   # used for pushing final reports to the vm-creation project
 GIT_API_TOKEN = os.environ["GIT_API_TOKEN"]     # used to fetch failed stage state and traceback of vm-creation project
@@ -47,7 +50,10 @@ JIRA_SRV = os.environ["JIRA_SRV"]
 JIRA_TOKEN = os.environ["JIRA_TOKEN"]
 JIRA_ADDR = os.environ["JIRA_ADDR"]
 JIRA_CLOSE_TRANSITION_NAME = os.environ.get("JIRA_CLOSE_TRANSITION_NAME", "close") # ID in test 101
-JIRA_TICKET_KEY = os.environ["JIRA_TICKET_KEY"]
+JIRA_TICKET_KEY = os.environ["JIRA_TICKET_KEY"] # Set in Jira automation body
+JIRA_TARGET_DATACENTER = os.environ["JIRA_TARGET_DATACENTER"].lower() # Set in Jira automation body
+JIRA_TARGET_PRODUCTLINE = os.environ["JIRA_TARGET_PRODUCTLINE"].lower() # Set in Jira automation body
+
 
 # vCenter
 VSPHERE_USER = os.environ["VSPHERE_USER"]
@@ -259,92 +265,95 @@ jira_field_dict = {
         "lb_disk5_type":       "customfield_13610",
     },
 
-    "main": {
+    "prod": {
         # General Fields
-        "datacenter":           "customfield_13004",
-        "vm_base_name":         "customfield_11246",
-        "product_line":         "customfield_11377",
-        "category":             "customfield_11385",
-        "instances":            "customfield_13564",
+        "datacenter":           "customfield_14064",
+        "vm_base_name":         "customfield_14006",
+        "product_line":         "customfield_14007",
+        "category":             "customfield_14008",
+        "instances":            "customfield_14022",
         "company_name":         "customfield_11328",
-        "national_id":          "customfield_11223",
-        "server_os":            "customfield_11342",
-        "business_value":       "customfield_13460",
-        "industry":             "customfield_13514",
-        "vcenter_folder":       "customfield_13562",
-        "ad_ou":                "customfield_13563",
+        "national_id":          "customfield_13723",
+        "server_os":            "customfield_14016",
+        "business_value":       "customfield_13504",
+        "industry":             "customfield_14066",
+        "vcenter_folder":       "customfield_14036",
+        "ad_ou":                "customfield_14037",
         "sepidar_lock":         "customfield_11512",
         "vra_server":           "customfield_12798",
-        "processor_type":       "customfield_11291",
+        "processor_type":       "customfield_14017",
 
         # Boolean Fields
-        "is_new_customer":      "customfield_11292",
-        "idsips_enabled":       "customfield_13518",
-        "waf_enabled":          "customfield_13519",
-        "dongle_enabled":       "customfield_13520",
-        "stsvpn_enabled":       "customfield_13521",
+        "is_new_customer":      "customfield_14065",
+        "idsips_enabled":       "customfield_14018",
+        "waf_enabled":          "customfield_14019",
+        "dongle_enabled":       "customfield_14020",
+        "stsvpn_enabled":       "customfield_14021",
         "native_backup_needed": "customfield_11338",
         "public_ip_needed":     "customfield_11372",
 
         # Contact Fields
-        "agent_fullname":       "customfield_13522",
-        "agent_phone":          "customfield_11345",
-        "agent_natid":          "customfield_13523",
-        "agent_email":          "customfield_11234",
-        "deployer_fullname":    "customfield_13524",
-        "deployer_phone":       "customfield_13526",
-        "deployer_natid":       "customfield_13525",
-        "deployer_email":       "customfield_13527",
+        "agent_fullname":       "customfield_13725",
+        "agent_phone":          "customfield_12654",
+        "agent_natid":          "customfield_14010",
+        "agent_email":          "customfield_14011",
+        "deployer_fullname":    "customfield_14012",
+        "deployer_phone":       "customfield_14014",
+        "deployer_natid":       "customfield_14013",
+        "deployer_email":       "customfield_14015",
 
         # App Fields
-        "app_memory":           "customfield_11250",
-        "app_cpu":              "customfield_11352",
-        "app_disk_count":       "customfield_13528",
+        "app_memory":           "customfield_14024",
+        "app_cpu":              "customfield_14023",
+        "app_disk_count":       "customfield_14025",
 
-        "app_disk1_size":       "customfield_13529",
-        "app_disk2_size":       "customfield_13531",
-        "app_disk3_size":       "customfield_13532",
-        "app_disk4_size":       "customfield_13594",
-        "app_disk5_size":       "customfield_13596",
+        "app_disk1_size":       "customfield_14026",
+        "app_disk2_size":       "customfield_14028",
+        "app_disk3_size":       "customfield_14030",
+        "app_disk4_size":       "customfield_14032",
+        "app_disk5_size":       "customfield_14034",
 
-        "app_disk1_type":       "customfield_13586",
-        "app_disk2_type":       "customfield_13587",
-        "app_disk3_type":       "customfield_13588",
-        "app_disk4_type":       "customfield_13595",
-        "app_disk5_type":       "customfield_13597",
+        "app_disk1_type":       "customfield_14027",
+        "app_disk2_type":       "customfield_14029",
+        "app_disk3_type":       "customfield_14031",
+        "app_disk4_type":       "customfield_14033",
+        "app_disk5_type":       "customfield_14035",
 
         # DB Fields
-        "db_memory":           "customfield_13570",
-        "db_cpu":              "customfield_13569",
-        "db_disk_count":       "customfield_13571",
+        "db_memory":           "customfield_14039",
+        "db_cpu":              "customfield_14038",
+        "db_disk_count":       "customfield_14040",
 
-        "db_disk1_size":       "customfield_13573",
-        "db_disk2_size":       "customfield_13583",
-        "db_disk3_size":       "customfield_13598",
-        "db_disk4_size":       "customfield_13600",
-        "db_disk5_size":       "customfield_13602",
+        "db_disk1_size":       "customfield_14042",
+        "db_disk2_size":       "customfield_14044",
+        "db_disk3_size":       "customfield_14046",
+        "db_disk4_size":       "customfield_14048",
+        "db_disk5_size":       "customfield_14050",
 
-        "db_disk1_type":       "customfield_13589",
-        "db_disk2_type":       "customfield_13590",
-        "db_disk3_type":       "customfield_13599",
-        "db_disk4_type":       "customfield_13601",
-        "db_disk5_type":       "customfield_13603",
+        "db_disk1_type":       "customfield_14041",
+        "db_disk2_type":       "customfield_14043",
+        "db_disk3_type":       "customfield_14045",
+        "db_disk4_type":       "customfield_14047",
+        "db_disk5_type":       "customfield_14049",
 
         # LB Fields
-        "lb_memory":           "customfield_13575",
-        "lb_cpu":              "customfield_13574",
-        "lb_disk_count":       "customfield_13576",
+        "lb_memory":           "customfield_14052",
+        "lb_cpu":              "customfield_14051",
+        "lb_disk_count":       "customfield_14053",
 
-        "lb_disk1_size":       "customfield_13579",
-        "lb_disk2_size":       "customfield_13606",
-        "lb_disk3_size":       "customfield_13604",
-        "lb_disk4_size":       "customfield_13607",
-        "lb_disk5_size":       "customfield_13609",
+        "lb_disk1_size":       "customfield_14054",
+        "lb_disk2_size":       "customfield_14057",
+        "lb_disk3_size":       "customfield_14059",
+        "lb_disk4_size":       "customfield_14061",
+        "lb_disk5_size":       "customfield_14063",
 
-        "lb_disk1_type":       "customfield_13591",
-        "lb_disk2_type":       "customfield_13592",
-        "lb_disk3_type":       "customfield_13605",
-        "lb_disk4_type":       "customfield_13608",
-        "lb_disk5_type":       "customfield_13610",
+        "lb_disk1_type":       "customfield_14055",
+        "lb_disk2_type":       "customfield_14056",
+        "lb_disk3_type":       "customfield_14058",
+        "lb_disk4_type":       "customfield_14060",
+        "lb_disk5_type":       "customfield_14062",
     }
 }
+
+
+

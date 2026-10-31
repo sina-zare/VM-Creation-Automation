@@ -1,236 +1,262 @@
 #!/usr/bin/env python3
+try:
+    from prometheus_client import CollectorRegistry, Gauge, push_to_gateway, Counter
+    from scripts.utility.functions.data_validators import *
+    from scripts.utility.functions.netbox import *
+    from pyVim.connect import Disconnect
+    from scripts.utility.log.logger import get_logger
+    from jira import JIRA
+    from scripts.configs import *
+    import time
+    import json
+    import sys
 
-from prometheus_client import CollectorRegistry, Gauge, push_to_gateway, Counter
-from scripts.utility.functions.data_validators import *
-from scripts.utility.functions.netbox import *
-from pyVim.connect import Disconnect
-from scripts.utility.log.logger import get_logger
-from jira import JIRA
-from scripts.configs import *
-import time
-import json
-import sys
+    logger = get_logger(__name__)
 
-logger = get_logger(__name__)
+    # Metric Definition
+    script_name = 'vm_creation_data_fetcher'
+    job_name = 'python_scripts'
+    instance = script_name
+    target = 'vm_specs'
 
-# Metric Definition
-script_name = 'vm_creation_data_fetcher'
-job_name = 'python_scripts'
-instance = script_name
-target = 'vm_specs'
+    # Create a registry for our custom metrics
+    registry = CollectorRegistry()
 
-# Create a registry for our custom metrics
-registry = CollectorRegistry()
+    # Define metrics
+    duration_gauge = Gauge('script_exec_duration_seconds', 'Duration of my script', registry=registry)
+    status_gauge = Gauge('script_success', 'Whether script succeeded (1) or failed (0)', registry=registry)
+    last_error_message = Gauge(
+        'script_last_error_message',
+        'The last error message encountered during script execution',
+        ['error_summary', 'error_detail'],
+        registry=registry)
 
-# Define metrics
-duration_gauge = Gauge('script_exec_duration_seconds', 'Duration of my script', registry=registry)
-status_gauge = Gauge('script_success', 'Whether script succeeded (1) or failed (0)', registry=registry)
-last_error_message = Gauge(
-    'script_last_error_message',
-    'The last error message encountered during script execution',
-    ['error_summary', 'error_detail'],
-    registry=registry)
+    start_time = time.time()
 
-start_time = time.time()
+    if len(sys.argv) != 2:
+        raise ValueError("Usage: data_fetcher.py <ticket_id>")
 
-if len(sys.argv) != 2:
-    raise ValueError("Usage: data_fetcher.py <ticket_id>")
+    TICKET_ID = sys.argv[1]
+    #TICKET_ID = 'SERVICDESK-83929'
 
-TICKET_ID = sys.argv[1]
-#TICKET_ID = 'SERVICDESK-83929'
+    jira = JIRA(server=JIRA_ADDR, token_auth=JIRA_TOKEN)
+    issue = jira.issue(TICKET_ID)
+    fields = issue.fields
 
-jira = JIRA(server=JIRA_ADDR, token_auth=JIRA_TOKEN)
-issue = jira.issue(TICKET_ID)
-fields = issue.fields
+    # Show ticket fields
+    # print(json.dumps(
+    #     issue.fields.__dict__,
+    #     ensure_ascii=False,
+    #     indent=2,
+    #     default=str
+    # ))
 
-# Show ticket fields
-# print(json.dumps(
-#     issue.fields.__dict__,
-#     ensure_ascii=False,
-#     indent=2,
-#     default=str
-# ))
+    # Data Gathering
+    # General Spec
+    datacenter = getattr(issue.fields, jira_field_dict[JIRA_SRV]['datacenter'], None).value.strip().lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['datacenter'], None) else ""
+    vm_base_name = getattr(issue.fields, jira_field_dict[JIRA_SRV]['vm_base_name'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['vm_base_name'], None) else ""
+    product_line = getattr(issue.fields, jira_field_dict[JIRA_SRV]['product_line'], None).value if getattr(issue.fields, jira_field_dict[JIRA_SRV]['product_line'], None) else "N/A"
+    category = getattr(issue.fields, jira_field_dict[JIRA_SRV]['category'], None).value if getattr(issue.fields, jira_field_dict[JIRA_SRV]['category'], None) else "N/A"
+    instances = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['instances'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['instances'], None) else 1
+    company_name = getattr(issue.fields, jira_field_dict[JIRA_SRV]['company_name'], None) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['company_name'], None) else ""
+    national_id = getattr(issue.fields, jira_field_dict[JIRA_SRV]['national_id'], None) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['national_id'], None) else ""
+    server_os = getattr(issue.fields, jira_field_dict[JIRA_SRV]['server_os'], None).value.strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['server_os'], None) else None
+    os_type = os_selector(product_line, server_os, issue)
+    business_value = getattr(issue.fields, jira_field_dict[JIRA_SRV]['business_value'], None).value.strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['business_value'], None) else ""  
+    industry = getattr(issue.fields, jira_field_dict[JIRA_SRV]['industry'], None).value.strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['industry'], None) else ""
+    init_vcenter_folder = getattr(issue.fields, jira_field_dict[JIRA_SRV]['vcenter_folder'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['vcenter_folder'], None) else ""
+    ad_ou = getattr(issue.fields, jira_field_dict[JIRA_SRV]['ad_ou'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['ad_ou'], None) else ""
 
-# Data Gathering
-# General Spec
-datacenter = getattr(issue.fields, jira_field_dict[JIRA_SRV]['datacenter'], None).value.strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['datacenter'], None) else ""
-vm_base_name = getattr(issue.fields, jira_field_dict[JIRA_SRV]['vm_base_name'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['vm_base_name'], None) else ""
-product_line = getattr(issue.fields, jira_field_dict[JIRA_SRV]['product_line'], None).value if getattr(issue.fields, jira_field_dict[JIRA_SRV]['product_line'], None) else "N/A"
-category = getattr(issue.fields, jira_field_dict[JIRA_SRV]['category'], None).value if getattr(issue.fields, jira_field_dict[JIRA_SRV]['category'], None) else "N/A"
-instances = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['instances'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['instances'], None) else 1
-company_name = getattr(issue.fields, jira_field_dict[JIRA_SRV]['company_name'], None) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['company_name'], None) else ""
-national_id = getattr(issue.fields, jira_field_dict[JIRA_SRV]['national_id'], None) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['national_id'], None) else ""
-server_os = getattr(issue.fields, jira_field_dict[JIRA_SRV]['server_os'], None).value.strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['server_os'], None) else ""
-os_type = "windows" if server_os.lower().startswith('windows') else "linux"
-business_value = getattr(issue.fields, jira_field_dict[JIRA_SRV]['business_value'], None).value.strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['business_value'], None) else ""  
-industry = getattr(issue.fields, jira_field_dict[JIRA_SRV]['industry'], None).value.strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['industry'], None) else ""
-init_vcenter_folder = getattr(issue.fields, jira_field_dict[JIRA_SRV]['vcenter_folder'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['vcenter_folder'], None) else ""
-ad_ou = getattr(issue.fields, jira_field_dict[JIRA_SRV]['ad_ou'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['ad_ou'], None) else ""
+    if datacenter.lower() == 'vanak':
+        nb_scope = 'vanak'
+    elif datacenter.lower() == 'miremad':
+        nb_scope = 'ME'
+    nb_target = 'customers'
 
-if datacenter.lower() == 'vanak':
-    nb_scope = 'vanak'
-elif datacenter.lower() == 'miremad':
-    nb_scope = 'ME'
-nb_target = 'customers'
+    sepidar_lock = getattr(issue.fields, jira_field_dict[JIRA_SRV]['sepidar_lock'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['sepidar_lock'], None) and product_line == "Sepidar Server" else ""
+    vra_server = getattr(issue.fields, jira_field_dict[JIRA_SRV]['vra_server'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['vra_server'], None) and product_line == "BI Server" else ""
 
-sepidar_lock = getattr(issue.fields, jira_field_dict[JIRA_SRV]['sepidar_lock'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['sepidar_lock'], None) and product_line == "Sepidar Server" else ""
-vra_server = getattr(issue.fields, jira_field_dict[JIRA_SRV]['vra_server'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['vra_server'], None) and product_line == "BI Server" else ""
+    is_new_customer = True if (getattr(issue.fields, jira_field_dict[JIRA_SRV]['is_new_customer'], None).value.strip().lower() == "new customer") else False
+    idsips_enabled = True if (getattr(issue.fields, jira_field_dict[JIRA_SRV]['idsips_enabled'], None).value.strip().lower() == "yes") else False
+    waf_enabled = True if (getattr(issue.fields, jira_field_dict[JIRA_SRV]['waf_enabled'], None).value.strip().lower() == "yes") else False
+    dongle_enabled = True if (getattr(issue.fields, jira_field_dict[JIRA_SRV]['dongle_enabled'], None).value.strip().lower() == "yes") else False
+    stsvpn_enabled = True if (getattr(issue.fields, jira_field_dict[JIRA_SRV]['stsvpn_enabled'], None).value.strip().lower() == "yes") else False
+    native_backup_needed = True if (getattr(issue.fields, jira_field_dict[JIRA_SRV]['native_backup_needed'], None).value.strip().lower() == "yes") else False
+    public_ip_needed = True if (getattr(issue.fields, jira_field_dict[JIRA_SRV]['public_ip_needed'], None).value.strip().lower() == "yes") else False
 
-is_new_customer = True if (getattr(issue.fields, jira_field_dict[JIRA_SRV]['is_new_customer'], None).value.strip().lower() == "new customer") else False
-idsips_enabled = True if (getattr(issue.fields, jira_field_dict[JIRA_SRV]['idsips_enabled'], None).value.strip().lower() == "yes") else False
-waf_enabled = True if (getattr(issue.fields, jira_field_dict[JIRA_SRV]['waf_enabled'], None).value.strip().lower() == "yes") else False
-dongle_enabled = True if (getattr(issue.fields, jira_field_dict[JIRA_SRV]['dongle_enabled'], None).value.strip().lower() == "yes") else False
-stsvpn_enabled = True if (getattr(issue.fields, jira_field_dict[JIRA_SRV]['stsvpn_enabled'], None).value.strip().lower() == "yes") else False
-native_backup_needed = True if (getattr(issue.fields, jira_field_dict[JIRA_SRV]['native_backup_needed'], None).value.strip().lower() == "yes") else False
-public_ip_needed = True if (getattr(issue.fields, jira_field_dict[JIRA_SRV]['public_ip_needed'], None).value.strip().lower() == "yes") else False
+    # AD OU and vCenter Folder
+    if is_new_customer:
+        print(f'New Customer: {is_new_customer}')
+        ad_ou = vm_base_name
+        vcenter_folder = vcenter_folder_selector(
+            _is_new_customer=is_new_customer,
+            _base_name=vm_base_name,
+            vm_product_line=product_line,
+            jira_issue=issue
+        )
+    else:
+        print(f'New Customer: {is_new_customer}')
+        vcenter_folder = vcenter_folder_selector(
+            _is_new_customer=is_new_customer,
+            _base_name=init_vcenter_folder,
+            vm_product_line=product_line,
+            jira_issue=issue
+        )
 
-# AD OU and vCenter Folder
-if is_new_customer:
-    ad_ou = vm_base_name
-    vcenter_folder = vcenter_folder_selector(
-        _base_name=vm_base_name,
-        vm_product_line=product_line,
-        jira_issue=issue
+    # Server Count
+    if product_line == "Rahkaran Server" and category == "R II":
+        server_count = 2  # 1(DB) + 1(App)
+    elif product_line == "Rahkaran Server" and category == "R III":
+        server_count = 2 + instances  # 1(DB) + 1(LB) + N(App)
+    else:
+        server_count = 1
+
+    # Human Resources Info
+    agent_fullname = getattr(issue.fields, jira_field_dict[JIRA_SRV]['agent_fullname'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['agent_fullname'], None) else None
+    agent_phone = getattr(issue.fields, jira_field_dict[JIRA_SRV]['agent_phone'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['agent_phone'], None) else None
+    agent_natid = getattr(issue.fields, jira_field_dict[JIRA_SRV]['agent_natid'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['agent_natid'], None) else None
+    agent_email = getattr(issue.fields, jira_field_dict[JIRA_SRV]['agent_email'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['agent_email'], None) else None
+
+    deployer_fullname = getattr(issue.fields, jira_field_dict[JIRA_SRV]['deployer_fullname'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['deployer_fullname'], None) else None
+    deployer_phone = getattr(issue.fields, jira_field_dict[JIRA_SRV]['deployer_phone'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['deployer_phone'], None) else None
+    deployer_natid = getattr(issue.fields, jira_field_dict[JIRA_SRV]['deployer_natid'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['deployer_natid'], None) else None
+    deployer_email = getattr(issue.fields, jira_field_dict[JIRA_SRV]['deployer_email'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['deployer_email'], None) else None
+
+    # Specs Info
+    processor_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['processor_type'], None).value if getattr(issue.fields, jira_field_dict[JIRA_SRV]['processor_type'], None) else ""
+    compute_cluster = vcenter_dict.get(datacenter, {}).get("compute_cluster", {}).get(processor_type, "")
+
+    # Memory and CPU Specs
+    app_init_memory = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_memory'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_memory'], None) else 0  # APP
+    db_init_memory = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_memory'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_memory'], None) else 0  # DB
+    lb_init_memory = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_memory'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_memory'], None) else 0  # LB
+
+    app_init_cpu = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_cpu'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_cpu'], None) else 0  # APP
+    db_init_cpu = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_cpu'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_cpu'], None) else 0  # DB
+    lb_init_cpu = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_cpu'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_cpu'], None) else 0  # LB
+    # Disk Specs
+    app_disk_count = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk_count'], None).value) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk_count'], None) else 0  # APP
+
+    app_disk1_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk1_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk1_size'], None) else 0  # APP
+    app_disk2_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk2_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk2_size'], None) else 0  # APP
+    app_disk3_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk3_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk3_size'], None) else 0  # APP
+    app_disk4_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk4_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk4_size'], None) else 0  # APP
+    app_disk5_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk5_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk5_size'], None) else 0  # APP
+
+    app_disk1_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk1_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk1_type'], None) else ""  # APP
+    app_disk2_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk2_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk2_type'], None) else ""  # APP
+    app_disk3_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk3_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk3_type'], None) else ""  # APP
+    app_disk4_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk4_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk4_type'], None) else ""  # APP
+    app_disk5_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk5_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk5_type'], None) else ""  # APP
+    # ===========================================================================================================
+    db_disk_count = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk_count'], None).value) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk_count'], None) else 0  # DB
+
+    db_disk1_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk1_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk1_size'], None) else 0  # DB
+    db_disk2_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk2_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk2_size'], None) else 0  # DB
+    db_disk3_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk3_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk3_size'], None) else 0  # DB
+    db_disk4_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk4_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk4_size'], None) else 0  # DB
+    db_disk5_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk5_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk5_size'], None) else 0  # DB
+
+    db_disk1_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk1_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk1_type'], None) else ""  # DB
+    db_disk2_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk2_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk2_type'], None) else ""  # DB
+    db_disk3_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk3_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk3_type'], None) else ""  # DB
+    db_disk4_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk4_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk4_type'], None) else ""  # DB
+    db_disk5_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk5_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk5_type'], None) else ""  # DB
+    # ===========================================================================================================
+    lb_disk_count = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk_count'], None).value) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk_count'], None) else 0  # LB
+
+    lb_disk1_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk1_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk1_size'], None) else 0  # LB
+    lb_disk2_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk2_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk2_size'], None) else 0  # LB
+    lb_disk3_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk3_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk3_size'], None) else 0  # LB
+    lb_disk4_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk4_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk4_size'], None) else 0  # LB
+    lb_disk5_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk5_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk5_size'], None) else 0  # LB
+
+    lb_disk1_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk1_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk1_type'], None) else ""  # LB
+    lb_disk2_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk2_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk2_type'], None) else ""  # LB
+    lb_disk3_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk3_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk3_type'], None) else ""  # LB
+    lb_disk4_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk4_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk4_type'], None) else ""  # LB
+    lb_disk5_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk5_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk5_type'], None) else ""  # LB
+
+    disk_map = {
+        "app": [
+            {"size": app_disk1_size, "type": app_disk1_type},
+            {"size": app_disk2_size, "type": app_disk2_type},
+            {"size": app_disk3_size, "type": app_disk3_type},
+            {"size": app_disk4_size, "type": app_disk4_type},
+            {"size": app_disk5_size, "type": app_disk5_type},
+        ],
+        "db": [
+            {"size": db_disk1_size, "type": db_disk1_type},
+            {"size": db_disk2_size, "type": db_disk2_type},
+            {"size": db_disk3_size, "type": db_disk3_type},
+            {"size": db_disk4_size, "type": db_disk4_type},
+            {"size": db_disk5_size, "type": db_disk5_type},
+        ],
+        "lb": [
+            {"size": lb_disk1_size, "type": lb_disk1_type},
+            {"size": lb_disk2_size, "type": lb_disk2_type},
+            {"size": lb_disk3_size, "type": lb_disk3_type},
+            {"size": lb_disk4_size, "type": lb_disk4_type},
+            {"size": lb_disk5_size, "type": lb_disk5_type},
+        ]
+    }
+
+    # print(f"""
+    #     App Disk Count: {app_disk_count}
+    #         Disk1
+    #             Size: {app_disk1_size}
+    #             Type: {app_disk1_type}
+
+    #         Disk2
+    #             Size: {app_disk2_size}
+    #             Type: {app_disk2_type}
+
+    #         Disk3
+    #             Size: {app_disk3_size}
+    #             Type: {app_disk3_type}
+
+
+    #     DB Disk Count: {db_disk_count}
+    #         Disk1
+    #             Size: {db_disk1_size}
+    #             Type: {db_disk1_type}
+
+    #         Disk2
+    #             Size: {db_disk2_size}
+    #             Type: {db_disk2_type}
+
+
+    #     LB Disk Count: {lb_disk_count}
+    #         Disk1
+    #             Size: {lb_disk1_size}
+    #             Type: {lb_disk1_type}
+
+    #         Disk2
+    #             Size: {lb_disk2_size}
+    #             Type: {lb_disk2_type}
+    # """)
+
+except Exception as err:
+    
+    success = False
+    error_string_summary += f"{type(err).__name__}: {err}"
+
+    # Get the traceback and extract the last traceback frame
+    tb = traceback.extract_tb(err.__traceback__)
+    last_call = tb[-1]  # the last traceback frame, where the exception occurred
+    error_string_detail += f"Error occurred in line {last_call.lineno}: {last_call.line}"
+    print(f"Script failed: {error_string_summary}\n{error_string_detail}")
+
+    logger.error(
+        f"data_fetcher() failed",
+        extra={
+            "issue": TICKET_ID,
+            "error_summary": error_string_summary,
+            "error_detail": error_string_detail,
+        }
     )
-else:
-    vcenter_folder_selector(
-        _base_name=init_vcenter_folder,
-        vm_product_line=product_line,
-        jira_issue=issue
-    )
 
-# Server Count
-if product_line == "Rahkaran Server" and category == "R II":
-    server_count = 2  # 1(DB) + 1(App)
-elif product_line == "Rahkaran Server" and category == "R III":
-    server_count = 2 + instances  # 1(DB) + 1(LB) + N(App)
-else:
-    server_count = 1
-
-# Human Resources Info
-agent_fullname = getattr(issue.fields, jira_field_dict[JIRA_SRV]['agent_fullname'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['agent_fullname'], None) else None
-agent_phone = getattr(issue.fields, jira_field_dict[JIRA_SRV]['agent_phone'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['agent_phone'], None) else None
-agent_natid = getattr(issue.fields, jira_field_dict[JIRA_SRV]['agent_natid'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['agent_natid'], None) else None
-agent_email = getattr(issue.fields, jira_field_dict[JIRA_SRV]['agent_email'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['agent_email'], None) else None
-
-deployer_fullname = getattr(issue.fields, jira_field_dict[JIRA_SRV]['deployer_fullname'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['deployer_fullname'], None) else None
-deployer_phone = getattr(issue.fields, jira_field_dict[JIRA_SRV]['deployer_phone'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['deployer_phone'], None) else None
-deployer_natid = getattr(issue.fields, jira_field_dict[JIRA_SRV]['deployer_natid'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['deployer_natid'], None) else None
-deployer_email = getattr(issue.fields, jira_field_dict[JIRA_SRV]['deployer_email'], None).strip() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['deployer_email'], None) else None
-
-# Specs Info
-processor_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['processor_type'], None).value if getattr(issue.fields, jira_field_dict[JIRA_SRV]['processor_type'], None) else ""
-compute_cluster = vcenter_dict.get(datacenter, {}).get("compute_cluster", {}).get(processor_type, "")
-
-# Memory and CPU Specs
-app_init_memory = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_memory'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_memory'], None) else 0  # APP
-db_init_memory = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_memory'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_memory'], None) else 0  # DB
-lb_init_memory = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_memory'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_memory'], None) else 0  # LB
-
-app_init_cpu = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_cpu'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_cpu'], None) else 0  # APP
-db_init_cpu = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_cpu'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_cpu'], None) else 0  # DB
-lb_init_cpu = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_cpu'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_cpu'], None) else 0  # LB
-# Disk Specs
-app_disk_count = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk_count'], None).value) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk_count'], None) else 0  # APP
-
-app_disk1_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk1_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk1_size'], None) else 0  # APP
-app_disk2_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk2_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk2_size'], None) else 0  # APP
-app_disk3_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk3_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk3_size'], None) else 0  # APP
-app_disk4_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk4_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk4_size'], None) else 0  # APP
-app_disk5_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk5_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk5_size'], None) else 0  # APP
-
-app_disk1_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk1_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk1_type'], None) else ""  # APP
-app_disk2_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk2_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk2_type'], None) else ""  # APP
-app_disk3_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk3_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk3_type'], None) else ""  # APP
-app_disk4_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk4_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk4_type'], None) else ""  # APP
-app_disk5_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk5_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['app_disk5_type'], None) else ""  # APP
-# ===========================================================================================================
-db_disk_count = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk_count'], None).value) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk_count'], None) else 0  # DB
-
-db_disk1_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk1_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk1_size'], None) else 0  # DB
-db_disk2_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk2_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk2_size'], None) else 0  # DB
-db_disk3_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk3_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk3_size'], None) else 0  # DB
-db_disk4_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk4_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk4_size'], None) else 0  # DB
-db_disk5_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk5_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk5_size'], None) else 0  # DB
-
-db_disk1_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk1_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk1_type'], None) else ""  # DB
-db_disk2_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk2_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk2_type'], None) else ""  # DB
-db_disk3_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk3_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk3_type'], None) else ""  # DB
-db_disk4_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk4_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk4_type'], None) else ""  # DB
-db_disk5_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk5_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['db_disk5_type'], None) else ""  # DB
-# ===========================================================================================================
-lb_disk_count = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk_count'], None).value) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk_count'], None) else 0  # LB
-
-lb_disk1_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk1_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk1_size'], None) else 0  # LB
-lb_disk2_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk2_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk2_size'], None) else 0  # LB
-lb_disk3_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk3_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk3_size'], None) else 0  # LB
-lb_disk4_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk4_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk4_size'], None) else 0  # LB
-lb_disk5_size = int(getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk5_size'], None)) if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk5_size'], None) else 0  # LB
-
-lb_disk1_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk1_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk1_type'], None) else ""  # LB
-lb_disk2_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk2_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk2_type'], None) else ""  # LB
-lb_disk3_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk3_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk3_type'], None) else ""  # LB
-lb_disk4_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk4_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk4_type'], None) else ""  # LB
-lb_disk5_type = getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk5_type'], None).value.lower() if getattr(issue.fields, jira_field_dict[JIRA_SRV]['lb_disk5_type'], None) else ""  # LB
-
-disk_map = {
-    "app": [
-        {"size": app_disk1_size, "type": app_disk1_type},
-        {"size": app_disk2_size, "type": app_disk2_type},
-        {"size": app_disk3_size, "type": app_disk3_type},
-        {"size": app_disk4_size, "type": app_disk4_type},
-        {"size": app_disk5_size, "type": app_disk5_type},
-    ],
-    "db": [
-        {"size": db_disk1_size, "type": db_disk1_type},
-        {"size": db_disk2_size, "type": db_disk2_type},
-        {"size": db_disk3_size, "type": db_disk3_type},
-        {"size": db_disk4_size, "type": db_disk4_type},
-        {"size": db_disk5_size, "type": db_disk5_type},
-    ],
-    "lb": [
-        {"size": lb_disk1_size, "type": lb_disk1_type},
-        {"size": lb_disk2_size, "type": lb_disk2_type},
-        {"size": lb_disk3_size, "type": lb_disk3_type},
-        {"size": lb_disk4_size, "type": lb_disk4_type},
-        {"size": lb_disk5_size, "type": lb_disk5_type},
-    ]
-}
-
-# print(f"""
-#     App Disk Count: {app_disk_count}
-#         Disk1
-#             Size: {app_disk1_size}
-#             Type: {app_disk1_type}
-
-#         Disk2
-#             Size: {app_disk2_size}
-#             Type: {app_disk2_type}
-
-#         Disk3
-#             Size: {app_disk3_size}
-#             Type: {app_disk3_type}
-
-
-#     DB Disk Count: {db_disk_count}
-#         Disk1
-#             Size: {db_disk1_size}
-#             Type: {db_disk1_type}
-
-#         Disk2
-#             Size: {db_disk2_size}
-#             Type: {db_disk2_type}
-
-
-#     LB Disk Count: {lb_disk_count}
-#         Disk1
-#             Size: {lb_disk1_size}
-#             Type: {lb_disk1_type}
-
-#         Disk2
-#             Size: {lb_disk2_size}
-#             Type: {lb_disk2_type}
-# """)
+    raise
 
 try:
     try:
@@ -562,7 +588,15 @@ finally:
         registry=registry
     )
 
-    print('Metrics Sent')
+    logger.info(
+            f"data_fetcher() metrics sent",
+            extra={
+                "issue": JIRA_TICKET_KEY,
+            }
+        )
+    print('data_fetcher() Metrics Sent')
+    
+        
     
     if not success:
 

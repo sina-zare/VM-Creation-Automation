@@ -134,6 +134,7 @@ def api_get(path, token):
         return json.load(r)
 
 
+
 def wait_for_pipeline(sha, token, appear_timeout=180, run_timeout=900):
 
     pid = urllib.parse.quote(BIND_PATH, safe="")
@@ -184,6 +185,7 @@ def wait_for_pipeline(sha, token, appear_timeout=180, run_timeout=900):
                 }
             )
     raise SystemExit("Timed out waiting for bind pipeline")
+
 
 
 def main():

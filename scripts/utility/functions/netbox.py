@@ -4,6 +4,7 @@ import traceback
 from scripts.utility.log.logger import get_logger
 from scripts.configs import *
 import pynetbox
+import re
 
 logger = get_logger(__name__)
 
@@ -35,25 +36,50 @@ def find_best_prefix(nb, scope: str, target: str, jira_issue):
     Return the public prefix matching `scope` with the most available IPs.
     Assumes prefixes have custom fields: cf_public (bool) and cf_scope (str/select).
     id_scope-ts-label id_cf_Public-ts-label
+
+    # "customers" -> matches me-customers-1, vnk-customers-7, ...
     """
+    needle = f"-{target}-"
+    target_re = re.compile(rf"^(me|vnk){re.escape(needle)}range\d+$", re.IGNORECASE)
+
     try:
-        candidates = nb.ipam.prefixes.filter(cf_Public=True, cf_Target=target ,site=scope)
+        # candidates = nb.ipam.prefixes.filter(
+        # cf_Public=True,
+        # cf_Target__ic=needle,   # contains, case-insensitive
+        # site=scope,
+        # )
+        # logger.info(f"{len(candidates)} candidates for scope={scope} needle={needle}", extra={"issue": jira_issue.key})
+
+        # best_prefix = None
+        # best_free_count = -1
+
+        # Server-side: only the filters that are known to work
+        all_candidates = list(nb.ipam.prefixes.filter(cf_Public=True, site=scope))
+        logger.info(f"{len(all_candidates)} public prefixes in site={scope}", extra={"issue": jira_issue.key})
 
         best_prefix = None
         best_free_count = -1
 
-        for prefix in candidates:
-            total = prefix.prefix.split("/")
-            
+        for prefix in all_candidates:
+
+            raw = (prefix.custom_fields or {}).get("Target")
+            value = raw.get("value") if isinstance(raw, dict) else raw
+            value = value or ""
+
+            if not target_re.match(value):
+                logger.warning(f"Skipping {prefix.prefix}: Target={raw!r}", extra={"issue": jira_issue.key})
+                continue
+
             try:
                 available = nb.ipam.prefixes.get(prefix.id).available_ips.list(limit=0)
                 free_count = len(available)
-            except Exception:
-                # Fallback: use utilization field to estimate, if available_ips call fails
+
+            except Exception as e:
+                logger.exception(f"available_ips failed for {prefix.prefix}: {e}", extra={"issue": jira_issue.key})
                 free_count = 0
 
             logger.info(
-                f"Prefix {prefix.prefix} (id={prefix.id}) scope={scope} -> {free_count} free IPs",
+                f"Prefix {prefix.prefix} (id={prefix.id}) scope={scope} target={value} -> {free_count} free IPs",
                 extra={
                 "issue": jira_issue.key,
                 "Prefix": prefix.prefix,
@@ -69,8 +95,7 @@ def find_best_prefix(nb, scope: str, target: str, jira_issue):
 
         if best_prefix is None or best_free_count <= 0:
             raise ValueError(
-                    f"ERROR: No public prefix with free IPs found for scope '{scope}' and target '{target}'."
-                )
+                f"No public prefix with free IPs found for scope '{scope}' and target '{target}'.")
 
         logger.info(f"Selected prefix {best_prefix}")
         return best_prefix, best_free_count
@@ -175,6 +200,7 @@ def reserve_ip(nb, prefix, description: str, jira_issue):
         )
         raise
 
+
 def delete_ip(nb, ip: str, jira_issue):
     """
     Delete an IP address record from NetBox given its address (with or without CIDR).
@@ -204,6 +230,7 @@ def delete_ip(nb, ip: str, jira_issue):
             }
         )
         return True
+
 
     except Exception as err:
         global error_string_detail

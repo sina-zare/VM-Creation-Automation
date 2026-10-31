@@ -16,6 +16,7 @@ stages:
   - dns
   - zabbix
   - reporting
+  - log_shipping
   - catch_exception
 
 variables:
@@ -35,16 +36,23 @@ fetch_data:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "trigger"'
 
-  resource_group: recon
 
   script:
+    - echo "Server Creation Request for ${JIRA_TARGET_PRODUCTLINE} Datacenter ${JIRA_TARGET_DATACENTER}"
     - export PYTHONPATH="${CI_PROJECT_DIR}"
     - python3 -m scripts.utility.pipeline.timing start
+    - python3 -m scripts.utility.pipeline.send_status_metrics reset
+
     - echo "Fetching ticket ${JIRA_TICKET_KEY}"
     - python3 -m scripts.data_fetcher "${JIRA_TICKET_KEY}"
     - python3 -m scripts.utility.pipeline.timing mark reconnaissance_end
 
+  after_script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - python3 -m scripts.utility.pipeline.send_status_metrics job
+
   artifacts:
+    when: always 
     paths:
       - vms.tfvars.json
       - automation.*.log
@@ -101,7 +109,12 @@ create_vm:
     - terraform output -json | jq '{vm_ids:.vm_ids.value, vm_ips:.vm_ips.value}' > "${CI_PROJECT_DIR}/vm_outputs.json"
     - python3 -m scripts.utility.pipeline.timing mark terraform_end
 
+  after_script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - python3 -m scripts.utility.pipeline.send_status_metrics job
+
   artifacts:
+    when: always 
     paths:
       - vms.tfvars.json
       - reports/  
@@ -122,7 +135,6 @@ create_vm:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "trigger"'
 
-
   needs:
     - job: create_vm
       artifacts: true
@@ -137,8 +149,13 @@ create_vm:
 
     - echo "Inventory validation:"
     - ansible-inventory -i ansible/inventory/hosts.yml --list
+  
+  after_script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - python3 -m scripts.utility.pipeline.send_status_metrics job
 
   artifacts:
+    when: always 
     paths:
       - ansible/inventory/hosts.yml
       - vm_outputs.json
@@ -182,7 +199,12 @@ create_vm:
         playbooks/configure_active_directory.yml \
         -e "@../vms.tfvars.json"
 
+  after_script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - python3 -m scripts.utility.pipeline.send_status_metrics job
+
   artifacts:
+    when: always 
     paths:
       - automation.*.log
     expire_in: 1 day
@@ -223,7 +245,12 @@ create_vm:
         -e "@../vms.tfvars.json"
     - python3 -m scripts.utility.pipeline.timing mark ansible_end
 
+  after_script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - python3 -m scripts.utility.pipeline.send_status_metrics job
+  
   artifacts:
+    when: always
     paths:
       - vm_outputs.json
       - vms.tfvars.json
@@ -252,8 +279,12 @@ add_dns_records:
     - python3 -m scripts.utility.dns.add_dns_records vms.tfvars.json
     - python3 -m scripts.utility.pipeline.timing mark dns_end
 
+  after_script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - python3 -m scripts.utility.pipeline.send_status_metrics job
 
   artifacts:
+    when: always
     paths:
       - automation.*.log
       - pipeline_timing/
@@ -281,8 +312,12 @@ add_url_monitoring:
     - python3 -m scripts.utility.zabbix.add_url_monitoring
     - python3 -m scripts.utility.pipeline.timing mark zabbix_end
 
+  after_script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - python3 -m scripts.utility.pipeline.send_status_metrics job
 
   artifacts:
+    when: always
     paths:
       - automation.*.log
       - pipeline_timing/
@@ -309,7 +344,12 @@ add_url_monitoring:
     - cat vm_outputs.json | jq
     - python3 -m scripts.utility.webpage.patch_report_ips "${JIRA_TICKET_KEY}" vm_outputs.json
 
+  after_script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - python3 -m scripts.utility.pipeline.send_status_metrics job
+
   artifacts:
+    when: always
     paths:
       - automation.*.log
       - vms.tfvars.json
@@ -336,7 +376,12 @@ add_url_monitoring:
     - export PYTHONPATH="${CI_PROJECT_DIR}"
     - python3 -m scripts.utility.email.send_report_email "${JIRA_TICKET_KEY}" vms.tfvars.json
 
+  after_script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - python3 -m scripts.utility.pipeline.send_status_metrics job
+
   artifacts:
+    when: always
     paths:
       - automation.*.log
 
@@ -357,7 +402,12 @@ add_url_monitoring:
     - export PYTHONPATH="${CI_PROJECT_DIR}"
     - python3 -m scripts.utility.jira.close_ticket "${JIRA_TICKET_KEY}" "reports/${JIRA_TICKET_KEY}/index.html"
 
+  after_script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - python3 -m scripts.utility.pipeline.send_status_metrics job
+
   artifacts:
+    when: always
     paths:
       - automation.*.log
     expire_in: 1 day
@@ -398,6 +448,10 @@ add_url_monitoring:
     - export PYTHONPATH="${CI_PROJECT_DIR}"
     - python3 -m scripts.utility.log.merge_logs
 
+  after_script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - python3 -m scripts.utility.pipeline.send_status_metrics job
+
   artifacts:
     paths:
       - automation.log
@@ -429,9 +483,8 @@ add_url_monitoring:
     - sh scripts/utility/webpage/generate_index.sh
     - echo "Pages URL is ${CI_PAGES_URL}"
 
-    # Timing
     - python3 -m scripts.utility.pipeline.timing mark reporting_end
-    - python3 -m scripts.utility.pipeline.timing summary
+    
     #- 'python3 -m scripts.utility.mattermost.notifier "${MATTERMOST_NOTIFY_WEBHOOK}" "#### :globe_with_meridians: :link: Web Report URL: ${CI_PAGES_URL}"'
     
     # Make sure we're in the Git repository
@@ -447,7 +500,9 @@ add_url_monitoring:
     - 'git commit -m "Finalize report and logs for ${JIRA_TICKET_KEY} [skip ci]" || echo "nothing to commit"'
     - git push origin HEAD:main
 
-    
+  after_script:
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - python3 -m scripts.utility.pipeline.send_status_metrics job
 
   artifacts:
     paths:
@@ -462,6 +517,44 @@ add_url_monitoring:
     url: ${CI_PAGES_URL}
 
 
+# ============================================================================
+# Log Shipping
+# ============================================================================
+ship_logs_and_metrics:
+  timeout: 3m
+  stage: log_shipping
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "trigger"'
+      # run even if earlier jobs failed
+      when: always
+
+  allow_failure: true
+
+  script:
+    - |
+      if ! ls automation.*.log >/dev/null 2>&1; then
+        echo "No automation.*.log files found, nothing to ship"
+        exit 0
+      fi
+    - ls -l automation.*.log
+    - filebeat test config -c elasticsearch/filebeat/filebeat.yml --strict.perms=false
+    - filebeat test output -c elasticsearch/filebeat/filebeat.yml --strict.perms=false
+    - |
+      timeout 30 filebeat -e -c elasticsearch/filebeat/filebeat.yml \
+        --strict.perms=false --path.data /tmp/filebeat-data \
+        || [ $? -eq 124 ]
+
+  after_script:
+    # Runs whether script succeeded or failed
+    - export PYTHONPATH="${CI_PROJECT_DIR}"
+    - python3 -m scripts.utility.pipeline.timing mark log_shipping_end
+    - python3 -m scripts.utility.pipeline.timing summary
+    - python3 -m scripts.utility.pipeline.send_status_metrics job
+
+
+# ============================================================================
+# Notify on job failure
+# ============================================================================
 notify_failure:
   stage: catch_exception
   rules:
@@ -483,5 +576,4 @@ notify_failure:
 
     - python3 -m scripts.utility.mattermost.notifier "${MATTERMOST_FAILURE_WEBHOOK}" "${MTR_MESSAGE}"
     - python3 -m scripts.utility.jira.comment_ticket "${JIRA_TICKET_KEY}" "${JIRA_MESSAGE}"
-    #- python3 -m scripts.utility.jira.transition_ticket "${JIRA_TICKET_KEY}" "closed"
-
+    - python3 -m scripts.utility.jira.transition_ticket "${JIRA_TICKET_KEY}" "Failed"

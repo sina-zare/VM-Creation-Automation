@@ -6,6 +6,11 @@
 #  -t tap:1.0.0 .
 
 ARG PYTHON_VERSION=3.12
+# FILEBEAT_VERSION Must match ElasticSearch cluster version
+ARG FILEBEAT_VERSION=8.19.9
+ARG FILEBEAT_IMAGE=docker.elastic.co/beats/filebeat:${FILEBEAT_VERSION}
+
+FROM ${FILEBEAT_IMAGE} AS filebeat
 FROM python:${PYTHON_VERSION}-slim
 
 ARG TERRAFORM_VERSION=1.13.0
@@ -75,6 +80,11 @@ COPY python/requirements.txt /tmp/requirements.txt
 RUN pip install --upgrade pip --index-url http://vnk-nexus.abramad.com/repository/pypi-proxy/simple --trusted-host vnk-nexus.abramad.com \
 && pip install --no-cache-dir -r /tmp/requirements.txt --index-url http://vnk-nexus.abramad.com/repository/pypi-proxy/simple --trusted-host vnk-nexus.abramad.com
 
+# ------------------------------------------------------------
+# Filebeat (copied from the official image)
+# ------------------------------------------------------------
+COPY --from=filebeat /usr/share/filebeat/filebeat /usr/local/bin/filebeat
+RUN filebeat version
 
 # ------------------------------------------------------------
 # Run as non-root

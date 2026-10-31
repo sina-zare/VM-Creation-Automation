@@ -4,8 +4,9 @@ import json
 import sys
 import time
 from pathlib import Path
-from scripts.configs import MATTERMOST_NOTIFY_WEBHOOK, JIRA_TICKET_KEY
+from scripts.configs import MATTERMOST_NOTIFY_WEBHOOK, JIRA_TICKET_KEY, JIRA_TARGET_PRODUCTLINE, PUSHGATEWAY_URL
 from scripts.utility.mattermost.notifier import send_mattermost_message
+from scripts.utility.pipeline.send_time_metrics import push_time_metrics
 import os
 import re
 
@@ -51,10 +52,10 @@ def format_duration(seconds: float) -> str:
 def build_summary(data: dict) -> str:
     """Build a human-readable pipeline timing summary, tolerating missing stages."""
     pipeline_start = data.get("pipeline_start")
-    reporting_end = data.get("reporting_end")
+    log_shipping_end = data.get("log_shipping_end")
 
-    if pipeline_start is None or reporting_end is None:
-        return "Total time: unavailable (missing pipeline_start/reporting_end)"
+    if pipeline_start is None or log_shipping_end is None:
+        return "Total time: unavailable (missing pipeline_start/log_shipping_end)"
 
     stages = [
         ("reconnaissance", "pipeline_start", "reconnaissance_end"),
@@ -63,9 +64,10 @@ def build_summary(data: dict) -> str:
         ("dns", "ansible_end", "dns_end"),
         ("zabbix", "dns_end", "zabbix_end"),
         ("reporting", "reporting_start", "reporting_end"),
+        ("log_and_metric_shipping", "reporting_end", "log_shipping_end")
     ]
 
-    lines = [f"Total time:     {format_duration(reporting_end - pipeline_start)}"]
+    lines = [f"Total time:     {format_duration(log_shipping_end - pipeline_start)}"]
     for name, start_key, end_key in stages:
         start, end = data.get(start_key), data.get(end_key)
         if start is None or end is None:
@@ -133,6 +135,11 @@ def main() -> None:
             username="VM Automation",
             icon_emoji=":alarm_clock:",
         )
+
+        push_time_metrics(
+            data=data, 
+            product_line=JIRA_TARGET_PRODUCTLINE, 
+            gateway=PUSHGATEWAY_URL)
 
     else:
         print(f"Unknown command: {command}")

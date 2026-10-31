@@ -65,6 +65,8 @@ BEGIN {
   printf "%04d/%02d/%02d %s:%s", jy, i, j_day_no+1, gh, gmin
 }')
 
+
+
 awk -v cards="$CARDS" -v ts="$TIMESTAMP" '
   { gsub(/__CARDS__/, cards); gsub(/__TIMESTAMP__/, ts); print }
 ' "$TEMPLATE" > "$OUT"

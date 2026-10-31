@@ -54,7 +54,7 @@ def get_datacenter_names(vc_connection):
 
     datacenter_names = [dc.name for dc in container.view]
     container.Destroy()
-
+    
     return datacenter_names
 
 def pick_datastore(vc_connection, disks, jira_issue, max_utilization):
@@ -605,6 +605,51 @@ def template_selector(vm_name, vm_datacenter, vm_os, vm_product_line, vm_categor
         )
         raise
 
+def os_selector(_product_line, _server_os, jira_issue):
+    try:
+        if _server_os:
+            os_type = 'windows' if _server_os.lower().startswith('windows') else 'linux'
+
+        else:
+            os_type = 'windows'
+
+        
+        logger.info(
+            "OS selected",
+            extra={
+                "issue": jira_issue.key,
+                "product_line": _product_line,
+                "os": _server_os,
+                "os_type": os_type
+            }
+        )
+
+        return os_type
+    
+    except Exception as err:
+        global error_string_detail
+        global error_string_summary
+        global success
+
+        success = False
+        error_string_summary += f"{type(err).__name__}: {err}"
+
+        # Get the traceback and extract the last traceback frame
+        tb = traceback.extract_tb(err.__traceback__)
+        last_call = tb[-1]  # the last traceback frame, where the exception occurred
+        error_string_detail += f"Error occurred in line {last_call.lineno}: {last_call.line}"
+        print(f"Script failed: {error_string_summary}\n{error_string_detail}")
+
+        logger.error(
+            f"os_selector() failed",
+            extra={
+                "issue": jira_issue.key,
+                "error_summary": error_string_summary,
+                "error_detail": error_string_detail,
+            }
+        )
+        raise
+
 
 def portgroup_selector(_datacenter, _product_line, _category, jira_issue):
     try:
@@ -918,14 +963,34 @@ def disk_compactor(
 
         disks = []
         for i, disk in enumerate(selected_disks[:target_disk_count]):
+            calculated_storage_cluster = vcenter_dict.get(_datacenter, {}).get("storage_cluster", {}).get(disk["type"], "N/A")
+            if calculated_storage_cluster == "N/A":
+                logger.error(
+                    f"disk_compactor() failed to calculate storage cluster from storage type",
+                    extra={
+                        "issue": JIRA_TICKET_KEY,
+                        "disks": disk,
+                        "datacenter": _datacenter,
+                        "vcenter_dict": vcenter_dict,
+                    }
+                )
+                raise
+
             disks.append({
                 "label": f"disk{i}",
                 "size": disk["size"],
                 "type": disk["type"],
-                "storage_cluster": vcenter_dict.get(_datacenter, {}).get("storage_cluster", {}).get(disk["type"], ""),
+                "storage_cluster": calculated_storage_cluster,
                 "unit_number": i
             })
 
+        logger.info(
+            f"disk_compactor() compacted disks",
+            extra={
+                "issue": JIRA_TICKET_KEY,
+                "disks": disks
+            }
+        )
         return disks
 
     except Exception as err:
@@ -945,6 +1010,7 @@ def disk_compactor(
         logger.error(
             f"disk_compactor() failed",
             extra={
+                "issue": JIRA_TICKET_KEY,
                 "error_summary": error_string_summary,
                 "error_detail": error_string_detail,
             }
@@ -1356,7 +1422,7 @@ def reporter(
         # DOWNLOADS
         # ============================================================
 
-        html_msg += """
+        html_msg += f"""
                 <!-- Downloads -->
 
                 <table width="100%" cellpadding="0" cellspacing="0" border="0"
@@ -1390,7 +1456,7 @@ def reporter(
                         <td style="padding:10px 18px; font-size:13px">
                             نرم‌افزار FortiClient<br>
 
-                            <a href="https://abramad.thr-storage.abramad.com:9021/support/forticlient/forticlient.msi"
+                            <a {FORTICLIENT_DOWNLOAD_URL}"
                             style="color:#1f6fb2;">
                                 دانلود FortiClient
                             </a>
@@ -1647,44 +1713,66 @@ def tehran_datetime():
 
 
 def vcenter_folder_selector(
+        _is_new_customer,
         _base_name,
         vm_product_line,
         jira_issue
 ):
     try:
-        # Rahkaran
-        if vm_product_line == "Rahkaran Server":
-            vc_folder = f"AbramadCustomers/Rahkaran/{_base_name}"
-        # BI
-        elif vm_product_line == "BI Server":
-            vc_folder = f"AbramadCustomers/BI/{_base_name}"
-        # Sepidar
-        elif vm_product_line == "Sepidar Server":
-            vc_folder = f"AbramadCustomers/Sepidar/{_base_name}"
-        # IaaS
-        elif vm_product_line == "IaaS Server":
-            vc_folder = f"AbramadCustomers/IaaS/{_base_name}"
-        # Managed IaaS
-        elif vm_product_line == "Managed IaaS Server":
-            vc_folder = f"AbramadCustomers/ManagedIaaS/{_base_name}"
-        else:
-            logger.error(
-                f"Unsupported product line. No automation procedure available for '{vm_product_line}'",
-                extra={
-                    "issue": jira_issue.key,
-                    "product_line": vm_product_line,
-                }
-            )
+        if _is_new_customer:
+            customer_status = "new"
 
-            raise ValueError(
-                f"Unsupported product line. No automation procedure available for '{vm_product_line}'"
-            )
+            # Rahkaran
+            if vm_product_line == "Rahkaran Server":
+                vc_folder = f"AbramadCustomers/Rahkaran/{_base_name}"
+            # BI
+            elif vm_product_line == "BI Server":
+                vc_folder = f"AbramadCustomers/BI/{_base_name}"
+            # Sepidar
+            elif vm_product_line == "Sepidar Server":
+                vc_folder = f"AbramadCustomers/Sepidar/{_base_name}"
+            # IaaS
+            elif vm_product_line == "IaaS Server":
+                vc_folder = f"AbramadCustomers/IaaS/{_base_name}"
+            # Managed IaaS
+            elif vm_product_line == "Managed IaaS Server":
+                vc_folder = f"AbramadCustomers/ManagedIaaS/{_base_name}"
+            else:
+                logger.error(
+                    f"Unsupported product line. No automation procedure available for '{vm_product_line}'",
+                    extra={
+                        "issue": jira_issue.key,
+                        "product_line": vm_product_line,
+                    }
+                )
+
+                raise ValueError(
+                    f"Unsupported product line. No automation procedure available for '{vm_product_line}'"
+                )
+
+        else:
+            customer_status = "old"
+
+            if '/' in _base_name:
+                vc_folder = _base_name
+            
+            else:
+                logger.error(
+                    f"Invalid vcenter folder inputed.",
+                    extra={
+                        "issue": jira_issue.key,
+                        "product_line": vm_product_line,
+                        "input_vcenter_folder": _base_name
+                    }
+                )
+
 
         logger.info(
             "vCenter folder selected",
             extra={
                 "issue": jira_issue.key,
                 "vcenter_folder": vc_folder,
+                "customer_status": customer_status
             }
         )
 

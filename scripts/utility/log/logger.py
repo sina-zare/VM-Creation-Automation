@@ -2,7 +2,7 @@
 
 import logging
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from logging.handlers import TimedRotatingFileHandler
 from zoneinfo import ZoneInfo
 
@@ -20,12 +20,18 @@ class TehranJalaliJsonFormatter(jsonlogger.JsonFormatter):
             record.created,
             tz=ZoneInfo("Asia/Tehran"),
         )
-
         jalali_time = jdatetime.datetime.fromgregorian(
             datetime=tehran_time,
         )
-
+        
         return jalali_time.strftime("%Y-%m-%d %H:%M:%S")
+
+    def add_fields(self, log_record, record, message_dict):
+        super().add_fields(log_record, record, message_dict)
+        log_record["ts"] = datetime.fromtimestamp(
+            record.created,
+            tz=timezone.utc,
+        ).isoformat()
 
 
 def get_logger(name: str) -> logging.Logger:
@@ -106,6 +112,8 @@ def log_cli():
 
 if __name__ == "__main__":
     log_cli()
+
+
 
 
 ### How to use it from other modules

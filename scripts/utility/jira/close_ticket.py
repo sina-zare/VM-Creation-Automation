@@ -22,6 +22,9 @@ from scripts.utility.log.logger import get_logger
 
 logger = get_logger("scripts.utility.jira.close_ticket")
 
+def read_report(html_path):
+    with open(html_path, encoding="utf-8") as f:
+        return f.read()
 
 def parse_report(html_path):
     with open(html_path, encoding="utf-8") as f:
@@ -76,6 +79,7 @@ def clean(value):
     text = str(value)
     # A "|" inside a value would break the table, so escape it
     return text.replace("|", "\\|")
+
 
 
 def make_bold(text, destination):
@@ -169,6 +173,7 @@ try:
     jira_token = os.environ["JIRA_TOKEN"]
     transition_name = JIRA_CLOSE_TRANSITION_NAME
 
+    body_html = read_report(report_path)
     servers = parse_report(report_path)
     if not servers:
         logger.error(
@@ -191,6 +196,7 @@ try:
     )
 
     jira = JIRA(server=jira_addr, token_auth=jira_token)
+    #jira.add_comment(ticket, body_html)
     jira.add_comment(ticket, body_jira)
     jira.transition_issue(ticket, transition_name)
 
@@ -201,6 +207,7 @@ try:
                 "issue": ticket,
             }
         )
+
 
 except Exception as err:
 
